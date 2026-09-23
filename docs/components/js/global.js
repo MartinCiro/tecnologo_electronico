@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     if (window.EVIDENCIA_TITULO) {
-        document.title = `${window.EVIDENCIA_TITULO} (${window.EVIDENCIA_CODIGO || 'Evidencia'}) | ElectroLab`;
+        document.title = `${window.EVIDENCIA_TITULO} (${window.EVIDENCIA_CODIGO || 'Evidencia'}) | Mr. Ciro`;
         const titleEl = document.getElementById('dynamic-title');
         if (titleEl) titleEl.textContent = window.EVIDENCIA_TITULO;
     }

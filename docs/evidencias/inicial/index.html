@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Repositorio de Evidencias | Mr. Ciro</title>
+    <title>Fase Inicial | Evidencias</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,7 +29,7 @@
     </script>
 
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="/components/js/global.js" defer></script>
+    <script src="/components/js/global.js" defer></script> <!-- Nota: subimos dos niveles -->
 
     <style>
         body, div, nav, a, button, article { transition-property: background-color, border-color, color, fill, stroke, box-shadow; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 300ms; }
@@ -41,21 +41,21 @@
 
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
         <div class="mb-10">
-            <a href="/" class="inline-flex items-center gap-2 text-light-metal dark:text-dark-metal hover:text-light-accent dark:hover:text-dark-accent mb-4 transition-colors">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver al inicio
+            <a href="../" class="inline-flex items-center gap-2 text-light-metal dark:text-dark-metal hover:text-light-accent dark:hover:text-dark-accent mb-4 transition-colors">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver a Fases
             </a>
             <h1 class="font-display text-3xl sm:text-4xl text-light-dark dark:text-dark-light mb-3">
-                Repositorio de Evidencias
+                Fase: Inicial
             </h1>
             <p class="text-light-metal dark:text-dark-metal max-w-2xl text-lg">
-                Navega por las fases de la Guía de Aprendizaje IND1. Selecciona una fase para ver sus evidencias.
+                Actividades de inducción y contextualización Senalogía (Guía IND1).
             </p>
         </div>
 
         <div id="evidencias-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div class="col-span-full flex flex-col items-center justify-center py-12 text-light-metal dark:text-dark-metal">
                 <i data-lucide="loader-2" class="w-8 h-8 animate-spin mb-3"></i>
-                <p>Cargando fases...</p>
+                <p>Cargando evidencias...</p>
             </div>
         </div>
     </main>
@@ -66,6 +66,7 @@
         document.addEventListener('DOMContentLoaded', async () => {
             if (typeof lucide !== 'undefined') lucide.createIcons();
             const grid = document.getElementById('evidencias-grid');
+            const categoriaActual = "inicial"; // CLAVE: Define qué fase muestra esta página
             
             try {
                 const response = await fetch(`${ROOT}evidencias/evidencias.json`);
@@ -73,12 +74,18 @@
                 const data = await response.json();
 
                 grid.innerHTML = '';
+                const evidenciasDeEstaFase = data[categoriaActual];
 
-                // Iterar SOLO sobre las categorías (Nivel 1)
-                for (const [categoria, evidencias] of Object.entries(data)) {
-                    const categoriaTitulo = humanize(categoria);
-                    const numEvidencias = Object.keys(evidencias).length;
-                    const ruta = `${ROOT}evidencias/${categoria}/`;
+                if (!evidenciasDeEstaFase) {
+                    grid.innerHTML = `<p class="col-span-full text-center text-light-metal">No hay evidencias registradas para esta fase.</p>`;
+                    return;
+                }
+
+                // Iterar sobre las evidencias de ESTA categoría específica
+                for (const [nombreEvidencia, codigo] of Object.entries(evidenciasDeEstaFase)) {
+                    const titulo = humanize(nombreEvidencia);
+                    const icono = getIcon(nombreEvidencia);
+                    const ruta = `${ROOT}evidencias/${categoriaActual}/${nombreEvidencia}/`;
 
                     const card = document.createElement('a');
                     card.href = ruta;
@@ -86,21 +93,21 @@
                     
                     card.innerHTML = `
                         <div class="flex justify-between items-start mb-4">
-                            <div class="w-14 h-14 bg-light-accent/10 dark:bg-dark-accent/20 rounded-xl flex items-center justify-center text-light-accent dark:text-dark-accent group-hover/card:scale-110 transition-transform">
-                                <i data-lucide="folder-open" class="w-7 h-7"></i>
+                            <div class="w-12 h-12 bg-light-accent/10 dark:bg-dark-accent/20 rounded-xl flex items-center justify-center text-light-accent dark:text-dark-accent group-hover/card:scale-110 transition-transform">
+                                <i data-lucide="${icono}" class="w-6 h-6"></i>
                             </div>
-                            <span class="text-xs font-bold px-2 py-1 rounded-md bg-light-metal/10 dark:bg-dark-metal/20 text-light-metal dark:text-dark-metal border border-light-metal/20 dark:border-dark-metal/20">
-                                ${numEvidencias} evidencias
+                            <span class="text-xs font-bold px-2 py-1 rounded-md bg-light-accent/10 dark:bg-dark-accent/20 text-light-accent dark:text-dark-accent border border-light-accent/20 dark:border-dark-accent/20">
+                                ${codigo}
                             </span>
                         </div>
-                        <h3 class="font-display text-2xl mb-2 text-light-dark dark:text-dark-light group-hover/card:text-light-accent dark:group-hover/card:text-dark-accent transition-colors">
-                            Fase: ${categoriaTitulo}
+                        <h3 class="font-display text-xl mb-2 text-light-dark dark:text-dark-light group-hover/card:text-light-accent dark:group-hover/card:text-dark-accent transition-colors">
+                            ${titulo}
                         </h3>
                         <p class="text-light-metal dark:text-dark-metal text-sm flex-grow">
-                            Haz clic para explorar las actividades y entregables de esta etapa.
+                            Ver detalle y entregables de esta actividad.
                         </p>
                         <div class="mt-4 flex items-center text-light-accent dark:text-dark-accent font-semibold text-sm group-hover/card:gap-2 transition-all">
-                            <span>Entrar a la fase</span>
+                            <span>Ver evidencia</span>
                             <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
                         </div>
                     `;
@@ -111,17 +118,17 @@
 
             } catch (error) {
                 console.error(error);
-                grid.innerHTML = `
-                    <div class="col-span-full text-center py-12 bg-red-500/10 border border-red-500/20 rounded-xl">
-                        <i data-lucide="alert-triangle" class="w-8 h-8 mx-auto mb-2 text-red-500"></i>
-                        <p class="text-red-600 dark:text-red-400 font-semibold">Error al cargar la información</p>
-                    </div>
-                `;
+                grid.innerHTML = `<p class="col-span-full text-center text-red-500">Error al cargar las evidencias.</p>`;
             }
         });
 
         function humanize(name) {
             return name.replace(/[_-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+        }
+
+        function getIcon(name) {
+            const icons = { 'infografia': 'image', 'foro': 'message-square', 'crucigrama': 'puzzle', 'cuadro_sinoptico': 'table', 'taller': 'file-text' };
+            return icons[name] || 'folder';
         }
     </script>
 </body>
