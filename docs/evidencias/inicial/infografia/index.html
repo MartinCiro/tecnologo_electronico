@@ -154,7 +154,7 @@
     <div id="progress-bar" class="no-print" style="width: 0%;"></div>
 
     <!-- ===================== HEADER MÓVIL ===================== -->
-    <header class="lg:hidden bg-sena-green text-white py-6 px-4 text-center">
+    <header class="no-print lg:hidden bg-sena-green text-white py-6 px-4 text-center">
         <div class="flex justify-center mb-3 w-full">
             <img src="/assets/sena/logo_sena.svg" alt="Logo_Sena" width="50" class="block flex-shrink-0 invert" />
         </div>
@@ -190,20 +190,29 @@
     <!-- ===================== CONTENIDO PRINCIPAL ===================== -->
     <div class="main-content">
         <!-- HEADER DESKTOP -->
-        <header class="hidden lg:block bg-sena-green text-white py-10 px-6 text-center">
-            <div class="max-w-4xl mx-auto">
-                <div class="flex justify-center items-center mb-4">
-                    <img src="/assets/sena/logo_sena.svg" alt="Logo_Sena" width="60" height="60" class="block flex-shrink-0 invert" />
-                </div>
-                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">Contextualización Institucional</h1>
-                <p class="mt-3 text-green-100 text-base md:text-lg max-w-2xl mx-auto">
-                    Servicio Nacional de Aprendizaje – Infografía de Senalogía
-                </p>
-                <p class="mt-2 text-green-200 text-sm">
-                    Programa: Desarrollo de Productos Electrónicos (3607890) | Modalidad Virtual
-                </p>
+        <header class="hidden lg:block bg-sena-green text-white py-10 px-6 text-center relative">
+        
+        <!-- Botón Volver / Home -->
+        <button onclick="goBackOrHome()" 
+                class="no-print absolute top-6 left-6 flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-colors font-semibold text-sm" 
+                aria-label="Volver al inicio" title="Volver al inicio">
+            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            <span>Volver al inicio</span>
+        </button>
+
+        <div class="max-w-4xl mx-auto">
+            <div class="flex justify-center items-center mb-4">
+                <img src="/assets/sena/logo_sena.svg" alt="Logo_Sena" width="60" height="60" class="block flex-shrink-0 invert" />
             </div>
-        </header>
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">Contextualización Institucional</h1>
+            <p class="mt-3 text-green-100 text-base md:text-lg max-w-2xl mx-auto">
+                Servicio Nacional de Aprendizaje – Infografía de Senalogía
+            </p>
+            <p class="mt-2 text-green-200 text-sm">
+                Programa: Desarrollo de Productos Electrónicos (3607890) | Modalidad Virtual
+            </p>
+        </div>
+    </header>
 
         <main class="max-w-4xl mx-auto px-4 py-8 space-y-8">
 
@@ -593,6 +602,16 @@
                 btnText.textContent = 'Ver video';
                 iconPlay.classList.remove('hidden');
                 iconClose.classList.add('hidden');
+            }
+        }
+
+        function goBackOrHome() {
+            // Verifica si hay una página anterior Y si pertenece a tu mismo dominio
+            if (document.referrer && document.referrer.startsWith(window.location.origin)) {
+                window.history.back();
+            } else {
+                // Si no hay historial válido o viene de un sitio externo, va a la raíz
+                window.location.href = '/';
             }
         }
 
