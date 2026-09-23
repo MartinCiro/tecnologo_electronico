@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repositorio de Evidencias | ElectroLab</title>
+    
+    <!-- 1. RECURSOS CRÍTICOS (Mismo bloque que en el index principal) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/tailwindcss-cdn@3.4.10/tailwindcss-with-all-plugins.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'], display: ['"Fredoka One"', 'cursive'] },
+                    colors: {
+                        dark: { bg: '#2A2A2E', accent: '#4FB3D9', deep: '#2E6B8A', light: '#E0F2FE', metal: '#9CA3AF' },
+                        light: { bg: '#F8FAFC', accent: '#0284C7', deep: '#0EA5E9', dark: '#334155', metal: '#64748B' }
+                    }
+                }
+            }
+        };
+        // Detección sincrónica del tema
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+
+    <!-- 2. LÓGICA GLOBAL Y ICONOS -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="../components/js/global.js" defer></script> <!-- Nota la ruta relativa al componente -->
+
+    <style>
+        body, div, nav, a, button, article {
+            transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+    </style>
+</head>
+<body class="bg-light-bg text-light-dark dark:bg-dark-bg dark:text-dark-light font-sans antialiased flex flex-col min-h-screen">
+
+    <!-- 🎯 CONTENEDORES DE COMPONENTES -->
+    <div id="navbar-container"></div>
+
+    <!-- ========================================== -->
+    <!-- CONTENIDO PRINCIPAL -->
+    <!-- ========================================== -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+        <div class="mb-10">
+            <a href="/" class="inline-flex items-center gap-2 text-light-metal dark:text-dark-metal hover:text-light-accent dark:hover:text-dark-accent mb-4 transition-colors">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver al inicio
+            </a>
+            <h1 class="font-display text-3xl sm:text-4xl text-light-dark dark:text-dark-light mb-3">
+                Repositorio de Evidencias
+            </h1>
+            <p class="text-light-metal dark:text-dark-metal max-w-2xl text-lg">
+                Navega por las evidencias de la Guía de Aprendizaje IND1. Organizado por fases y actividades.
+            </p>
+        </div>
+
+        <!-- Grid dinámico -->
+        <div id="evidencias-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="col-span-full flex flex-col items-center justify-center py-12 text-light-metal dark:text-dark-metal">
+                <i data-lucide="loader-2" class="w-8 h-8 animate-spin mb-3"></i>
+                <p>Cargando evidencias...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- 🎯 CONTENEDOR DEL FOOTER -->
+    <div id="footer-container"></div>
+
+    <!-- ========================================== -->
+    <!-- LÓGICA ESPECÍFICA DE ESTA PÁGINA -->
+    <!-- ========================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Renderizar iconos estáticos iniciales
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+
+            // 2. Lógica de lectura del JSON anidado
+            const grid = document.getElementById('evidencias-grid');
+            
+            try {
+                // Usamos ROOT de global.js para que funcione en localhost y GitHub Pages
+                const response = await fetch(`${ROOT}evidencias/_.json`);
+                if (!response.ok) throw new Error('No se pudo cargar la información');
+                const data = await response.json();
+
+                grid.innerHTML = ''; // Limpiar loader
+
+                // Iterar sobre las categorías (ej: "inicial")
+                for (const [categoria, evidencias] of Object.entries(data)) {
+                    
+                    // Iterar sobre las evidencias dentro de cada categoría
+                    for (const [nombreEvidencia, codigo] of Object.entries(evidencias)) {
+                        
+                        const titulo = humanize(nombreEvidencia);
+                        const categoriaTitulo = humanize(categoria);
+                        const icono = ICONOS[nombreEvidencia] || ICONOS['default'];
+                        
+                        // Construir la ruta anidada: /evidencias/categoria/evidencia/
+                        const ruta = `${ROOT}evidencias/${categoria}/${nombreEvidencia}/`;
+
+                        const card = document.createElement('a');
+                        card.href = ruta;
+                        card.className = 'group/card block p-6 rounded-2xl bg-white dark:bg-dark-deep/20 border border-light-metal/20 dark:border-dark-metal/20 hover:border-light-accent dark:hover:border-dark-accent hover:shadow-xl hover:shadow-light-accent/10 dark:hover:shadow-dark-accent/10 transition-all flex flex-col h-full';
+                        
+                        card.innerHTML = `
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="w-12 h-12 bg-light-accent/10 dark:bg-dark-accent/20 rounded-xl flex items-center justify-center text-light-accent dark:text-dark-accent group-hover/card:scale-110 transition-transform">
+                                    <i data-lucide="${icono}" class="w-6 h-6"></i>
+                                </div>
+                                <span class="text-xs font-bold px-2 py-1 rounded-md bg-light-accent/10 dark:bg-dark-accent/20 text-light-accent dark:text-dark-accent border border-light-accent/20 dark:border-dark-accent/20">
+                                    ${codigo}
+                                </span>
+                            </div>
+                            
+                            <!-- Badge de Categoría -->
+                            <div class="mb-3">
+                                <span class="text-[10px] uppercase tracking-wider font-semibold text-light-metal dark:text-dark-metal bg-light-metal/10 dark:bg-dark-metal/20 px-2 py-1 rounded-full">
+                                    ${categoriaTitulo}
+                                </span>
+                            </div>
+
+                            <h3 class="font-display text-xl mb-2 text-light-dark dark:text-dark-light group-hover/card:text-light-accent dark:group-hover/card:text-dark-accent transition-colors">
+                                ${titulo}
+                            </h3>
+                            <p class="text-light-metal dark:text-dark-metal text-sm flex-grow">
+                                Ruta: <code class="text-xs px-1.5 py-0.5 rounded bg-light-metal/10 dark:bg-dark-metal/20">${categoria}/${nombreEvidencia}/</code>
+                            </p>
+                            <div class="mt-4 flex items-center text-light-accent dark:text-dark-accent font-semibold text-sm group-hover/card:gap-2 transition-all">
+                                <span>Ver evidencia</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                            </div>
+                        `;
+                        grid.appendChild(card);
+                    }
+                }
+
+                // 3. Re-renderizar iconos de las tarjetas recién creadas
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+
+            } catch (error) {
+                console.error(error);
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 bg-red-500/10 border border-red-500/20 rounded-xl">
+                        <i data-lucide="alert-triangle" class="w-8 h-8 mx-auto mb-2 text-red-500"></i>
+                        <p class="text-red-600 dark:text-red-400 font-semibold">Error al cargar la informacion</p>
+                        <p class="text-sm text-light-metal dark:text-dark-metal mt-1">Verifica que el archivo exista en la carpeta /evidencias/</p>
+                    </div>
+                `;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }
+        });
+
+        // Utilidad para formatear nombres de carpeta
+        function humanize(name) {
+            return name
+                .replace(/[_-]/g, ' ')
+                .replace(/\b\w/g, c => c.toUpperCase());
+        }
+
+        // Mapeo de iconos
+        const ICONOS = {
+            'infografia': 'image',
+            'foro': 'message-square',
+            'crucigrama': 'puzzle',
+            'cuadro_sinoptico': 'table',
+            'taller': 'file-text',
+            'default': 'folder'
+        };
+    </script>
+</body>
+</html>

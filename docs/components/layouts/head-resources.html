@@ -1,0 +1,40 @@
+<!-- Fuentes: Plus Jakarta Sans y Fredoka One -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Tailwind CSS CDN -->
+<script src="https://unpkg.com/tailwindcss-cdn@3.4.10/tailwindcss-with-all-plugins.js"></script>
+
+<!-- Configuración de Tailwind -->
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                fontFamily: {
+                    sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    display: ['"Fredoka One"', 'cursive'],
+                },
+                colors: {
+                    dark: { bg: '#2A2A2E', accent: '#4FB3D9', deep: '#2E6B8A', light: '#E0F2FE', metal: '#9CA3AF' },
+                    light: { bg: '#F8FAFC', accent: '#0284C7', deep: '#0EA5E9', dark: '#334155', metal: '#64748B' }
+                }
+            }
+        }
+    }
+</script>
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<!-- Estilos Globales -->
+<style>
+    body, div, nav, a, button, article {
+        transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>

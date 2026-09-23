@@ -1,0 +1,29 @@
+<footer class="border-t border-light-metal/20 dark:border-dark-metal/20 bg-white dark:bg-dark-deep/10 py-8 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-2">
+            <i data-lucide="cpu" class="w-5 h-5 text-light-accent dark:text-dark-accent"></i>
+            <span class="font-display text-lg text-light-dark dark:text-dark-light">ElectroLab</span>
+        </div>
+        <div class="text-center sm:text-right">
+            <!-- Contenedor dinámico para el código de evidencia (se muestra solo si existe) -->
+            <p id="footer-evidencia-info" class="text-sm text-light-metal dark:text-dark-metal mb-1 hidden">
+                Evidencia: <span id="footer-codigo-dinamico" class="font-semibold text-light-accent dark:text-dark-accent"></span> | Guía IND1
+            </p>
+            <p class="text-light-metal dark:text-dark-metal text-sm">
+                © 2026 Martin Ciro. Todos los derechos reservados.<br>
+                <span class="text-xs opacity-75">Construido con precisión y pasión por la electrónica.</span>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Si la página hija define esta variable, mostramos la info en el footer
+    if (window.EVIDENCIA_CODIGO) {
+        const infoEl = document.getElementById('footer-evidencia-info');
+        infoEl.classList.remove('hidden');
+        document.getElementById('footer-codigo-dinamico').textContent = window.EVIDENCIA_CODIGO;
+    }
+    // Reinicializar iconos por si acaso
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+</script>

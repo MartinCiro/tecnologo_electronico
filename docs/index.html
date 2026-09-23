@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElectroLab | Blog de Electrónica</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/tailwindcss-cdn@3.4.10/tailwindcss-with-all-plugins.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'], display: ['"Fredoka One"', 'cursive'] },
+                    colors: {
+                        dark: { bg: '#2A2A2E', accent: '#4FB3D9', deep: '#2E6B8A', light: '#E0F2FE', metal: '#9CA3AF' },
+                        light: { bg: '#F8FAFC', accent: '#0284C7', deep: '#0EA5E9', dark: '#334155', metal: '#64748B' }
+                    }
+                }
+            }
+        };
+
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+
+    <script src="components/js/global.js" defer></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body, div, nav, a, button, article {
+            transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* ========================================== */
+        /* Animación de entrada escalonada */
+        /* ========================================== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #carousel-container > a {
+            animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+        }
+        #carousel-container > a:nth-child(1) { animation-delay: 0.1s; }
+        #carousel-container > a:nth-child(2) { animation-delay: 0.2s; }
+        #carousel-container > a:nth-child(3) { animation-delay: 0.3s; }
+        #carousel-container > a:nth-child(4) { animation-delay: 0.4s; }
+
+        /* ========================================== */
+        /* Indicadores (Dots) */
+        /* ========================================== */
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: currentColor;
+            opacity: 0.3;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .carousel-dot.active {
+            opacity: 1;
+            width: 24px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body class="bg-light-bg text-light-dark dark:bg-dark-bg dark:text-dark-light font-sans antialiased flex flex-col min-h-screen">
+
+    <!-- 🎯 CONTENEDOR DEL NAVBAR -->
+    <div id="navbar-container"></div>
+
+    <!-- ========================================== -->
+    <!-- CONTENIDO PRINCIPAL -->
+    <!-- ========================================== -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+
+        <div class="mb-10 text-center sm:text-left">
+            <h1 class="font-display text-3xl sm:text-4xl text-light-dark dark:text-dark-light mb-3">
+                Explora el Laboratorio
+            </h1>
+            <p class="text-light-metal dark:text-dark-metal max-w-2xl text-lg">
+                Navega por las diferentes secciones del proyecto. Encuentra guías paso a paso, evidencias de prototipos, contenidos técnicos y anexos personales.
+            </p>
+        </div>
+
+        <!-- Carrusel de Navegación -->
+        <div class="relative group/carousel">
+
+            <!-- Botón Scroll Izquierda -->
+            <button id="scroll-left"
+                class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white dark:bg-dark-deep border border-light-metal/30 dark:border-dark-metal/30 text-light-dark dark:text-dark-light p-2 rounded-full shadow-lg opacity-100 disabled:opacity-30 disabled:pointer-events-none transition-all hover:bg-light-accent hover:text-white dark:hover:bg-dark-accent flex">
+                <i data-lucide="chevron-left" class="w-6 h-6"></i>
+            </button>
+
+            <!-- Contenedor del Carrusel -->
+            <div id="carousel-container" class="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-6 no-scrollbar scroll-smooth">
+
+                <!-- Card 1: Evidencias -->
+                <a href="/evidencias/" class="flex-shrink-0 w-72 snap-center group/card block">
+                    <article class="h-full p-6 rounded-2xl bg-white dark:bg-dark-deep/20 border border-light-metal/20 dark:border-dark-metal/20 hover:border-light-accent dark:hover:border-dark-accent hover:shadow-xl hover:shadow-light-accent/10 dark:hover:shadow-dark-accent/10 transition-all flex flex-col">
+                        <div class="w-14 h-14 bg-light-accent/10 dark:bg-dark-accent/20 rounded-xl flex items-center justify-center mb-5 text-light-accent dark:text-dark-accent group-hover/card:scale-110 transition-transform">
+                            <i data-lucide="microscope" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="font-display text-xl mb-2 text-light-dark dark:text-dark-light">Evidencias</h3>
+                        <p class="text-light-metal dark:text-dark-metal text-sm flex-grow">Documentación fotográfica, pruebas de funcionamiento y resultados de los prototipos electrónicos.</p>
+                        <div class="mt-4 flex items-center text-light-accent dark:text-dark-accent font-semibold text-sm group-hover/card:gap-2 transition-all">
+                            <span>Ver evidencias</span><i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                        </div>
+                    </article>
+                </a>
+
+                <!-- Card 2: Guías -->
+                <a href="/guias/" class="flex-shrink-0 w-72 snap-center group/card block">
+                    <article class="h-full p-6 rounded-2xl bg-white dark:bg-dark-deep/20 border border-light-metal/20 dark:border-dark-metal/20 hover:border-light-accent dark:hover:border-dark-accent hover:shadow-xl hover:shadow-light-accent/10 dark:hover:shadow-dark-accent/10 transition-all flex flex-col">
+                        <div class="w-14 h-14 bg-light-accent/10 dark:bg-dark-accent/20 rounded-xl flex items-center justify-center mb-5 text-light-accent dark:text-dark-accent group-hover/card:scale-110 transition-transform">
+                            <i data-lucide="book-open" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="font-display text-xl mb-2 text-light-dark dark:text-dark-light">Guías</h3>
+                        <p class="text-light-metal dark:text-dark-metal text-sm flex-grow">Tutoriales paso a paso, diagramas de conexión (Fritzing) y explicaciones de componentes.</p>
+                        <div class="mt-4 flex items-center text-light-accent dark:text-dark-accent font-semibold text-sm group-hover/card:gap-2 transition-all">
+                            <span>Explorar guías</span><i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                        </div>
+                    </article>
+                </a>
+
+                <!-- Card 3: Contenidos -->
+                <a href="/contenidos/" class="flex-shrink-0 w-72 snap-center group/card block">
+                    <article class="h-full p-6 rounded-2xl bg-white dark:bg-dark-deep/20 border border-light-metal/20 dark:border-dark-metal/20 hover:border-light-accent dark:hover:border-dark-accent hover:shadow-xl hover:shadow-light-accent/10 dark:hover:shadow-dark-accent/10 transition-all flex flex-col">
+                        <div class="w-14 h-14 bg-light-accent/10 dark:bg-dark-accent/20 rounded-xl flex items-center justify-center mb-5 text-light-accent dark:text-dark-accent group-hover/card:scale-110 transition-transform">
+                            <i data-lucide="folder-tree" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="font-display text-xl mb-2 text-light-dark dark:text-dark-light">Contenidos</h3>
+                        <p class="text-light-metal dark:text-dark-metal text-sm flex-grow">Recursos descargables, hojas de datos (datasheets), código fuente y librerías utilizadas.</p>
+                        <div class="mt-4 flex items-center text-light-accent dark:text-dark-accent font-semibold text-sm group-hover/card:gap-2 transition-all">
+                            <span>Acceder a recursos</span><i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                        </div>
+                    </article>
+                </a>
+
+                <!-- Card 4: Blogs / Anexos -->
+                <a href="/blog/" class="flex-shrink-0 w-72 snap-center group/card block">
+                    <article class="h-full p-6 rounded-2xl bg-white dark:bg-dark-deep/20 border border-light-metal/20 dark:border-dark-metal/20 hover:border-light-accent dark:hover:border-dark-accent hover:shadow-xl hover:shadow-light-accent/10 dark:hover:shadow-dark-accent/10 transition-all flex flex-col">
+                        <div class="w-14 h-14 bg-light-accent/10 dark:bg-dark-accent/20 rounded-xl flex items-center justify-center mb-5 text-light-accent dark:text-dark-accent group-hover/card:scale-110 transition-transform">
+                            <i data-lucide="pen-tool" class="w-7 h-7"></i>
+                        </div>
+                        <h3 class="font-display text-xl mb-2 text-light-dark dark:text-dark-light">Blogs y Anexos</h3>
+                        <p class="text-light-metal dark:text-dark-metal text-sm flex-grow">Reflexiones personales, bitácora del proyecto, aprendizajes y notas técnicas adicionales.</p>
+                        <div class="mt-4 flex items-center text-light-accent dark:text-dark-accent font-semibold text-sm group-hover/card:gap-2 transition-all">
+                            <span>Leer bitácora</span><i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                        </div>
+                    </article>
+                </a>
+
+            </div>
+
+            <!-- Botón Scroll Derecha -->
+            <button id="scroll-right"
+                class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white dark:bg-dark-deep border border-light-metal/30 dark:border-dark-metal/30 text-light-dark dark:text-dark-light p-2 rounded-full shadow-lg opacity-100 disabled:opacity-30 disabled:pointer-events-none transition-all hover:bg-light-accent hover:text-white dark:hover:bg-dark-accent flex">
+                <i data-lucide="chevron-right" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- Indicadores de posición -->
+        <div id="carousel-dots" class="flex justify-center gap-2 mt-6 md:hidden text-light-accent dark:text-dark-accent"></div>
+
+    </main>
+
+    <div id="footer-container"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Renderizar iconos estáticos
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+            // 2. Inicializar carrusel 
+            initCarousel();
+        });
+
+        function initCarousel() {
+            const carouselContainer = document.getElementById('carousel-container');
+            const scrollLeftBtn = document.getElementById('scroll-left');
+            const scrollRightBtn = document.getElementById('scroll-right');
+            const dotsContainer = document.getElementById('carousel-dots');
+            
+            const firstCard = carouselContainer.querySelector('a');
+            const gap = 24; // gap-6 = 1.5rem = 24px
+            const scrollAmount = firstCard ? firstCard.offsetWidth + gap : 312;
+            const cards = carouselContainer.querySelectorAll('a');
+
+            // --- MEJORA UX 2: Generar Dots dinámicamente ---
+            if (dotsContainer && cards.length > 0) {
+                cards.forEach((_, index) => {
+                    const dot = document.createElement('button');
+                    dot.className = 'carousel-dot';
+                    dot.setAttribute('aria-label', `Ir a sección ${index + 1}`);
+                    dot.addEventListener('click', () => {
+                        const card = cards[index];
+                        carouselContainer.scrollTo({
+                            left: card.offsetLeft - 20, 
+                            behavior: 'smooth'
+                        });
+                    });
+                    dotsContainer.appendChild(dot);
+                });
+            }
+
+            if (scrollLeftBtn && scrollRightBtn && carouselContainer) {
+                scrollLeftBtn.addEventListener('click', () => {
+                    carouselContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+                });
+
+                scrollRightBtn.addEventListener('click', () => {
+                    carouselContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                });
+
+                const updateButtonVisibility = () => {
+                    const maxScrollLeft = carouselContainer.scrollWidth - carouselContainer.clientWidth;
+                    
+                    // Actualizar estado de botones
+                    scrollLeftBtn.disabled = carouselContainer.scrollLeft <= 10;
+                    scrollRightBtn.disabled = carouselContainer.scrollLeft >= maxScrollLeft - 10;
+                    
+                    // Actualizar estado de los dots
+                    if (dotsContainer && maxScrollLeft > 0) {
+                        const dots = dotsContainer.querySelectorAll('.carousel-dot');
+                        const scrollPercent = carouselContainer.scrollLeft / maxScrollLeft;
+                        const activeIndex = Math.round(scrollPercent * (dots.length - 1)) || 0;
+                        
+                        dots.forEach((dot, i) => {
+                            dot.classList.toggle('active', i === activeIndex);
+                        });
+                    }
+                };
+
+                carouselContainer.addEventListener('scroll', updateButtonVisibility);
+                window.addEventListener('resize', updateButtonVisibility);
+                setTimeout(updateButtonVisibility, 100);
+
+                // --- MEJORA UX 3: Sutil "empujón" inicial en móvil ---
+                if (window.innerWidth < 768 && cards.length > 1) {
+                    setTimeout(() => {
+                        carouselContainer.scrollBy({ left: 40, behavior: 'smooth' });
+                        setTimeout(() => {
+                            carouselContainer.scrollBy({ left: -40, behavior: 'smooth' });
+                        }, 600);
+                    }, 1500); 
+                }
+            }
+        }
+    </script>
+</body>
+</html>
