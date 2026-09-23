@@ -154,13 +154,20 @@
     <div id="progress-bar" class="no-print" style="width: 0%;"></div>
 
     <!-- ===================== HEADER MÓVIL ===================== -->
-    <header class="no-print lg:hidden bg-sena-green text-white py-6 px-4 text-center">
-        <div class="flex justify-center mb-3 w-full">
-            <img src="/assets/sena/logo_sena.svg" alt="Logo_Sena" width="50" class="block flex-shrink-0 invert" />
-        </div>
-        <h1 class="text-2xl font-extrabold tracking-tight">Contextualización Institucional</h1>
-        <p class="mt-1 text-green-100 text-xs">Infografía de Senalogía</p>
-    </header>
+    <header class="lg:hidden bg-sena-green text-white py-4 px-4 relative no-print">
+    <!-- Botón Volver / Home -->
+    <button onclick="goBackOrHome()" 
+            class="absolute top-4 left-4 p-2 rounded-full hover:bg-white/10 transition-colors" 
+            aria-label="Volver al inicio" title="Volver al inicio">
+        <i data-lucide="arrow-left" class="w-6 h-6"></i>
+    </button>
+
+    <div class="flex justify-center mb-3 w-full pt-2">
+        <img src="/assets/sena/logo_sena.svg" alt="Logo_Sena" width="50" class="block flex-shrink-0 invert" />
+    </div>
+    <h1 class="text-2xl font-extrabold tracking-tight">Contextualización Institucional</h1>
+    <p class="mt-1 text-green-100 text-xs">Infografía de Senalogía</p>
+</header>
 
     <!-- ===================== MENÚ STICKY MÓVIL ===================== -->
     <nav class="lg:hidden no-print sticky top-0 z-40 bg-sena-green/95 backdrop-blur-md shadow-md border-b border-sena-dark">
