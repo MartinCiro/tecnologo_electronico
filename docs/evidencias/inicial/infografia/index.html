@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Infografía – Contextualización SENA</title>
-    <!-- CDN de Tailwind SIN CAMBIAR -->
+
     <script src="https://unpkg.com/tailwindcss-cdn@3.4.10/tailwindcss-with-all-plugins.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
@@ -25,454 +25,641 @@
             },
         };
     </script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap');
 
-        body {
-            font-family: 'Open Sans', sans-serif;
-        }
+        /* ============================================================
+           BASE COMÚN
+           ============================================================ */
+        body { font-family: 'Open Sans', sans-serif; }
+        h1, h2, h3, h4, h5 { font-family: 'Montserrat', sans-serif; }
 
-        h1, h2, h3, h4, h5 {
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        /* Barra de progreso superior */
         #progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
+            position: fixed; top: 0; left: 0; height: 3px;
             background: linear-gradient(90deg, #F5A623, #39A900);
-            z-index: 100;
-            transition: width 0.1s ease-out;
+            z-index: 100; transition: width 0.1s ease-out;
         }
 
-        /* Animación fade-in */
         .fade-in-section {
-            opacity: 0;
-            transform: translateY(20px);
+            opacity: 0; transform: translateY(20px);
             transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
+        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
 
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Scrollbar oculta para menú móvil */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        /* ===== ANIMACIÓN DE PESTAÑAS DEL ORGANIGRAMA ===== */
-        .tab-content {
-            display: none;
-        }
-
+        /* Animación de pestañas (Versión B) */
+        .tab-content { display: none; }
         .tab-content.active-tab {
             display: block;
             animation: tabFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
-
         @keyframes tabFadeIn {
             from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
         .video-wrapper {
-            max-height: 600px;
-            opacity: 1;
-            overflow: hidden;
+            max-height: 600px; opacity: 1; overflow: hidden;
             transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out;
         }
+        .video-wrapper.collapsed { max-height: 0; opacity: 0; }
 
-        .video-wrapper.collapsed {
-            max-height: 0;
-            opacity: 0;
+        /* ============================================================
+           CONMUTADOR DE VISTAS
+           Pantalla  -> Versión B (web)
+           Impresión -> Versión A (PDF)
+           ============================================================ */
+        #pdf-view { display: none; }
+
+        @media print {
+            #web-view { display: none !important; }
+            #pdf-view { display: block !important; }
         }
 
-        /* Estilos para impresión (PDF) */
+        /* ============================================================
+           OPTIMIZACIÓN EXTREMA PARA IMPRESIÓN (VERSIÓN A / PDF)
+           ============================================================ */
         @media print {
+            @page { size: A4 portrait; margin: 10mm; }
+
             body {
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
+                background: white !important;
+                color: #333 !important;
             }
 
-            .no-print {
-                display: none !important;
-            }
+            .no-print { display: none !important; }
 
-            .break-inside-avoid {
-                break-inside: avoid;
-                page-break-inside: avoid;
-            }
+            /* Forzar visibilidad de las secciones animadas */
+            #pdf-view .fade-in-section { opacity: 1 !important; transform: none !important; }
 
-            .fade-in-section {
-                opacity: 1 !important;
-                transform: none !important;
-            }
+            /* Header desktop visible en impresión (en A4 el breakpoint lg no aplica) */
+            .pdf-header-desktop { display: block !important; }
 
-            .tab-content {
-                display: block !important;
+            /* Forzar diseño de 1-2 páginas en cuadrícula */
+            .main-content { margin: 0 !important; padding: 0 !important; }
+            .print-grid {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 12px !important;
             }
+            .print-span-2 { grid-column: span 2 !important; }
 
-            .tab-content.active-tab {
-                animation: none !important;
-            }
+            /* Compactar tipografía y espacios */
+            h1 { font-size: 16pt !important; margin-bottom: 4px !important; }
+            h2 { font-size: 11pt !important; margin-bottom: 4px !important; }
+            h3 { font-size: 9pt !important; }
+            p, li, span { font-size: 8pt !important; line-height: 1.2 !important; }
 
-            .tab-content:not(:last-child) {
-                margin-bottom: 1.5rem;
-                border-bottom: 2px dashed #ccc;
-                padding-bottom: 1.5rem;
-            }
-
-            .tab-buttons {
-                display: none !important;
-            }
-
-            @page {
-                margin: 12mm;
-                size: A4;
-            }
-
-            .shadow-md, .shadow-lg {
+            #pdf-view section {
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
                 box-shadow: none !important;
-                border: 1px solid #e5e7eb;
+                border: 1px solid #e5e7eb !important;
+                padding: 8px !important;
+                margin: 0 !important;
             }
+
+            /* Compactar símbolos */
+            .simbolo-box { height: auto !important; min-height: 0 !important; }
+            .simbolo-box svg, .simbolo-box img { width: 60px !important; height: 60px !important; }
+
+            /* Compactar organigrama */
+            .org-box { padding: 4px !important; font-size: 7pt !important; }
+
+            /* Footer compacto */
+            #pdf-view footer { padding: 8px !important; margin-top: 8px !important; font-size: 7pt !important; }
         }
     </style>
 </head>
 
 <body class="bg-gray-50 text-sena-gray">
 
-    <!-- ===================== BARRA DE PROGRESO SUPERIOR ===================== -->
-    <div id="progress-bar" class="no-print" style="width: 0%;"></div>
+    <!-- ==================================================================
+         ============  VISTA PDF  ·  VERSIÓN A (solo impresión)  ==========
+         ================================================================== -->
+    <div id="pdf-view">
+        <div class="main-content">
 
-    <!-- ===================== HEADER MÓVIL ===================== -->
-    <header class="lg:hidden bg-sena-green text-white py-4 px-4 relative no-print">
-    <!-- Botón Volver / Home -->
-    <button onclick="goBackOrHome()" 
-            class="absolute top-4 left-4 p-2 rounded-full hover:bg-white/10 transition-colors" 
-            aria-label="Volver al inicio" title="Volver al inicio">
-        <i data-lucide="arrow-left" class="w-6 h-6"></i>
-    </button>
-
-    <div class="flex justify-center mb-3 w-full pt-2">
-        <img src="/assets/sena/logo_sena.svg" alt="Logo_Sena" width="50" class="block flex-shrink-0 invert" />
-    </div>
-    <h1 class="text-2xl font-extrabold tracking-tight">Contextualización Institucional</h1>
-    <p class="mt-1 text-green-100 text-xs">Infografía de Senalogía</p>
-</header>
-
-    <!-- ===================== MENÚ STICKY MÓVIL ===================== -->
-    <nav class="lg:hidden no-print sticky top-0 z-40 bg-sena-green/95 backdrop-blur-md shadow-md border-b border-sena-dark">
-        <div class="max-w-4xl mx-auto flex items-center px-2 py-2">
-            <button id="mobile-nav-left" class="hidden p-2 text-white hover:text-sena-orange transition-colors flex-shrink-0" onclick="scrollMobileMenu(-1)" aria-label="Anterior">
-                <i data-lucide="chevron-left" class="w-5 h-5"></i>
-            </button>
-
-            <div id="mobile-menu-container" class="flex-1 overflow-x-auto no-scrollbar">
-                <div class="flex gap-2 pb-1 text-xs font-semibold text-white whitespace-nowrap" id="mobile-menu">
-                    <a href="#historia" data-section="historia" class="mobile-nav-item px-3 py-1.5 rounded hover:bg-white/10 transition-colors">Historia</a>
-                    <a href="#mision-vision" data-section="mision-vision" class="mobile-nav-item px-3 py-1.5 rounded hover:bg-white/10 transition-colors">Misión/Visión</a>
-                    <a href="#simbolos" data-section="simbolos" class="mobile-nav-item px-3 py-1.5 rounded hover:bg-white/10 transition-colors">Símbolos</a>
-                    <a href="#himno" data-section="himno" class="mobile-nav-item px-3 py-1.5 rounded hover:bg-white/10 transition-colors">Himno</a>
-                    <a href="#organigrama" data-section="organigrama" class="mobile-nav-item px-3 py-1.5 rounded hover:bg-white/10 transition-colors">Organigrama</a>
-                    <a href="#naturaleza" data-section="naturaleza" class="mobile-nav-item px-3 py-1.5 rounded hover:bg-white/10 transition-colors">Naturaleza</a>
-                    <a href="#glosario" data-section="glosario" class="mobile-nav-item px-3 py-1.5 rounded hover:bg-white/10 transition-colors">Glosario</a>
+            <!-- HEADER MÓVIL (no se imprime) -->
+            <header class="lg:hidden bg-sena-green text-white py-4 px-4 relative no-print">
+                <button onclick="goBackOrHome()" class="absolute top-4 left-4 p-2 rounded-full hover:bg-white/10 transition-colors" aria-label="Volver">
+                    <i data-lucide="arrow-left" class="w-6 h-6"></i>
+                </button>
+                <div class="flex justify-center mb-2 w-full pt-2">
+                    <img src="/assets/sena/logo_sena.svg" alt="Logo_Sena" width="40" class="block flex-shrink-0 invert" />
                 </div>
-            </div>
+                <h1 class="text-xl font-extrabold tracking-tight text-center">Contextualización SENA</h1>
+            </header>
 
-            <button id="mobile-nav-right" class="p-2 text-white hover:text-sena-orange transition-colors flex-shrink-0" onclick="scrollMobileMenu(1)" aria-label="Siguiente">
-                <i data-lucide="chevron-right" class="w-5 h-5"></i>
-            </button>
+            <!-- HEADER DESKTOP / IMPRESIÓN -->
+            <header class="pdf-header-desktop hidden lg:block bg-sena-green text-white py-6 px-6 text-center relative print-span-2">
+                <button onclick="goBackOrHome()" class="no-print absolute top-4 left-4 flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg transition-colors font-semibold text-xs">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver
+                </button>
+                <div class="max-w-4xl mx-auto flex flex-col items-center">
+                    <img src="/assets/sena/logo_sena.svg" alt="Logo_Sena" width="50" height="50" class="block flex-shrink-0 invert mb-2" />
+                    <h1 class="text-3xl font-extrabold tracking-tight">Contextualización Institucional</h1>
+                    <p class="text-green-100 text-sm">Servicio Nacional de Aprendizaje – Infografía de Senalogía</p>
+                    <p class="text-green-200 text-xs mt-1">Programa: Desarrollo de Productos Electrónicos (3607890) | Modalidad Virtual</p>
+                </div>
+            </header>
+
+            <!-- GRID PRINCIPAL (2 columnas al imprimir) -->
+            <main class="max-w-5xl mx-auto px-4 py-6 print-grid">
+
+                <!-- 1. HISTORIA -->
+                <section id="pdf-historia" class="fade-in-section bg-white rounded-xl shadow-sm p-4 border-l-4 border-sena-green print-span-2">
+                    <div class="flex items-start gap-3">
+                        <i data-lucide="clock-4" class="w-6 h-6 text-sena-green flex-shrink-0 mt-1"></i>
+                        <div>
+                            <h2 class="text-lg font-bold text-sena-dark mb-1">Historia del SENA</h2>
+                            <p class="text-xs leading-relaxed text-gray-700">
+                                Fundado en <strong>1957</strong> por el <strong>Dr. Rodolfo Martínez Tono</strong> con apoyo de la OIT. Nació como entidad descentralizada en alianza entre Gobierno, empresarios y trabajadores. En sus primeros 17 años inauguró <strong>87 centros</strong> de formación.
+                                <em class="text-sena-dark block mt-1 text-[11px]">"El SENA es un tesoro que hay que conservar y acrecentar para que Colombia progrese." — R. Martínez Tono</em>
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. MISIÓN Y VISIÓN -->
+                <section id="pdf-mision-vision" class="fade-in-section bg-white rounded-xl shadow-sm p-4 border-t-4 border-sena-green">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="zap" class="w-5 h-5 text-sena-green"></i>
+                        <h2 class="text-base font-bold text-sena-dark">Misión</h2>
+                    </div>
+                    <p class="text-xs leading-tight text-gray-700">Invertir en el desarrollo social y técnico de los trabajadores, ejecutando la formación profesional integral para contribuir al desarrollo social, económico y tecnológico del país.</p>
+                </section>
+
+                <section class="fade-in-section bg-white rounded-xl shadow-sm p-4 border-t-4 border-sena-orange">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="eye" class="w-5 h-5 text-sena-orange"></i>
+                        <h2 class="text-base font-bold text-sena-dark">Visión 2026</h2>
+                    </div>
+                    <p class="text-xs leading-tight text-gray-700">Estar a la vanguardia de la cualificación del talento humano, generando valor público y fortaleciendo la economía campesina, popular, verde y digital con enfoque diferencial.</p>
+                </section>
+
+                <!-- 3. SÍMBOLOS -->
+                <section id="pdf-simbolos" class="fade-in-section bg-white rounded-xl shadow-sm p-4 print-span-2">
+                    <h2 class="text-base font-bold text-sena-dark text-center mb-3">Símbolos Institucionales</h2>
+                    <div class="grid grid-cols-3 gap-3 text-center">
+                        <div class="simbolo-box flex flex-col items-center">
+                            <img src="/assets/sena/escudo.svg" alt="Escudo" width="60" height="60" class="mb-2" />
+                            <h3 class="font-bold text-sena-dark text-xs">Escudo</h3>
+                            <p class="text-[10px] text-gray-600 leading-tight mt-1"><strong>Piñón</strong> (industria), <strong>Caduceo</strong> (comercio) y <strong>Café</strong> (sector primario).</p>
+                        </div>
+                        <div class="simbolo-box flex flex-col items-center">
+                            <img src="/assets/sena/bandera.svg" alt="Bandera" width="60" height="60" class="mb-2" />
+                            <h3 class="font-bold text-sena-dark text-xs">Bandera</h3>
+                            <p class="text-[10px] text-gray-600 leading-tight mt-1">Fondo <strong>blanco</strong> con el escudo en el centro. Simboliza paz y transparencia.</p>
+                        </div>
+                        <div class="simbolo-box flex flex-col items-center">
+                            <svg width="70" height="35" viewBox="0 0 100 98" class="mb-2"><path fill="#2D8600" d="M50.3,1c-5.9,0-10.6,4.8-10.6,10.6c0,5.9,4.8,10.6,10.6,10.6c5.9,0,10.6-4.8,10.6-10.6v0C60.9,5.8,56.2,1,50.3,1z M15.3,25.6c-1.9,0-3.8,0.1-5.5,0.6c-1.2,0.3-2.3,0.8-3,1.5c-0.9,1-1,2.2-0.6,3.3c0.4,1,1.5,1.7,2.7,2.1c2.6,0.9,5.5,1.1,8.2,1.6c0.5,0.1,1.1,0.3,1.4,0.6c0.3,0.4,0.1,1-0.4,1.2c-0.9,0.5-2,0.5-3.1,0.4c-0.9,0-2-0.1-2.7-0.6c-0.6-0.3-0.6-0.9-0.5-1.4l-6.1,0c0,0.9,0.2,1.9,0.8,2.7c0.6,0.7,1.5,1.2,2.5,1.4c1.6,0.5,3.3,0.6,5,0.6c2.3,0,4.6,0,6.8-0.5c1.3-0.3,2.6-0.8,3.4-1.7c1.5-1.5,1.1-3.9-0.8-5c-1-0.6-2.2-0.9-3.4-1.2c-1.8-0.4-3.5-0.6-5.3-0.9c-0.6-0.1-1.3-0.2-1.8-0.5c-0.5-0.3-0.6-1,0-1.3c0.7-0.4,1.7-0.4,2.6-0.4c0.9,0,1.9,0.1,2.7,0.5c0.4,0.2,0.6,0.6,0.6,1l5.8,0c0-0.7-0.2-1.5-0.7-2.1c-0.6-0.8-1.7-1.3-2.8-1.6C19,25.7,17.1,25.6,15.3,25.6L15.3,25.6z M27.8,26l0,13.8l16.9,0l0-3H34v-2.7h9.5v-2.9H34l0-2.2l10.3,0l0-3L27.8,26z M55.7,26c0,0-5.2,0-7.8,0l0,13.8l5.9,0l0-9.3l8.1,9.3l8.1,0L70,26l-5.9,0l0,9.2L55.7,26z M80.6,26c0,0-6.4,9.2-9.6,13.8l6.2,0l1.5-2.5h9.6l1.4,2.5l6.9,0L87.5,26L80.6,26z M83.7,29.3l3,5l-6.1,0L83.7,29.3z M0.7,43.8l0.1,7.5l28.2-0.1c1.4,0.3,2.3,1.2,2,3.4L13.6,84.9l5.6,5.3L46,43.8L0.7,43.8z M54.4,43.8L80.8,90l5.8-5.2L69.1,54.5c-0.3-2.1,0.5-3.1,2-3.4l28.2,0.1l0-7.4L54.4,43.8z M50,51.5L25.2,93.9l6.6,3.2l16.5-27.9c0.6-0.5,1.1-0.7,1.7-0.7c0.6,0,1.2,0.2,1.8,0.7l16.5,28l6.8-3.5L50,51.5z"/></svg>
+                            <h3 class="font-bold text-sena-dark text-xs">Logo</h3>
+                            <p class="text-[10px] text-gray-600 leading-tight mt-1"><strong>Camino al horizonte</strong> y simultáneamente al <strong>ser humano</strong>.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. HIMNO Y NATURALEZA JURÍDICA -->
+                <section id="pdf-himno" class="fade-in-section bg-sena-green text-white rounded-xl shadow-sm p-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="music-4" class="w-5 h-5"></i>
+                        <h2 class="text-base font-bold">Himno (Coro)</h2>
+                    </div>
+                    <p class="text-[11px] italic leading-tight text-center mb-2">
+                        "Estudiantes del SENA adelante, por Colombia luchad con amor,<br>
+                        con el ánimo noble y radiante, transformémosla en mundo mejor."
+                    </p>
+                    <p class="text-[9px] text-green-200 text-center">Letra: L.A. Sarmiento | Música: D. Marles Endo</p>
+                </section>
+
+                <section id="pdf-naturaleza" class="fade-in-section bg-white rounded-xl shadow-sm p-4 border-l-4 border-sena-orange">
+                    <h2 class="text-base font-bold text-sena-dark mb-2">Naturaleza Jurídica</h2>
+                    <div class="grid grid-cols-2 gap-2 text-center">
+                        <div class="bg-sena-light rounded p-1.5"><p class="text-[10px] font-bold text-sena-dark">Establecimiento Público</p></div>
+                        <div class="bg-sena-light rounded p-1.5"><p class="text-[10px] font-bold text-sena-dark">Personería Jurídica</p></div>
+                        <div class="bg-sena-light rounded p-1.5"><p class="text-[10px] font-bold text-sena-dark">Patrimonio Propio</p></div>
+                        <div class="bg-sena-light rounded p-1.5"><p class="text-[10px] font-bold text-sena-dark">Autonomía Admin.</p></div>
+                    </div>
+                </section>
+
+                <!-- 5. ORGANIGRAMA -->
+                <section id="pdf-organigrama" class="fade-in-section bg-white rounded-xl shadow-sm p-4 print-span-2">
+                    <h2 class="text-base font-bold text-sena-dark text-center mb-3">Estructura Organizacional</h2>
+                    <div class="flex flex-col items-center gap-1.5 text-[10px]">
+                        <div class="org-box bg-sena-dark text-white font-bold px-3 py-1 rounded w-full max-w-md text-center">Consejo Directivo Nacional</div>
+                        <div class="w-px h-2 bg-gray-300"></div>
+                        <div class="org-box bg-sena-green text-white font-bold px-3 py-1 rounded w-full max-w-md text-center">Dirección General</div>
+                        <div class="w-px h-2 bg-gray-300"></div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-1.5 w-full">
+                            <div class="org-box bg-sena-light border border-sena-green/30 rounded p-1 text-center font-semibold text-sena-dark">Secretaría General</div>
+                            <div class="org-box bg-sena-light border border-sena-green/30 rounded p-1 text-center font-semibold text-sena-dark">Dir. Formación Profesional</div>
+                            <div class="org-box bg-sena-light border border-sena-green/30 rounded p-1 text-center font-semibold text-sena-dark">Dir. de Empleo</div>
+                            <div class="org-box bg-sena-light border border-sena-green/30 rounded p-1 text-center font-semibold text-sena-dark">Dir. Jurídica</div>
+                            <div class="org-box bg-sena-light border border-sena-green/30 rounded p-1 text-center font-semibold text-sena-dark">Dir. Planeación</div>
+                            <div class="org-box bg-sena-light border border-sena-green/30 rounded p-1 text-center font-semibold text-sena-dark">Dir. Administrativa y Financiera</div>
+                            <div class="org-box bg-sena-light border border-sena-green/30 rounded p-1 text-center font-semibold text-sena-dark">Dir. Promoción y Relaciones</div>
+                            <div class="org-box bg-sena-light border border-sena-green/30 rounded p-1 text-center font-semibold text-sena-dark">Dir. Sistema Nacional</div>
+                        </div>
+                        <div class="w-px h-2 bg-gray-300"></div>
+                        <div class="grid grid-cols-2 gap-1.5 w-full max-w-md">
+                            <div class="org-box bg-sena-orange/10 border border-sena-orange/40 rounded p-1 text-center font-semibold text-sena-dark">Direcciones Regionales</div>
+                            <div class="org-box bg-sena-orange/10 border border-sena-orange/40 rounded p-1 text-center font-semibold text-sena-dark">Centros de Formación</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. GLOSARIO Y PORTALES -->
+                <section id="pdf-glosario" class="fade-in-section bg-gray-100 rounded-xl shadow-sm p-4 print-span-2">
+                    <h2 class="text-base font-bold text-sena-dark mb-2 text-center">Conceptos Clave y Portales</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-[10px]">
+                        <div class="bg-white rounded p-2 border-l-2 border-sena-green"><strong class="text-sena-green">E-Learning:</strong> Aprendizaje 100% en línea, 24/7.</div>
+                        <div class="bg-white rounded p-2 border-l-2 border-sena-green"><strong class="text-sena-green">B-Learning:</strong> Aprendizaje mixto (virtual + presencial/sincrónico).</div>
+                        <div class="bg-white rounded p-2 border-l-2 border-sena-green"><strong class="text-sena-green">FAVA:</strong> Formación en Ambientes Virtuales de Aprendizaje.</div>
+                        <div class="bg-white rounded p-2 border-l-2 border-sena-green"><strong class="text-sena-green">LMS:</strong> Sistema de Gestión de Aprendizaje (ej. Sofia Plus).</div>
+                        <div class="bg-white rounded p-2 border-l-2 border-sena-green"><strong class="text-sena-green">TIC:</strong> Tecnologías de la Información y Comunicación.</div>
+                        <div class="bg-white rounded p-2 border-l-2 border-sena-orange"><strong class="text-sena-orange">Portales:</strong> Sofia Plus, Territorium, SENA Virtual.</div>
+                    </div>
+                </section>
+
+            </main>
+
+            <!-- FOOTER -->
+            <footer class="bg-sena-dark text-white py-4 px-4 text-center print-span-2">
+                <p class="text-xs font-semibold">Infografía – Contextualización SENA (AA1-EV01)</p>
+                <p class="text-[10px] text-green-200 mt-0.5">Programa: Desarrollo de Productos Electrónicos (3607890)</p>
+                <div class="mt-1">
+                    <a href="https://martinciro.github.io/tecnologo_electronico/evidencias/inicial/infografia" class="text-yellow-300 underline text-[10px] font-semibold hover:text-yellow-200" target="_blank">
+                        🔗 Ver desarrollo web en vivo
+                    </a>
+                    <p class="text-[8px] text-green-400 mt-0.5 break-all">https://martinciro.github.io/tecnologo_electronico/evidencias/inicial/infografia</p>
+                </div>
+                <p class="text-[8px] text-green-500 mt-1">Fuente: SENA. (2024). Contextualización SENA. Grupo de Ejecución de la Formación Virtual.</p>
+            </footer>
         </div>
-    </nav>
+    </div>
+    <!-- ==================  FIN VISTA PDF (VERSIÓN A)  ================== -->
 
-    <!-- ===================== CONTENIDO PRINCIPAL ===================== -->
-    <div class="main-content">
-        <!-- HEADER DESKTOP -->
-        <header class="hidden lg:block bg-sena-green text-white py-10 px-6 text-center relative">
-        
-        <!-- Botón Volver / Home -->
-        <button onclick="goBackOrHome()" 
-                class="no-print absolute top-6 left-6 flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-colors font-semibold text-sm" 
-                aria-label="Volver al inicio" title="Volver al inicio">
-            <i data-lucide="arrow-left" class="w-5 h-5"></i>
-            <span>Volver al inicio</span>
+
+    <!-- ==================================================================
+         ============  VISTA WEB  ·  VERSIÓN B (solo pantalla)  ===========
+         ================================================================== -->
+    <div id="web-view">
+
+        <!-- BARRA DE PROGRESO SUPERIOR -->
+        <div id="progress-bar" class="no-print" style="width: 0%;"></div>
+
+        <!-- HEADER MÓVIL -->
+        <header class="lg:hidden bg-sena-green text-white py-4 px-4 relative no-print">
+            <button onclick="goBackOrHome()"
+                    class="absolute top-4 left-4 p-2 rounded-full hover:bg-white/10 transition-colors"
+                    aria-label="Volver al inicio" title="Volver al inicio">
+                <i data-lucide="arrow-left" class="w-6 h-6"></i>
+            </button>
+            <div class="flex justify-center mb-3 w-full pt-2">
+                <img src="/assets/sena/logo_sena.svg" alt="Logo_Sena" width="50" class="block flex-shrink-0 invert" />
+            </div>
+            <h1 class="text-2xl font-extrabold tracking-tight">Contextualización Institucional</h1>
+            <p class="mt-1 text-green-100 text-xs">Infografía de Senalogía</p>
+        </header>
+
+        <!-- MENÚ STICKY MÓVIL -->
+        <nav class="lg:hidden no-print sticky top-0 z-40 bg-sena-green/95 backdrop-blur-md shadow-md border-b border-sena-dark">
+            <div class="max-w-4xl mx-auto flex items-center px-2 py-2">
+                <button id="mobile-nav-left" class="hidden p-2 text-white hover:text-sena-orange transition-colors flex-shrink-0" onclick="scrollMobileMenu(-1)" aria-label="Anterior">
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+
+                <div id="mobile-menu-container" class="flex-1 overflow-x-auto no-scrollbar">
+                    <div class="flex gap-2 pb-1 text-xs font-semibold text-white whitespace-nowrap" id="mobile-menu">
+                        <a href="#historia" data-section="historia" class="mobile-nav-item px-3 py-1.5 rounded hover:bg-white/10 transition-colors">Historia</a>
+                        <a href="#mision-vision" data-section="mision-vision" class="mobile-nav-item px-3 py-1.5 rounded hover:bg-white/10 transition-colors">Misión/Visión</a>
+                        <a href="#simbolos" data-section="simbolos" class="mobile-nav-item px-3 py-1.5 rounded hover:bg-white/10 transition-colors">Símbolos</a>
+                        <a href="#himno" data-section="himno" class="mobile-nav-item px-3 py-1.5 rounded hover:bg-white/10 transition-colors">Himno</a>
+                        <a href="#organigrama" data-section="organigrama" class="mobile-nav-item px-3 py-1.5 rounded hover:bg-white/10 transition-colors">Organigrama</a>
+                        <a href="#naturaleza" data-section="naturaleza" class="mobile-nav-item px-3 py-1.5 rounded hover:bg-white/10 transition-colors">Naturaleza</a>
+                        <a href="#glosario" data-section="glosario" class="mobile-nav-item px-3 py-1.5 rounded hover:bg-white/10 transition-colors">Glosario</a>
+                    </div>
+                </div>
+
+                <button id="mobile-nav-right" class="p-2 text-white hover:text-sena-orange transition-colors flex-shrink-0" onclick="scrollMobileMenu(1)" aria-label="Siguiente">
+                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <div class="main-content">
+            <!-- HEADER DESKTOP -->
+            <header class="hidden lg:block bg-sena-green text-white py-10 px-6 text-center relative">
+                <button onclick="goBackOrHome()"
+                        class="no-print absolute top-6 left-6 flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-colors font-semibold text-sm"
+                        aria-label="Volver al inicio" title="Volver al inicio">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    <span>Volver al inicio</span>
+                </button>
+
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex justify-center items-center mb-4">
+                        <img src="/assets/sena/logo_sena.svg" alt="Logo_Sena" width="60" height="60" class="block flex-shrink-0 invert" />
+                    </div>
+                    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">Contextualización Institucional</h1>
+                    <p class="mt-3 text-green-100 text-base md:text-lg max-w-2xl mx-auto">
+                        Servicio Nacional de Aprendizaje – Infografía de Senalogía
+                    </p>
+                    <p class="mt-2 text-green-200 text-sm">
+                        Programa: Desarrollo de Productos Electrónicos (3607890) | Modalidad Virtual
+                    </p>
+                </div>
+            </header>
+
+            <main class="max-w-4xl mx-auto px-4 py-8 space-y-8">
+
+                <!-- HISTORIA -->
+                <section id="historia" class="fade-in-section break-inside-avoid bg-white rounded-2xl shadow-md p-6 border-l-4 border-sena-green hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                    <div class="flex flex-col md:flex-row md:items-start gap-4">
+                        <div class="flex items-center gap-3 md:flex-shrink-0 md:w-14 md:h-14 md:bg-sena-green/10 md:rounded-full md:flex md:items-center md:justify-center">
+                            <i data-lucide="clock-4" class="w-7 h-7 text-sena-green"></i>
+                            <h2 class="text-xl font-bold text-sena-dark md:hidden">Historia del SENA</h2>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="hidden md:block text-xl font-bold text-sena-dark mb-2">Historia del SENA</h2>
+                            <p class="text-sm leading-relaxed">
+                                Fundado en <strong>1957</strong> por el <strong>Dr. Rodolfo Martínez Tono</strong>, con el apoyo de la <em>Organización Internacional del Trabajo (OIT)</em>. Nació como una entidad descentralizada del Estado con financiación autónoma, en alianza entre el <strong>Gobierno, los empresarios y los trabajadores</strong>. En sus primeros 17 años inauguró <strong>87 centros</strong> de formación en todo el territorio nacional.
+                            </p>
+                            <blockquote class="mt-3 border-l-2 border-sena-orange pl-3 italic text-xs text-gray-600">
+                                "El SENA es un tesoro que hay que conservar y acrecentar para que Colombia progrese económica y socialmente."
+                                <span class="block not-italic font-semibold text-sena-dark mt-1">— Rodolfo Martínez Tono</span>
+                            </blockquote>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- MISIÓN Y VISIÓN -->
+                <section id="mision-vision" class="fade-in-section grid md:grid-cols-2 gap-6">
+                    <div class="break-inside-avoid bg-white rounded-2xl shadow-md p-6 border-t-4 border-sena-green hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-sena-green rounded-lg flex items-center justify-center">
+                                <i data-lucide="zap" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <h2 class="text-lg font-bold text-sena-dark">Misión</h2>
+                        </div>
+                        <p class="text-sm leading-relaxed">
+                            Invertir en el <strong>desarrollo social y técnico</strong> de los trabajadores colombianos, ofreciendo y ejecutando la <strong>formación profesional integral</strong>, para la incorporación y el desarrollo de las personas en actividades productivas que contribuyan al desarrollo social, económico y tecnológico del país.
+                        </p>
+                    </div>
+
+                    <div class="break-inside-avoid bg-white rounded-2xl shadow-md p-6 border-t-4 border-sena-orange hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-sena-orange rounded-lg flex items-center justify-center">
+                                <i data-lucide="eye" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <h2 class="text-lg font-bold text-sena-dark">Visión 2026</h2>
+                        </div>
+                        <p class="text-sm leading-relaxed">
+                            Estar a la <strong>vanguardia de la cualificación del talento humano</strong> a nivel nacional e internacional, a través de la formación profesional integral, el empleo, el emprendimiento y el reconocimiento de aprendizajes previos, generando <strong>valor público</strong> y fortaleciendo la economía campesina, popular, verde y digital.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- SÍMBOLOS -->
+                <section id="simbolos" class="fade-in-section break-inside-avoid bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition-all duration-300">
+                    <h2 class="text-xl font-bold text-sena-dark text-center mb-6">Símbolos Institucionales</h2>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <div class="mx-auto w-32 h-32 mb-3 flex items-center justify-center bg-sena-light/30 rounded-full p-2">
+                                <img src="/assets/sena/escudo.svg" alt="Escudo_Sena" width="80" height="80" class="block flex-shrink-0" />
+                            </div>
+                            <h3 class="font-bold text-sena-dark">Escudo</h3>
+                            <p class="text-xs mt-1 leading-relaxed text-gray-600">
+                                <strong>Piñón</strong> (industria), <strong>Caduceo</strong> (comercio/servicios) y <strong>Café</strong> (sector primario).
+                            </p>
+                        </div>
+
+                        <div class="text-center">
+                            <div class="mx-auto w-32 h-32 mb-3 flex items-center justify-center bg-sena-light/30 rounded-full p-2">
+                                <img src="/assets/sena/bandera.svg" alt="Bandera_Sena" width="120" height="120" class="block flex-shrink-0" />
+                            </div>
+                            <h3 class="font-bold text-sena-dark">Bandera</h3>
+                            <p class="text-xs mt-1 leading-relaxed text-gray-600">
+                                Fondo <strong>blanco</strong> con el escudo en el centro. Simboliza paz y transparencia.
+                            </p>
+                        </div>
+
+                        <div class="text-center">
+                            <div class="mx-auto w-32 h-32 mb-3 flex items-center justify-center bg-sena-light/30 rounded-full p-2">
+                                <svg width="140" height="70" viewBox="0 0 100 98" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill="#2D8600" d="M50.3,1c-5.9,0-10.6,4.8-10.6,10.6c0,5.9,4.8,10.6,10.6,10.6c5.9,0,10.6-4.8,10.6-10.6v0C60.9,5.8,56.2,1,50.3,1z M15.3,25.6c-1.9,0-3.8,0.1-5.5,0.6c-1.2,0.3-2.3,0.8-3,1.5c-0.9,1-1,2.2-0.6,3.3c0.4,1,1.5,1.7,2.7,2.1c2.6,0.9,5.5,1.1,8.2,1.6c0.5,0.1,1.1,0.3,1.4,0.6c0.3,0.4,0.1,1-0.4,1.2c-0.9,0.5-2,0.5-3.1,0.4c-0.9,0-2-0.1-2.7-0.6c-0.6-0.3-0.6-0.9-0.5-1.4l-6.1,0c0,0.9,0.2,1.9,0.8,2.7c0.6,0.7,1.5,1.2,2.5,1.4c1.6,0.5,3.3,0.6,5,0.6c2.3,0,4.6,0,6.8-0.5c1.3-0.3,2.6-0.8,3.4-1.7c1.5-1.5,1.1-3.9-0.8-5c-1-0.6-2.2-0.9-3.4-1.2c-1.8-0.4-3.5-0.6-5.3-0.9c-0.6-0.1-1.3-0.2-1.8-0.5c-0.5-0.3-0.6-1,0-1.3c0.7-0.4,1.7-0.4,2.6-0.4c0.9,0,1.9,0.1,2.7,0.5c0.4,0.2,0.6,0.6,0.6,1l5.8,0c0-0.7-0.2-1.5-0.7-2.1c-0.6-0.8-1.7-1.3-2.8-1.6C19,25.7,17.1,25.6,15.3,25.6L15.3,25.6z M27.8,26l0,13.8l16.9,0l0-3H34v-2.7h9.5v-2.9H34l0-2.2l10.3,0l0-3L27.8,26z M55.7,26c0,0-5.2,0-7.8,0l0,13.8l5.9,0l0-9.3l8.1,9.3l8.1,0L70,26l-5.9,0l0,9.2L55.7,26z M80.6,26c0,0-6.4,9.2-9.6,13.8l6.2,0l1.5-2.5h9.6l1.4,2.5l6.9,0L87.5,26L80.6,26z M83.7,29.3l3,5l-6.1,0L83.7,29.3z M0.7,43.8l0.1,7.5l28.2-0.1c1.4,0.3,2.3,1.2,2,3.4L13.6,84.9l5.6,5.3L46,43.8L0.7,43.8z M54.4,43.8L80.8,90l5.8-5.2L69.1,54.5c-0.3-2.1,0.5-3.1,2-3.4l28.2,0.1l0-7.4L54.4,43.8z M50,51.5L25.2,93.9l6.6,3.2l16.5-27.9c0.6-0.5,1.1-0.7,1.7-0.7c0.6,0,1.2,0.2,1.8,0.7l16.5,28l6.8-3.5L50,51.5z" />
+                                </svg>
+                            </div>
+                            <h3 class="font-bold text-sena-dark">Logo</h3>
+                            <p class="text-xs mt-1 leading-relaxed text-gray-600">
+                                <strong>Camino hacia el horizonte</strong> y simultáneamente al <strong>ser humano</strong>.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- HIMNO -->
+                <section id="himno" class="fade-in-section break-inside-avoid bg-sena-green rounded-2xl shadow-md p-6 text-white hover:shadow-lg transition-all duration-300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i data-lucide="music-4" class="w-8 h-8"></i>
+                        <h2 class="text-xl font-bold">Himno del SENA</h2>
+                    </div>
+
+                    <div class="bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-white/20 mb-4">
+                        <p class="text-sm italic leading-relaxed text-center">
+                            <strong class="text-yellow-300">Coro:</strong><br />
+                            Estudiantes del SENA adelante<br />
+                            por Colombia luchad con amor<br />
+                            con el ánimo noble y radiante<br />
+                            transformémosla en mundo mejor.
+                        </p>
+                        <p class="text-xs mt-3 text-green-200 text-center" id="credit_himno">
+                            Letra: Mtro. Luis Alfredo Sarmiento | Música: Mtro. Daniel Marles Endo
+                        </p>
+
+                        <div class="hidden print:block text-center mt-2">
+                            <a href="https://www.youtube.com/watch?v=ZejiOSVZMyI&t=8s" class="text-yellow-300 underline text-xs font-semibold" target="_blank">
+                                Disfrútalo en YouTube
+                            </a>
+                        </div>
+
+                        <div class="no-print text-center mb-2 mt-3">
+                            <button onclick="toggleHimnoVideo()" class="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 shadow-sm hover:shadow-md">
+                                <i data-lucide="circle-play" class="w-5 h-5 hidden" id="icon-play"></i>
+                                <i data-lucide="circle-x" class="w-5 h-5" id="icon-close"></i>
+                                <span id="text-toggle">Ocultar video</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="himno-video-wrapper" class="no-print video-wrapper relative w-full rounded-xl overflow-hidden shadow-lg mb-4">
+                        <div style="padding-bottom: 56.25%;">
+                            <iframe id="himno-iframe" class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/ZejiOSVZMyI?start=8" title="Himno del SENA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ORGANIGRAMA CON PESTAÑAS -->
+                <section id="organigrama" class="fade-in-section break-inside-avoid bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition-all duration-300">
+                    <h2 class="text-xl font-bold text-sena-dark text-center mb-6">Organigrama General del SENA</h2>
+
+                    <div class="tab-buttons no-print flex flex-wrap justify-center gap-2 mb-6">
+                        <button onclick="showTab('estructura')" id="btn-estructura" class="tab-btn px-4 py-2 rounded-lg font-semibold text-sm bg-sena-green text-white transition-all">Estructura General</button>
+                        <button onclick="showTab('direcciones')" id="btn-direcciones" class="tab-btn px-4 py-2 rounded-lg font-semibold text-sm bg-gray-200 text-sena-dark hover:bg-gray-300 transition-all">Direcciones</button>
+                        <button onclick="showTab('centros')" id="btn-centros" class="tab-btn px-4 py-2 rounded-lg font-semibold text-sm bg-gray-200 text-sena-dark hover:bg-gray-300 transition-all">Centros y Comités</button>
+                    </div>
+
+                    <div id="tab-estructura" class="tab-content active-tab">
+                        <div class="flex flex-col items-center gap-3 text-xs">
+                            <div class="bg-sena-dark text-white font-bold px-5 py-2 rounded-lg text-center w-full max-w-xs shadow-sm">Consejo Directivo Nacional</div>
+                            <div class="w-px h-4 bg-gray-300"></div>
+                            <div class="bg-sena-green text-white font-bold px-5 py-2 rounded-lg text-center w-full max-w-xs shadow-sm">Dirección General</div>
+                            <div class="w-px h-4 bg-gray-300"></div>
+                            <div class="bg-gray-100 border border-gray-300 rounded-lg p-2 text-center font-semibold text-gray-600 w-full max-w-sm">Oficinas de apoyo: Control Interno, Control Interno Disciplinario, Comunicaciones y Sistemas</div>
+                        </div>
+                    </div>
+
+                    <div id="tab-direcciones" class="tab-content">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 w-full text-xs">
+                            <div class="bg-sena-light border border-sena-green/30 rounded-lg p-2 text-center font-semibold text-sena-dark hover:bg-sena-green/10 transition-colors">Secretaría General</div>
+                            <div class="bg-sena-light border border-sena-green/30 rounded-lg p-2 text-center font-semibold text-sena-dark hover:bg-sena-green/10 transition-colors">Dir. Formación Profesional</div>
+                            <div class="bg-sena-light border border-sena-green/30 rounded-lg p-2 text-center font-semibold text-sena-dark hover:bg-sena-green/10 transition-colors">Dir. de Empleo</div>
+                            <div class="bg-sena-light border border-sena-green/30 rounded-lg p-2 text-center font-semibold text-sena-dark hover:bg-sena-green/10 transition-colors">Dir. Jurídica</div>
+                            <div class="bg-sena-light border border-sena-green/30 rounded-lg p-2 text-center font-semibold text-sena-dark hover:bg-sena-green/10 transition-colors">Dir. Planeación</div>
+                            <div class="bg-sena-light border border-sena-green/30 rounded-lg p-2 text-center font-semibold text-sena-dark hover:bg-sena-green/10 transition-colors">Dir. Administrativa y Financiera</div>
+                            <div class="bg-sena-light border border-sena-green/30 rounded-lg p-2 text-center font-semibold text-sena-dark hover:bg-sena-green/10 transition-colors">Dir. Promoción y Relaciones</div>
+                            <div class="bg-sena-light border border-sena-green/30 rounded-lg p-2 text-center font-semibold text-sena-dark hover:bg-sena-green/10 transition-colors">Dir. Sistema Nacional de Formación</div>
+                        </div>
+                    </div>
+
+                    <div id="tab-centros" class="tab-content">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 w-full text-xs">
+                            <div class="bg-sena-orange/10 border border-sena-orange/40 rounded-lg p-3 text-center font-semibold text-sena-dark">📍 Direcciones Regionales y del Distrito Capital</div>
+                            <div class="bg-sena-orange/10 border border-sena-orange/40 rounded-lg p-3 text-center font-semibold text-sena-dark">🏫 Centros de Formación Profesional</div>
+                            <div class="bg-gray-100 border border-gray-300 rounded-lg p-3 text-center font-semibold text-gray-600 md:col-span-2">👥 Comités Técnicos de Centro</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- NATURALEZA JURÍDICA -->
+                <section id="naturaleza" class="fade-in-section break-inside-avoid bg-white rounded-2xl shadow-md p-6 border-l-4 border-sena-orange hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                    <h2 class="text-lg font-bold text-sena-dark mb-3">Naturaleza Jurídica</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+                        <div class="bg-sena-light rounded-xl p-3 hover:bg-sena-green/20 transition-colors">
+                            <p class="text-2xl mb-1">🏛️</p>
+                            <p class="text-xs font-semibold text-sena-dark">Establecimiento Público del Orden Nacional</p>
+                        </div>
+                        <div class="bg-sena-light rounded-xl p-3 hover:bg-sena-green/20 transition-colors">
+                            <p class="text-2xl mb-1">⚖️</p>
+                            <p class="text-xs font-semibold text-sena-dark">Personería Jurídica</p>
+                        </div>
+                        <div class="bg-sena-light rounded-xl p-3 hover:bg-sena-green/20 transition-colors">
+                            <p class="text-2xl mb-1">💰</p>
+                            <p class="text-xs font-semibold text-sena-dark">Patrimonio Propio e Independiente</p>
+                        </div>
+                        <div class="bg-sena-light rounded-xl p-3 hover:bg-sena-green/20 transition-colors">
+                            <p class="text-2xl mb-1">🔧</p>
+                            <p class="text-xs font-semibold text-sena-dark">Autonomía Administrativa</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-3 text-center">Adscrito al Ministerio del Trabajo | Formación gratuita para millones de colombianos</p>
+                </section>
+
+                <!-- GLOSARIO -->
+                <section id="glosario" class="fade-in-section break-inside-avoid bg-gray-100 rounded-2xl shadow-md p-6 hover:shadow-lg transition-all duration-300">
+                    <h2 class="text-lg font-bold text-sena-dark mb-4 text-center">Glosario Clave</h2>
+                    <div class="grid md:grid-cols-2 gap-3 text-xs">
+                        <div class="bg-white rounded-lg p-3 border-l-2 border-sena-green hover:shadow-md transition-shadow">
+                            <strong class="text-sena-green">E-Learning:</strong> Enseñanza-aprendizaje a través de Internet con comunicación sincrónica y asincrónica. Disponible 24/7.
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border-l-2 border-sena-green hover:shadow-md transition-shadow">
+                            <strong class="text-sena-green">B-Learning:</strong> Aprendizaje mixto que combina sesiones en línea con encuentros presenciales o sincrónicos.
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border-l-2 border-sena-green hover:shadow-md transition-shadow">
+                            <strong class="text-sena-green">FAVA:</strong> Formación en Ambientes Virtuales de Aprendizaje. Gestión académica y administrativa dentro de un software.
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border-l-2 border-sena-green hover:shadow-md transition-shadow">
+                            <strong class="text-sena-green">LMS:</strong> Learning Management System. Plataforma de gestión de aprendizaje (ej. Sofia Plus).
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border-l-2 border-sena-green hover:shadow-md transition-shadow">
+                            <strong class="text-sena-green">TIC:</strong> Tecnologías de la Información y la Comunicación. Herramientas tecnológicas que permean la educación.
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border-l-2 border-sena-green hover:shadow-md transition-shadow">
+                            <strong class="text-sena-green">Aula Virtual:</strong> Entorno telemático donde el aprendiz accede a documentación, actividades y herramientas de interacción.
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+
+            <!-- FOOTER -->
+            <footer class="bg-sena-dark text-white py-8 px-4 text-center">
+                <p class="text-sm font-semibold">Infografía – Contextualización SENA (AA1-EV01)</p>
+                <p class="text-xs text-green-200 mt-1">Programa: Desarrollo de Productos Electrónicos (3607890) | Inducción Virtual</p>
+                <p class="text-xs text-green-300 mt-2">Elaborada con HTML5 + Tailwind CSS | Herramienta: VS Code</p>
+                <div class="mt-2">
+                    <a href="https://martinciro.github.io/tecnologo_electronico/evidencias/inicial/infografia" class="text-yellow-300 underline text-xs font-semibold hover:text-yellow-200 transition-colors" target="_blank">
+                        🔗 Ver web en vivo (GitHub Pages)
+                    </a>
+                    <p class="text-[10px] text-green-400 mt-1 break-all">https://martinciro.github.io/tecnologo_electronico/evidencias/inicial/infografia</p>
+                </div>
+                <p class="text-xs text-green-500 mt-3">Fuente: SENA. (2024). Contextualización SENA. Grupo de Ejecución de la Formación Virtual.</p>
+            </footer>
+        </div>
+
+        <!-- BOTONES FLOTANTES -->
+        <button id="btn-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="no-print fixed bottom-6 left-6 z-50 bg-sena-green hover:bg-sena-dark text-white p-3 rounded-full shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 opacity-0 invisible" title="Ir arriba">
+            <i data-lucide="chevron-up" class="w-6 h-6"></i>
         </button>
 
-        <div class="max-w-4xl mx-auto">
-            <div class="flex justify-center items-center mb-4">
-                <img src="/assets/sena/logo_sena.svg" alt="Logo_Sena" width="60" height="60" class="block flex-shrink-0 invert" />
-            </div>
-            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">Contextualización Institucional</h1>
-            <p class="mt-3 text-green-100 text-base md:text-lg max-w-2xl mx-auto">
-                Servicio Nacional de Aprendizaje – Infografía de Senalogía
-            </p>
-            <p class="mt-2 text-green-200 text-sm">
-                Programa: Desarrollo de Productos Electrónicos (3607890) | Modalidad Virtual
-            </p>
-        </div>
-    </header>
-
-        <main class="max-w-4xl mx-auto px-4 py-8 space-y-8">
-
-            <!-- ============= HISTORIA ============= -->
-            <section id="historia" class="fade-in-section break-inside-avoid bg-white rounded-2xl shadow-md p-6 border-l-4 border-sena-green hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                <div class="flex flex-col md:flex-row md:items-start gap-4">
-                    <div class="flex items-center gap-3 md:flex-shrink-0 md:w-14 md:h-14 md:bg-sena-green/10 md:rounded-full md:flex md:items-center md:justify-center">
-                        <i data-lucide="clock-4" class="w-7 h-7 text-sena-green"></i>
-                        <h2 class="text-xl font-bold text-sena-dark md:hidden">Historia del SENA</h2>
-                    </div>
-                    <div class="flex-1">
-                        <h2 class="hidden md:block text-xl font-bold text-sena-dark mb-2">Historia del SENA</h2>
-                        <p class="text-sm leading-relaxed">
-                            Fundado en <strong>1957</strong> por el <strong>Dr. Rodolfo Martínez Tono</strong>, con el apoyo de la <em>Organización Internacional del Trabajo (OIT)</em>. Nació como una entidad descentralizada del Estado con financiación autónoma, en alianza entre el <strong>Gobierno, los empresarios y los trabajadores</strong>. En sus primeros 17 años inauguró <strong>87 centros</strong> de formación en todo el territorio nacional.
-                        </p>
-                        <blockquote class="mt-3 border-l-2 border-sena-orange pl-3 italic text-xs text-gray-600">
-                            "El SENA es un tesoro que hay que conservar y acrecentar para que Colombia progrese económica y socialmente."
-                            <span class="block not-italic font-semibold text-sena-dark mt-1">— Rodolfo Martínez Tono</span>
-                        </blockquote>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ============= MISIÓN Y VISIÓN ============= -->
-            <section id="mision-vision" class="fade-in-section grid md:grid-cols-2 gap-6">
-                <div class="break-inside-avoid bg-white rounded-2xl shadow-md p-6 border-t-4 border-sena-green hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 bg-sena-green rounded-lg flex items-center justify-center">
-                            <i data-lucide="zap" class="w-5 h-5 text-white"></i>
-                        </div>
-                        <h2 class="text-lg font-bold text-sena-dark">Misión</h2>
-                    </div>
-                    <p class="text-sm leading-relaxed">
-                        Invertir en el <strong>desarrollo social y técnico</strong> de los trabajadores colombianos, ofreciendo y ejecutando la <strong>formación profesional integral</strong>, para la incorporación y el desarrollo de las personas en actividades productivas que contribuyan al desarrollo social, económico y tecnológico del país.
-                    </p>
-                </div>
-
-                <div class="break-inside-avoid bg-white rounded-2xl shadow-md p-6 border-t-4 border-sena-orange hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-10 h-10 bg-sena-orange rounded-lg flex items-center justify-center">
-                            <i data-lucide="eye" class="w-5 h-5 text-white"></i>
-                        </div>
-                        <h2 class="text-lg font-bold text-sena-dark">Visión 2026</h2>
-                    </div>
-                    <p class="text-sm leading-relaxed">
-                        Estar a la <strong>vanguardia de la cualificación del talento humano</strong> a nivel nacional e internacional, a través de la formación profesional integral, el empleo, el emprendimiento y el reconocimiento de aprendizajes previos, generando <strong>valor público</strong> y fortaleciendo la economía campesina, popular, verde y digital.
-                    </p>
-                </div>
-            </section>
-
-            <!-- ============= SÍMBOLOS ============= -->
-            <section id="simbolos" class="fade-in-section break-inside-avoid bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition-all duration-300">
-                <h2 class="text-xl font-bold text-sena-dark text-center mb-6">Símbolos Institucionales</h2>
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="text-center">
-                        <div class="mx-auto w-32 h-32 mb-3 flex items-center justify-center bg-sena-light/30 rounded-full p-2">
-                            <img src="/assets/sena/escudo.svg" alt="Escudo_Sena" width="80" height="80" class="block flex-shrink-0" />
-                        </div>
-                        <h3 class="font-bold text-sena-dark">Escudo</h3>
-                        <p class="text-xs mt-1 leading-relaxed text-gray-600">
-                            <strong>Piñón</strong> (industria), <strong>Caduceo</strong> (comercio/servicios) y <strong>Café</strong> (sector primario).
-                        </p>
-                    </div>
-
-                    <div class="text-center">
-                        <div class="mx-auto w-32 h-32 mb-3 flex items-center justify-center bg-sena-light/30 rounded-full p-2">
-                            <img src="/assets/sena/bandera.svg" alt="Bandera_Sena" width="120" height="120" class="block flex-shrink-0" />
-                        </div>
-                        <h3 class="font-bold text-sena-dark">Bandera</h3>
-                        <p class="text-xs mt-1 leading-relaxed text-gray-600">
-                            Fondo <strong>blanco</strong> con el escudo en el centro. Simboliza paz y transparencia.
-                        </p>
-                    </div>
-
-                    <div class="text-center">
-                        <div class="mx-auto w-32 h-32 mb-3 flex items-center justify-center bg-sena-light/30 rounded-full p-2">
-                            <svg width="140" height="70" viewBox="0 0 100 98" xmlns="http://www.w3.org/2000/svg">
-                                <path fill="#2D8600" d="M50.3,1c-5.9,0-10.6,4.8-10.6,10.6c0,5.9,4.8,10.6,10.6,10.6c5.9,0,10.6-4.8,10.6-10.6v0C60.9,5.8,56.2,1,50.3,1z M15.3,25.6c-1.9,0-3.8,0.1-5.5,0.6c-1.2,0.3-2.3,0.8-3,1.5c-0.9,1-1,2.2-0.6,3.3c0.4,1,1.5,1.7,2.7,2.1c2.6,0.9,5.5,1.1,8.2,1.6c0.5,0.1,1.1,0.3,1.4,0.6c0.3,0.4,0.1,1-0.4,1.2c-0.9,0.5-2,0.5-3.1,0.4c-0.9,0-2-0.1-2.7-0.6c-0.6-0.3-0.6-0.9-0.5-1.4l-6.1,0c0,0.9,0.2,1.9,0.8,2.7c0.6,0.7,1.5,1.2,2.5,1.4c1.6,0.5,3.3,0.6,5,0.6c2.3,0,4.6,0,6.8-0.5c1.3-0.3,2.6-0.8,3.4-1.7c1.5-1.5,1.1-3.9-0.8-5c-1-0.6-2.2-0.9-3.4-1.2c-1.8-0.4-3.5-0.6-5.3-0.9c-0.6-0.1-1.3-0.2-1.8-0.5c-0.5-0.3-0.6-1,0-1.3c0.7-0.4,1.7-0.4,2.6-0.4c0.9,0,1.9,0.1,2.7,0.5c0.4,0.2,0.6,0.6,0.6,1l5.8,0c0-0.7-0.2-1.5-0.7-2.1c-0.6-0.8-1.7-1.3-2.8-1.6C19,25.7,17.1,25.6,15.3,25.6L15.3,25.6z M27.8,26l0,13.8l16.9,0l0-3H34v-2.7h9.5v-2.9H34l0-2.2l10.3,0l0-3L27.8,26z M55.7,26c0,0-5.2,0-7.8,0l0,13.8l5.9,0l0-9.3l8.1,9.3l8.1,0L70,26l-5.9,0l0,9.2L55.7,26z M80.6,26c0,0-6.4,9.2-9.6,13.8l6.2,0l1.5-2.5h9.6l1.4,2.5l6.9,0L87.5,26L80.6,26z M83.7,29.3l3,5l-6.1,0L83.7,29.3z M0.7,43.8l0.1,7.5l28.2-0.1c1.4,0.3,2.3,1.2,2,3.4L13.6,84.9l5.6,5.3L46,43.8L0.7,43.8z M54.4,43.8L80.8,90l5.8-5.2L69.1,54.5c-0.3-2.1,0.5-3.1,2-3.4l28.2,0.1l0-7.4L54.4,43.8z M50,51.5L25.2,93.9l6.6,3.2l16.5-27.9c0.6-0.5,1.1-0.7,1.7-0.7c0.6,0,1.2,0.2,1.8,0.7l16.5,28l6.8-3.5L50,51.5z" />
-                            </svg>
-                        </div>
-                        <h3 class="font-bold text-sena-dark">Logo</h3>
-                        <p class="text-xs mt-1 leading-relaxed text-gray-600">
-                            <strong>Camino hacia el horizonte</strong> y simultáneamente al <strong>ser humano</strong>.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ============= HIMNO ============= -->
-            <section id="himno" class="fade-in-section break-inside-avoid bg-sena-green rounded-2xl shadow-md p-6 text-white hover:shadow-lg transition-all duration-300">
-                <div class="flex items-center gap-3 mb-4">
-                    <i data-lucide="music-4" class="w-8 h-8"></i>
-                    <h2 class="text-xl font-bold">Himno del SENA</h2>
-                </div>
-
-                <div class="bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-white/20 mb-4">
-                    <p class="text-sm italic leading-relaxed text-center">
-                        <strong class="text-yellow-300">Coro:</strong><br />
-                        Estudiantes del SENA adelante<br />
-                        por Colombia luchad con amor<br />
-                        con el ánimo noble y radiante<br />
-                        transformémosla en mundo mejor.
-                    </p>
-                    <p class="text-xs mt-3 text-green-200 text-center" id="credit_himno">
-                        Letra: Mtro. Luis Alfredo Sarmiento | Música: Mtro. Daniel Marles Endo
-                    </p>
-
-                    <div class="hidden print:block text-center mt-2">
-                        <a href="https://www.youtube.com/watch?v=ZejiOSVZMyI&t=8s" class="text-yellow-300 underline text-xs font-semibold" target="_blank">
-                            Disfrútalo en YouTube
-                        </a>
-                    </div>
-
-                    <div class="no-print text-center mb-2 mt-3">
-                        <button onclick="toggleHimnoVideo()" class="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300 shadow-sm hover:shadow-md">
-                            <i data-lucide="circle-play" class="w-5 h-5 hidden" id="icon-play"></i>
-                            <i data-lucide="circle-x" class="w-5 h-5" id="icon-close"></i>
-                            <span id="text-toggle">Ocultar video</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div id="himno-video-wrapper" class="no-print video-wrapper relative w-full rounded-xl overflow-hidden shadow-lg mb-4">
-                    <div style="padding-bottom: 56.25%;">
-                        <iframe id="himno-iframe" class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/ZejiOSVZMyI?start=8" title="Himno del SENA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ============= ORGANIGRAMA CON PESTAÑAS ============= -->
-            <section id="organigrama" class="fade-in-section break-inside-avoid bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition-all duration-300">
-                <h2 class="text-xl font-bold text-sena-dark text-center mb-6">Organigrama General del SENA</h2>
-
-                <div class="tab-buttons no-print flex flex-wrap justify-center gap-2 mb-6">
-                    <button onclick="showTab('estructura')" id="btn-estructura" class="tab-btn px-4 py-2 rounded-lg font-semibold text-sm bg-sena-green text-white transition-all">Estructura General</button>
-                    <button onclick="showTab('direcciones')" id="btn-direcciones" class="tab-btn px-4 py-2 rounded-lg font-semibold text-sm bg-gray-200 text-sena-dark hover:bg-gray-300 transition-all">Direcciones</button>
-                    <button onclick="showTab('centros')" id="btn-centros" class="tab-btn px-4 py-2 rounded-lg font-semibold text-sm bg-gray-200 text-sena-dark hover:bg-gray-300 transition-all">Centros y Comités</button>
-                </div>
-
-                <div id="tab-estructura" class="tab-content active-tab">
-                    <div class="flex flex-col items-center gap-3 text-xs">
-                        <div class="bg-sena-dark text-white font-bold px-5 py-2 rounded-lg text-center w-full max-w-xs shadow-sm">Consejo Directivo Nacional</div>
-                        <div class="w-px h-4 bg-gray-300"></div>
-                        <div class="bg-sena-green text-white font-bold px-5 py-2 rounded-lg text-center w-full max-w-xs shadow-sm">Dirección General</div>
-                        <div class="w-px h-4 bg-gray-300"></div>
-                        <div class="bg-gray-100 border border-gray-300 rounded-lg p-2 text-center font-semibold text-gray-600 w-full max-w-sm">Oficinas de apoyo: Control Interno, Control Interno Disciplinario, Comunicaciones y Sistemas</div>
-                    </div>
-                </div>
-
-                <div id="tab-direcciones" class="tab-content">
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 w-full text-xs">
-                        <div class="bg-sena-light border border-sena-green/30 rounded-lg p-2 text-center font-semibold text-sena-dark hover:bg-sena-green/10 transition-colors">Secretaría General</div>
-                        <div class="bg-sena-light border border-sena-green/30 rounded-lg p-2 text-center font-semibold text-sena-dark hover:bg-sena-green/10 transition-colors">Dir. Formación Profesional</div>
-                        <div class="bg-sena-light border border-sena-green/30 rounded-lg p-2 text-center font-semibold text-sena-dark hover:bg-sena-green/10 transition-colors">Dir. de Empleo</div>
-                        <div class="bg-sena-light border border-sena-green/30 rounded-lg p-2 text-center font-semibold text-sena-dark hover:bg-sena-green/10 transition-colors">Dir. Jurídica</div>
-                        <div class="bg-sena-light border border-sena-green/30 rounded-lg p-2 text-center font-semibold text-sena-dark hover:bg-sena-green/10 transition-colors">Dir. Planeación</div>
-                        <div class="bg-sena-light border border-sena-green/30 rounded-lg p-2 text-center font-semibold text-sena-dark hover:bg-sena-green/10 transition-colors">Dir. Administrativa y Financiera</div>
-                        <div class="bg-sena-light border border-sena-green/30 rounded-lg p-2 text-center font-semibold text-sena-dark hover:bg-sena-green/10 transition-colors">Dir. Promoción y Relaciones</div>
-                        <div class="bg-sena-light border border-sena-green/30 rounded-lg p-2 text-center font-semibold text-sena-dark hover:bg-sena-green/10 transition-colors">Dir. Sistema Nacional de Formación</div>
-                    </div>
-                </div>
-
-                <div id="tab-centros" class="tab-content">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 w-full text-xs">
-                        <div class="bg-sena-orange/10 border border-sena-orange/40 rounded-lg p-3 text-center font-semibold text-sena-dark">📍 Direcciones Regionales y del Distrito Capital</div>
-                        <div class="bg-sena-orange/10 border border-sena-orange/40 rounded-lg p-3 text-center font-semibold text-sena-dark">🏫 Centros de Formación Profesional</div>
-                        <div class="bg-gray-100 border border-gray-300 rounded-lg p-3 text-center font-semibold text-gray-600 md:col-span-2">👥 Comités Técnicos de Centro</div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ============= NATURALEZA JURÍDICA ============= -->
-            <section id="naturaleza" class="fade-in-section break-inside-avoid bg-white rounded-2xl shadow-md p-6 border-l-4 border-sena-orange hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                <h2 class="text-lg font-bold text-sena-dark mb-3">Naturaleza Jurídica</h2>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
-                    <div class="bg-sena-light rounded-xl p-3 hover:bg-sena-green/20 transition-colors">
-                        <p class="text-2xl mb-1">🏛️</p>
-                        <p class="text-xs font-semibold text-sena-dark">Establecimiento Público del Orden Nacional</p>
-                    </div>
-                    <div class="bg-sena-light rounded-xl p-3 hover:bg-sena-green/20 transition-colors">
-                        <p class="text-2xl mb-1">⚖️</p>
-                        <p class="text-xs font-semibold text-sena-dark">Personería Jurídica</p>
-                    </div>
-                    <div class="bg-sena-light rounded-xl p-3 hover:bg-sena-green/20 transition-colors">
-                        <p class="text-2xl mb-1">💰</p>
-                        <p class="text-xs font-semibold text-sena-dark">Patrimonio Propio e Independiente</p>
-                    </div>
-                    <div class="bg-sena-light rounded-xl p-3 hover:bg-sena-green/20 transition-colors">
-                        <p class="text-2xl mb-1">🔧</p>
-                        <p class="text-xs font-semibold text-sena-dark">Autonomía Administrativa</p>
-                    </div>
-                </div>
-                <p class="text-xs text-gray-500 mt-3 text-center">Adscrito al Ministerio del Trabajo | Formación gratuita para millones de colombianos</p>
-            </section>
-
-            <!-- ============= GLOSARIO ============= -->
-            <section id="glosario" class="fade-in-section break-inside-avoid bg-gray-100 rounded-2xl shadow-md p-6 hover:shadow-lg transition-all duration-300">
-                <h2 class="text-lg font-bold text-sena-dark mb-4 text-center">Glosario Clave</h2>
-                <div class="grid md:grid-cols-2 gap-3 text-xs">
-                    <div class="bg-white rounded-lg p-3 border-l-2 border-sena-green hover:shadow-md transition-shadow">
-                        <strong class="text-sena-green">E-Learning:</strong> Enseñanza-aprendizaje a través de Internet con comunicación sincrónica y asincrónica. Disponible 24/7.
-                    </div>
-                    <div class="bg-white rounded-lg p-3 border-l-2 border-sena-green hover:shadow-md transition-shadow">
-                        <strong class="text-sena-green">B-Learning:</strong> Aprendizaje mixto que combina sesiones en línea con encuentros presenciales o sincrónicos.
-                    </div>
-                    <div class="bg-white rounded-lg p-3 border-l-2 border-sena-green hover:shadow-md transition-shadow">
-                        <strong class="text-sena-green">FAVA:</strong> Formación en Ambientes Virtuales de Aprendizaje. Gestión académica y administrativa dentro de un software.
-                    </div>
-                    <div class="bg-white rounded-lg p-3 border-l-2 border-sena-green hover:shadow-md transition-shadow">
-                        <strong class="text-sena-green">LMS:</strong> Learning Management System. Plataforma de gestión de aprendizaje (ej. Sofia Plus).
-                    </div>
-                    <div class="bg-white rounded-lg p-3 border-l-2 border-sena-green hover:shadow-md transition-shadow">
-                        <strong class="text-sena-green">TIC:</strong> Tecnologías de la Información y la Comunicación. Herramientas tecnológicas que permean la educación.
-                    </div>
-                    <div class="bg-white rounded-lg p-3 border-l-2 border-sena-green hover:shadow-md transition-shadow">
-                        <strong class="text-sena-green">Aula Virtual:</strong> Entorno telemático donde el aprendiz accede a documentación, actividades y herramientas de interacción.
-                    </div>
-                </div>
-            </section>
-
-        </main>
-
-        <!-- ===================== FOOTER ===================== -->
-        <footer class="bg-sena-dark text-white py-8 px-4 text-center">
-            <p class="text-sm font-semibold">Infografía – Contextualización SENA (AA1-EV01)</p>
-            <p class="text-xs text-green-200 mt-1">Programa: Desarrollo de Productos Electrónicos (3607890) | Inducción Virtual</p>
-            <p class="text-xs text-green-300 mt-2">Elaborada con HTML5 + Tailwind CSS | Herramienta: VS Code</p>
-            <div class="mt-2">
-                <a href="https://martinciro.github.io/tecnologo_electronico/evidencias/inicial/infografia" class="text-yellow-300 underline text-xs font-semibold hover:text-yellow-200 transition-colors" target="_blank">
-                    🔗 Ver web en vivo (GitHub Pages)
-                </a>
-                <p class="text-[10px] text-green-400 mt-1 break-all">https://martinciro.github.io/tecnologo_electronico/evidencias/inicial/infografia</p>
-            </div>
-            <p class="text-xs text-green-500 mt-3">Fuente: SENA. (2024). Contextualización SENA. Grupo de Ejecución de la Formación Virtual.</p>
-        </footer>
+        <button onclick="window.print()" class="no-print fixed bottom-6 right-6 z-50 bg-sena-orange hover:bg-sena-dark text-white p-4 rounded-full shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex items-center group" title="Guardar como PDF">
+            <i data-lucide="printer" class="w-6 h-6"></i>
+            <span class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap font-semibold text-sm ml-0 group-hover:ml-2">
+                Guardar PDF
+            </span>
+        </button>
     </div>
+    <!-- ==================  FIN VISTA WEB (VERSIÓN B)  ================== -->
 
-    <!-- ===================== BOTONES FLOTANTES ===================== -->
-    <button id="btn-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="no-print fixed bottom-6 left-6 z-50 bg-sena-green hover:bg-sena-dark text-white p-3 rounded-full shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 opacity-0 invisible" title="Ir arriba">
-        <i data-lucide="chevron-up" class="w-6 h-6"></i>
-    </button>
-
-    <button onclick="window.print()" class="no-print fixed bottom-6 right-6 z-50 bg-sena-orange hover:bg-sena-dark text-white p-4 rounded-full shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex items-center group" title="Guardar como PDF">
-        <i data-lucide="printer" class="w-6 h-6"></i>
-        <span class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap font-semibold text-sm ml-0 group-hover:ml-2">
-            Guardar PDF
-        </span>
-    </button>
 
     <!-- ===================== SCRIPTS ===================== -->
     <script>
-        // ===== SCROLL SPY + PROGRESO =====
-        const sections = document.querySelectorAll('section[id]');
+        /* ============================================================
+           UTILIDADES COMPARTIDAS
+           ============================================================ */
+        function goBackOrHome() {
+            if (document.referrer && document.referrer.startsWith(window.location.origin)) {
+                window.history.back();
+            } else {
+                window.location.href = '/';
+            }
+        }
+
+        /* ============================================================
+           FADE-IN (afecta a las secciones visibles en pantalla)
+           ============================================================ */
+        const faders = document.querySelectorAll('.fade-in-section');
+        const appearOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
+        const appearOnScroll = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            });
+        }, appearOptions);
+        faders.forEach(fader => appearOnScroll.observe(fader));
+
+        /* ============================================================
+           VISTA WEB · SCROLL SPY + BARRA DE PROGRESO
+           ============================================================ */
+        const sections = document.querySelectorAll('#web-view section[id]');
         let lastActiveSectionId = '';
 
         function updateOnScroll() {
@@ -480,13 +667,13 @@
             const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const windowHeight = window.innerHeight;
 
-            // --- Barra de progreso superior (global) ---
-            if (docHeight > 0) {
-                const globalProgress = Math.min(100, (winScroll / docHeight) * 100);
-                document.getElementById('progress-bar').style.width = globalProgress + '%';
+            // Barra de progreso superior
+            const progressBar = document.getElementById('progress-bar');
+            if (progressBar && docHeight > 0) {
+                progressBar.style.width = Math.min(100, (winScroll / docHeight) * 100) + '%';
             }
 
-            // --- Scroll Spy para menú móvil ---
+            // Scroll Spy para menú móvil
             let currentSectionId = '';
             const isNearBottom = (winScroll + windowHeight) >= (document.documentElement.scrollHeight - 100);
 
@@ -505,26 +692,29 @@
                 });
             }
 
-            // Actualizar menú móvil si cambió la sección
             if (currentSectionId && currentSectionId !== lastActiveSectionId) {
                 lastActiveSectionId = currentSectionId;
                 updateMobileMenu(currentSectionId);
             }
 
-            // --- Botón ir arriba ---
+            // Botón "ir arriba"
             const btnTop = document.getElementById('btn-top');
-            if (winScroll > 300) {
-                btnTop.classList.remove('opacity-0', 'invisible');
-                btnTop.classList.add('opacity-100', 'visible');
-            } else {
-                btnTop.classList.add('opacity-0', 'invisible');
-                btnTop.classList.remove('opacity-100', 'visible');
+            if (btnTop) {
+                if (winScroll > 300) {
+                    btnTop.classList.remove('opacity-0', 'invisible');
+                    btnTop.classList.add('opacity-100', 'visible');
+                } else {
+                    btnTop.classList.add('opacity-0', 'invisible');
+                    btnTop.classList.remove('opacity-100', 'visible');
+                }
             }
         }
 
-        // ===== LÓGICA DEL MENÚ MÓVIL =====
+        /* ============================================================
+           VISTA WEB · MENÚ MÓVIL
+           ============================================================ */
         const mobileMenuContainer = document.getElementById('mobile-menu-container');
-        const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+        const mobileNavItems = document.querySelectorAll('#web-view .mobile-nav-item');
         const btnLeft = document.getElementById('mobile-nav-left');
         const btnRight = document.getElementById('mobile-nav-right');
 
@@ -540,7 +730,7 @@
         }
 
         function checkMobileArrows() {
-            if (!mobileMenuContainer) return;
+            if (!mobileMenuContainer || !btnLeft || !btnRight) return;
             const scrollLeft = mobileMenuContainer.scrollLeft;
             const maxScrollLeft = mobileMenuContainer.scrollWidth - mobileMenuContainer.clientWidth;
 
@@ -552,6 +742,7 @@
         }
 
         function scrollMobileMenu(direction) {
+            if (!mobileMenuContainer) return;
             mobileMenuContainer.scrollBy({ left: direction * 150, behavior: 'smooth' });
             setTimeout(checkMobileArrows, 350);
         }
@@ -563,22 +754,12 @@
 
         window.addEventListener('scroll', updateOnScroll);
 
-        // ===== FADE-IN ANIMATION =====
-        const faders = document.querySelectorAll('.fade-in-section');
-        const appearOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
-        const appearOnScroll = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting) return;
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
-            });
-        }, appearOptions);
-        faders.forEach(fader => appearOnScroll.observe(fader));
-
-        // ===== TABS DEL ORGANIGRAMA =====
+        /* ============================================================
+           VISTA WEB · TABS DEL ORGANIGRAMA
+           ============================================================ */
         function showTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active-tab'));
-            document.querySelectorAll('.tab-btn').forEach(btn => {
+            document.querySelectorAll('#web-view .tab-content').forEach(el => el.classList.remove('active-tab'));
+            document.querySelectorAll('#web-view .tab-btn').forEach(btn => {
                 btn.classList.remove('bg-sena-green', 'text-white');
                 btn.classList.add('bg-gray-200', 'text-sena-dark', 'hover:bg-gray-300');
             });
@@ -592,7 +773,9 @@
             targetBtn.classList.remove('bg-gray-200', 'text-sena-dark', 'hover:bg-gray-300');
         }
 
-        // ===== TOGGLE VIDEO DEL HIMNO =====
+        /* ============================================================
+           VISTA WEB · TOGGLE VIDEO DEL HIMNO
+           ============================================================ */
         function toggleHimnoVideo() {
             const wrapper = document.getElementById('himno-video-wrapper');
             const btnText = document.getElementById('text-toggle');
@@ -612,19 +795,12 @@
             }
         }
 
-        function goBackOrHome() {
-            // Verifica si hay una página anterior Y si pertenece a tu mismo dominio
-            if (document.referrer && document.referrer.startsWith(window.location.origin)) {
-                window.history.back();
-            } else {
-                // Si no hay historial válido o viene de un sitio externo, va a la raíz
-                window.location.href = '/';
-            }
-        }
-
-        // Inicializar
+        /* ============================================================
+           INICIALIZACIÓN
+           ============================================================ */
         lucide.createIcons();
         updateOnScroll();
     </script>
 </body>
+
 </html>
