@@ -5,7 +5,7 @@ const getBasePath = () => {
     const path = window.location.pathname;
     if (window.location.hostname.includes('github.io')) {
         const parts = path.split('/').filter(Boolean);
-        return `/${parts[0]}/`;
+        return parts.length > 0 ? `/${parts[0]}/` : '/';
     }
     return '/';
 };
@@ -34,8 +34,8 @@ async function loadComponent(containerId, url) {
 document.addEventListener('DOMContentLoaded', async () => {
     
     // 👉 2. USAR 'await' PARA ESPERAR A QUE EL HTML SE INYECTE
-    await loadComponent('navbar-container', 'components/layouts/navbar.html');
-    await loadComponent('footer-container', 'components/layouts/footer.html');
+    await loadComponent('navbar-container', './components/layouts/navbar.html');
+    await loadComponent('footer-container', './components/layouts/footer.html');
 
     // 👉 3. AHORA SÍ, el botón existe en el DOM y se puede seleccionar
     const themeToggleBtn = document.getElementById('theme-toggle');
