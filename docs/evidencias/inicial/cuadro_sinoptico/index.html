@@ -168,11 +168,33 @@
         .dark .mermaid { background: rgba(42,42,46,.6); }
         .mermaid svg { max-width: 100%; height: auto; }
 
+        /* ======================================================
+           DESKTOP WEB SOLAMENTE: centrar Mermaid en su columna.
+           Se aplica SOLO a pantalla (screen) y SOLO en desktop.
+           ====================================================== */
+        @media screen and (min-width: 1024px) {
+            #main-grid > div:first-child {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                align-self: stretch;
+            }
+            #main-grid > div:first-child > .mermaid {
+                flex: 1 1 auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            #main-grid > div:first-child > .mermaid svg {
+                max-height: 100%;
+            }
+        }
+
         /* ===== ENCABEZADO SOLO PARA IMPRESIÓN ===== */
         .print-header { display: none; }
 
         /* ======================================================
-           IMPRESIÓN: WYSIWYG (Lo que ves es lo que se imprime)
+           IMPRESIÓN
            ====================================================== */
         @media print {
             @page { size: A4 landscape; margin: 8mm; }
@@ -325,7 +347,6 @@
 
         <!-- ===================== VISTA WEB (Y BASE PARA PDF) ===================== -->
         <div id="web-view">
-            <!-- Encabezado Web (se oculta en impresión) -->
             <div class="mb-8 text-center sm:text-left">
                 <div class="inline-flex items-center gap-3 mb-3 max-w-full">
                     <div class="w-10 h-10 sm:w-12 sm:h-12 bg-sena-green/10 dark:bg-sena-green/20 rounded-xl flex items-center justify-center text-sena-green flex-shrink-0">
@@ -336,12 +357,12 @@
                     </h1>
                 </div>
                 <p class="text-light-metal dark:text-dark-metal max-w-3xl text-sm sm:text-base leading-relaxed px-2 sm:px-0">
-                    Alternativas de <strong>Etapa Productiva</strong> (Acuerdo 009 de 2024). </br>
+                    Alternativas de <strong>Etapa Productiva</strong> (Acuerdo 009 de 2024).
                     Haz clic en el <span class="text-sena-green font-semibold">nodo verde</span> de cada rama para mostrar u ocultar el detalle.
                 </p>
             </div>
 
-            <!-- GRID PRINCIPAL: 1 columna en móvil, 2 columnas en escritorio Y EN IMPRESIÓN -->
+            <!-- GRID PRINCIPAL -->
             <div id="main-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
 
                 <!-- COLUMNA IZQUIERDA: MAPA MERMAID -->
@@ -350,39 +371,39 @@
                         <i data-lucide="git-fork" class="w-5 h-5"></i> Mapa Visual
                     </h2>
                     <div class="mermaid">
-                        flowchart LR
-                            ROOT["🎓 ETAPA PRODUCTIVA<br/>(Acuerdo 009 de 2024)"]
-                            ROOT --> A["1️⃣ Contrato de<br/>Aprendizaje"]
-                            ROOT --> B["2️⃣ Contrato de<br/>Vínculo Formativo"]
-                            ROOT --> C["3️⃣ Monitoría"]
-                            ROOT --> D["4️⃣ Proyecto<br/>Productivo"]
-                            ROOT --> E["5️⃣ Vínculo<br/>Laboral"]
-                            A --> A1["Formación teórico-práctica"]
-                            A --> A2["Contrato laboral especial"]
-                            A --> A3["Remuneración 75% → 100%"]
-                            A --> A4["Gestión Sofía Plus + SGVA"]
-                            A --> A5["Requisitos 2.º contrato"]
-                            B --> B1["Asesoría a PYMES"]
-                            B --> B2["Apoyo a unidad productiva"]
-                            B --> B3["Apoyo a institución"]
-                            C --> C1["Apoyo en el centro"]
-                            C --> C2["Convocatoria subdirección"]
-                            C --> C3["Complementar horas"]
-                            D --> D1["SENA Empresa"]
-                            D --> D2["SENA Proveedor SENA"]
-                            D --> D3["Producción de Centros"]
-                            D --> D4["Enfoque Empresarial / I+D+i"]
-                            D --> D5["Ruta Emprendedora SENA"]
-                            E --> E1["Trabajo formal / contrato"]
-                            E --> E2["Funciones afines"]
-                            E --> E3["Aval coordinación"]
-                            E --> E4["Constancia de la entidad"]
-                            classDef root fill:#2D8600,stroke:#2D8600,color:#fff,font-weight:bold,stroke-width:2px;
-                            classDef lvl1 fill:#E8F5E1,stroke:#39A900,color:#2D8600,font-weight:bold;
-                            classDef lvl2 fill:#FFF7E6,stroke:#F5A623,color:#4A4A4A;
-                            class ROOT root;
-                            class A,B,C,D,E lvl1;
-                            class A1,A2,A3,A4,A5,B1,B2,B3,C1,C2,C3,D1,D2,D3,D4,D5,E1,E2,E3,E4 lvl2;
+flowchart LR
+    ROOT["🎓 ETAPA PRODUCTIVA<br/>(Acuerdo 009 de 2024)"]
+    ROOT --> A["1️⃣ Contrato de<br/>Aprendizaje"]
+    ROOT --> B["2️⃣ Contrato de<br/>Vínculo Formativo"]
+    ROOT --> C["3️⃣ Monitoría"]
+    ROOT --> D["4️⃣ Proyecto<br/>Productivo"]
+    ROOT --> E["5️⃣ Vínculo<br/>Laboral"]
+    A --> A1["Formación teórico-práctica"]
+    A --> A2["Contrato laboral especial"]
+    A --> A3["Remuneración 75% → 100%"]
+    A --> A4["Gestión Sofía Plus + SGVA"]
+    A --> A5["Requisitos 2.º contrato"]
+    B --> B1["Asesoría a PYMES"]
+    B --> B2["Apoyo a unidad productiva"]
+    B --> B3["Apoyo a institución"]
+    C --> C1["Apoyo en el centro"]
+    C --> C2["Convocatoria subdirección"]
+    C --> C3["Complementar horas"]
+    D --> D1["SENA Empresa"]
+    D --> D2["SENA Proveedor SENA"]
+    D --> D3["Producción de Centros"]
+    D --> D4["Enfoque Empresarial / I+D+i"]
+    D --> D5["Ruta Emprendedora SENA"]
+    E --> E1["Trabajo formal / contrato"]
+    E --> E2["Funciones afines"]
+    E --> E3["Aval coordinación"]
+    E --> E4["Constancia de la entidad"]
+    classDef root fill:#2D8600,stroke:#2D8600,color:#fff,font-weight:bold,stroke-width:2px;
+    classDef lvl1 fill:#E8F5E1,stroke:#39A900,color:#2D8600,font-weight:bold;
+    classDef lvl2 fill:#FFF7E6,stroke:#F5A623,color:#4A4A4A;
+    class ROOT root;
+    class A,B,C,D,E lvl1;
+    class A1,A2,A3,A4,A5,B1,B2,B3,C1,C2,C3,D1,D2,D3,D4,D5,E1,E2,E3,E4 lvl2;
                     </div>
                 </div>
 
@@ -564,7 +585,7 @@
             </div>
         </div>
 
-        <footer class="mt-10 bg-white dark:bg-dark-deep/20 rounded-2xl p-6 border border-light-metal/20 dark:border-dark-metal/20 border-l-4 border-l-sena-green text-center">
+        <footer class="no-print mt-10 bg-white dark:bg-dark-deep/20 rounded-2xl p-6 border border-light-metal/20 dark:border-dark-metal/20 border-l-4 border-l-sena-green text-center">
             <p class="text-sm font-semibold text-light-dark dark:text-dark-light">Cuadro Sinóptico – Etapa Productiva (AA4-EV01)</p>
             <p class="text-xs text-light-metal dark:text-dark-metal mt-1">Desarrollo de Productos Electrónicos (3607890) | Inducción Virtual</p>
             <div class="mt-2">
