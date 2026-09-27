@@ -45,318 +45,264 @@
         }
 
         /* ======================================================
-           ÁRBOL DE FLUJO HTML
-           Cada fila: [Nodo + chips] ──→ [Panel detalle]
+           ÁRBOL DE FLUJO HTML (VISTA WEB)
            ====================================================== */
-        .syn-tree {
-            position: relative;
-            padding: 8px 0;
-        }
+        .syn-tree { position: relative; padding: 8px 0; }
 
-        /* NODO RAÍZ */
         .syn-root-node {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
+            display: inline-flex; align-items: center; gap: 10px;
             background: linear-gradient(135deg, #2D8600 0%, #39A900 100%);
-            color: #fff;
-            padding: 14px 24px;
-            border-radius: 14px;
+            color: #fff; padding: 10px 16px; border-radius: 12px;
             font-family: 'Fredoka One', 'Plus Jakarta Sans', sans-serif;
-            font-weight: 700;
-            box-shadow: 0 8px 20px -6px rgba(45,134,0,.5);
-            margin-left: 26px;
-            position: relative;
-            z-index: 2;
+            font-weight: 700; box-shadow: 0 6px 16px -6px rgba(45,134,0,.5);
+            margin-left: 20px; position: relative; z-index: 2;
         }
-        .syn-root-node .emoji { font-size: 1.6rem; line-height: 1; }
-        .syn-root-node .rt { font-size: 1.05rem; letter-spacing: .3px; }
-        .syn-root-node .rs { font-size: .7rem; font-weight: 500; opacity: .85; letter-spacing: .4px; }
+        .syn-root-node .emoji { font-size: 1.3rem; line-height: 1; }
+        .syn-root-node .rt { font-size: .9rem; letter-spacing: .3px; }
+        .syn-root-node .rs { font-size: .65rem; font-weight: 500; opacity: .85; letter-spacing: .4px; }
 
-        /* SPINE vertical */
         .syn-spine {
-            position: relative;
-            margin-left: 42px;
-            margin-top: 0;
-            border-left: 2px solid #39A900;
-            padding-top: 20px;
-            padding-bottom: 4px;
-            padding-left: 0;
+            position: relative; margin-left: 32px;
+            border-left: 2px solid #39A900; padding-top: 14px; padding-bottom: 4px;
         }
         .dark .syn-spine { border-color: #4FB3D9; }
 
-        /* FILA (rama) */
         .syn-row {
-            position: relative;
-            display: grid;
-            grid-template-columns: 280px 50px minmax(0, 1fr);
-            align-items: flex-start;
-            margin-bottom: 18px;
-            padding-left: 22px;
+            position: relative; display: grid; grid-template-columns: 1fr;
+            align-items: flex-start; margin-bottom: 12px; padding-left: 16px;
         }
-        /* Codo horizontal (spine → nodo) */
         .syn-row::before {
-            content: "";
-            position: absolute;
-            left: -22px;
-            top: 28px;
-            width: 22px;
-            height: 2px;
-            background: #39A900;
-            border-radius: 2px;
+            content: ""; position: absolute; left: -16px; top: 22px;
+            width: 16px; height: 2px; background: #39A900; border-radius: 2px;
         }
         .dark .syn-row::before { background: #4FB3D9; }
 
-        /* COLUMNA 1: nodo + chips */
-        .syn-node-col {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+        .syn-node-col { display: flex; flex-direction: column; gap: 6px; }
 
-        /* NODO CLICABLE (rama) */
         .syn-node {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #E8F5E1;
-            border: 2px solid #39A900;
-            border-radius: 12px;
-            padding: 10px 14px;
-            cursor: pointer;
-            user-select: none;
-            font-weight: 700;
-            color: #2D8600;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: .88rem;
-            line-height: 1.15;
-            transition: all .25s ease;
-            position: relative;
+            display: flex; align-items: center; gap: 8px;
+            background: #E8F5E1; border: 2px solid #39A900; border-radius: 10px;
+            padding: 8px 12px; cursor: pointer; user-select: none;
+            font-weight: 700; color: #2D8600; font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: .8rem; line-height: 1.15; transition: all .25s ease;
         }
         .syn-node:hover {
-            background: #39A900;
-            color: #fff;
-            transform: translateX(2px);
-            box-shadow: 0 6px 16px -6px rgba(57,169,0,.6);
+            background: #39A900; color: #fff; transform: translateX(2px);
+            box-shadow: 0 4px 12px -4px rgba(57,169,0,.6);
         }
-        .syn-node .num { font-size: 1.05rem; line-height: 1; flex-shrink: 0; }
+        .syn-node .num { font-size: .95rem; line-height: 1; flex-shrink: 0; }
         .syn-node .nm { flex: 1; }
-        .syn-node .cv {
-            transition: transform .3s ease;
-            flex-shrink: 0;
-            opacity: .75;
-        }
+        .syn-node .cv { transition: transform .3s ease; flex-shrink: 0; opacity: .75; }
         .syn-node.collapsed .cv { transform: rotate(-90deg); }
-        .dark .syn-node {
-            background: rgba(57,169,0,.18);
-            border-color: #4FB3D9;
-            color: #7FD86B;
-        }
+        .dark .syn-node { background: rgba(57,169,0,.18); border-color: #4FB3D9; color: #7FD86B; }
         .dark .syn-node:hover { background: #4FB3D9; color: #fff; }
 
-        /* CHIPS (sub-nodos) */
         .syn-chips {
-            position: relative;
-            margin-left: 20px;
-            padding-left: 14px;
+            position: relative; margin-left: 14px; padding-left: 10px;
             border-left: 2px dashed rgba(245,166,35,.5);
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
+            display: flex; flex-direction: column; gap: 3px;
         }
         .syn-chip {
-            position: relative;
-            display: block;
-            padding: 4px 8px;
-            font-size: 11px;
-            font-weight: 500;
-            color: #4A4A4A;
-            background: #FFF7E6;
-            border: 1px solid rgba(245,166,35,.4);
-            border-radius: 5px;
-            line-height: 1.25;
+            position: relative; display: block; padding: 3px 6px;
+            font-size: 10px; font-weight: 500; color: #4A4A4A;
+            background: #FFF7E6; border: 1px solid rgba(245,166,35,.4);
+            border-radius: 4px; line-height: 1.25;
         }
         .syn-chip::before {
-            content: "";
-            position: absolute;
-            left: -14px;
-            top: 50%;
-            width: 14px;
-            height: 1.5px;
-            background: rgba(245,166,35,.7);
+            content: ""; position: absolute; left: -10px; top: 50%;
+            width: 10px; height: 1.5px; background: rgba(245,166,35,.7);
         }
         .syn-chip::after {
-            content: "";
-            position: absolute;
-            left: -17px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: #F5A623;
+            content: ""; position: absolute; left: -13px; top: 50%;
+            transform: translateY(-50%); width: 4px; height: 4px;
+            border-radius: 50%; background: #F5A623;
         }
         .dark .syn-chip { background: rgba(245,166,35,.12); color: #CBD5E1; border-color: rgba(245,166,35,.5); }
 
-        /* COLUMNA 2: flecha */
-        .syn-arrow {
-            align-self: flex-start;
-            margin-top: 26px;
-            height: 2px;
-            background: #F5A623;
-            position: relative;
-            border-radius: 2px;
-        }
-        .syn-arrow::after {
-            content: "";
-            position: absolute;
-            right: -1px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 0;
-            height: 0;
-            border-left: 10px solid #F5A623;
-            border-top: 6px solid transparent;
-            border-bottom: 6px solid transparent;
-        }
-
-        /* COLUMNA 3: PANEL DE DETALLE */
         .syn-detail {
-            background: #ffffff;
-            border: 1px solid rgba(148,163,184,.3);
-            border-left: 4px solid #F5A623;
-            border-radius: 12px;
-            padding: 14px 18px;
-            font-size: .84rem;
-            line-height: 1.5;
-            color: #4A4A4A;
-            overflow: hidden;
-            max-height: 900px;
-            opacity: 1;
-            transition: max-height .45s cubic-bezier(.4,0,.2,1),
-                        opacity .3s ease,
-                        padding .35s ease,
-                        margin .35s ease;
+            background: #ffffff; border: 1px solid rgba(148,163,184,.3);
+            border-left: 4px solid #F5A623; border-radius: 10px;
+            padding: 10px 14px; font-size: .76rem; line-height: 1.45; color: #4A4A4A;
+            overflow: hidden; max-height: 1200px; opacity: 1; margin-top: 8px;
+            transition: max-height .45s cubic-bezier(.4,0,.2,1), opacity .3s ease, padding .35s ease, margin .35s ease;
             box-shadow: 0 4px 14px -8px rgba(0,0,0,.15);
         }
         .syn-detail.collapsed {
-            max-height: 0;
-            opacity: 0;
-            padding-top: 0;
-            padding-bottom: 0;
-            border-width: 0;
+            max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0;
+            border-width: 0; margin-top: 0;
         }
         .dark .syn-detail {
-            background: rgba(46,107,138,.12);
-            border-color: rgba(156,163,175,.2);
-            border-left-color: #F5A623;
-            color: #CBD5E1;
+            background: rgba(46,107,138,.12); border-color: rgba(156,163,175,.2);
+            border-left-color: #F5A623; color: #CBD5E1;
         }
         .syn-detail h4 {
-            font-family: 'Fredoka One', sans-serif;
-            font-size: .95rem;
-            color: #2D8600;
-            margin: 0 0 8px 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-family: 'Fredoka One', sans-serif; font-size: .85rem;
+            color: #2D8600; margin: 0 0 6px 0; display: flex; align-items: center; gap: 6px;
         }
         .dark .syn-detail h4 { color: #7FD86B; }
-        .syn-detail p { margin: 0 0 6px 0; }
+        .syn-detail p { margin: 0 0 5px 0; }
         .syn-detail p:last-child { margin-bottom: 0; }
         .syn-detail strong { color: #2D8600; }
         .dark .syn-detail strong { color: #7FD86B; }
 
         .syn-sublist {
-            margin-top: 10px;
-            padding: 8px 12px;
-            background: #F8FAFC;
-            border-left: 3px solid #F5A623;
-            border-radius: 0 6px 6px 0;
+            margin-top: 8px; padding: 6px 10px; background: #F8FAFC;
+            border-left: 3px solid #F5A623; border-radius: 0 6px 6px 0;
         }
         .dark .syn-sublist { background: rgba(42,42,46,.4); }
         .syn-sublist .t {
-            font-size: .68rem;
-            font-weight: 700;
-            color: #F5A623;
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            margin-bottom: 4px;
+            font-size: .62rem; font-weight: 700; color: #F5A623;
+            text-transform: uppercase; letter-spacing: .5px; margin-bottom: 3px;
         }
         .syn-sublist ul { list-style: none; margin: 0; padding: 0; }
         .syn-sublist li {
-            display: flex;
-            gap: 6px;
-            padding: 2px 0;
-            font-size: .78rem;
-            line-height: 1.35;
+            display: flex; gap: 5px; padding: 1px 0; font-size: .72rem; line-height: 1.35;
         }
-        .syn-sublist li::before {
-            content: "▸";
-            color: #F5A623;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        /* Responsive */
-        @media (max-width: 900px) {
-            .syn-row {
-                grid-template-columns: 1fr;
-                padding-left: 0;
-                gap: 10px;
-            }
-            .syn-row::before { display: none; }
-            .syn-arrow { display: none; }
-            .syn-spine { margin-left: 16px; padding-left: 0; }
-            .syn-root-node { margin-left: 8px; }
-        }
+        .syn-sublist li::before { content: "▸"; color: #F5A623; font-weight: 700; flex-shrink: 0; }
 
         /* ===== MERMAID ===== */
         .mermaid {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 16px;
-            border: 1px solid rgba(148,163,184,.25);
-            overflow-x: auto;
+            background: #ffffff; border-radius: 16px; padding: 12px;
+            border: 1px solid rgba(148,163,184,.25); overflow-x: auto;
         }
         .dark .mermaid { background: rgba(42,42,46,.6); }
         .mermaid svg { max-width: 100%; height: auto; }
 
-        /* ===== IMPRESIÓN ===== */
-        #pdf-view { display: none; }
+        /* ===== ENCABEZADO SOLO PARA IMPRESIÓN ===== */
+        .print-header { display: none; }
+
+        /* ======================================================
+           IMPRESIÓN: WYSIWYG (Lo que ves es lo que se imprime)
+           ====================================================== */
         @media print {
-            @page { size: A4 portrait; margin: 8mm; }
-            html, body { height: auto !important; overflow: visible !important; }
-            body {
+            @page { size: A4 landscape; margin: 8mm; }
+
+            /* === FIX: Reset total para evitar hoja vacía al inicio === */
+            html, body {
+                height: auto !important;
+                min-height: 0 !important;
+                overflow: visible !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: white !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
-                background: white !important;
                 color: #1a1a1a !important;
-                font-size: 8pt !important;
-                line-height: 1.2 !important;
+                font-size: 9pt !important;
+                line-height: 1.25 !important;
+            }
+
+            /* === FIX: Colapsar contenedores padre === */
+            body > * {
                 margin: 0 !important;
                 padding: 0 !important;
             }
-            .no-print { display: none !important; }
-            #web-view { display: none !important; }
-            #pdf-view { display: block !important; width: 100% !important; }
 
-            .pdf-title { font-size: 13pt !important; font-weight: 800 !important; color: #2D8600 !important; margin: 0 0 1px 0 !important; line-height: 1.1 !important; }
-            .pdf-subtitle { font-size: 8pt !important; color: #4A4A4A !important; margin: 0 0 6px 0 !important; }
-            .pdf-branch-title {
-                font-size: 9pt !important;
-                font-weight: 700 !important;
-                color: #2D8600 !important;
-                background: #E8F5E1 !important;
-                padding: 2px 6px !important;
-                border-radius: 3px !important;
-                margin: 0 0 2px 0 !important;
-                border-left: 3px solid #39A900 !important;
+            main,
+            main.flex-grow {
+                margin: 0 !important;
+                padding: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                flex: none !important;
+                display: block !important;
+                min-height: 0 !important;
             }
-            .pdf-leaf { font-size: 7.2pt !important; line-height: 1.2 !important; color: #333 !important; margin: 1px 0 1px 8px !important; }
-            .pdf-leaf::before { content: "▸ "; color: #F5A623 !important; font-weight: 700 !important; }
-            .pdf-col { break-inside: avoid !important; page-break-inside: avoid !important; }
-            .pdf-footer { margin-top: 6px !important; padding-top: 4px !important; border-top: 1px solid #ccc !important; text-align: center !important; font-size: 6.5pt !important; color: #666 !important; }
+
+            /* === FIX: Ocultar elementos interactivos === */
+            .no-print,
+            .syn-node .cv,
+            button,
+            #navbar-container,
+            #footer-container,
+            footer,
+            #btn-top,
+            #web-view > div.mb-8 {
+                display: none !important;
+            }
+
+            /* Mostrar encabezado exclusivo de impresión */
+            .print-header {
+                display: block !important;
+                text-align: center;
+                border-bottom: 2px solid #2D8600;
+                padding-bottom: 4px;
+                margin-bottom: 8px;
+            }
+            .print-header h1 { font-size: 14pt !important; margin: 0 0 2px 0 !important; color: #2D8600 !important; }
+            .print-header p { font-size: 9pt !important; margin: 0 !important; color: #4A4A4A !important; }
+
+            /* === FIX: Eliminar el primer margin/padding del #web-view === */
+            #web-view > *:first-child {
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+            }
+
+            /* FORZAR GRID DE 2 COLUMNAS PARA IMPRESIÓN */
+            #main-grid {
+                display: grid !important;
+                grid-template-columns: 1fr 1.15fr !important;
+                gap: 10px !important;
+                align-items: start !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            /* Ajustes Mermaid para impresión */
+            .mermaid {
+                padding: 6px !important; border: 1px solid #d1d5db !important;
+                border-radius: 6px !important; background: white !important;
+                overflow: visible !important;
+                display: block !important;
+                visibility: visible !important;
+                min-height: 200px !important;
+            }
+            .mermaid svg {
+                display: block !important;
+                visibility: visible !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                height: auto !important;
+                max-height: 80vh !important;
+            }
+
+            /* Ajustes Árbol para impresión (compacto) */
+            .syn-root-node {
+                padding: 6px 12px !important; margin-left: 12px !important; box-shadow: none !important;
+            }
+            .syn-root-node .emoji { font-size: 1rem !important; }
+            .syn-root-node .rt { font-size: .8rem !important; }
+            .syn-root-node .rs { font-size: .6rem !important; }
+
+            .syn-spine { margin-left: 22px !important; padding-top: 8px !important; }
+            .syn-row { padding-left: 10px !important; margin-bottom: 6px !important; }
+            .syn-row::before { left: -10px !important; width: 10px !important; top: 16px !important; }
+
+            .syn-node {
+                padding: 4px 8px !important; font-size: .7rem !important;
+                border-width: 1.5px !important; cursor: default !important;
+            }
+            .syn-node .num { font-size: .8rem !important; }
+
+            .syn-chips { margin-left: 8px !important; padding-left: 6px !important; gap: 1px !important; }
+            .syn-chip {
+                font-size: 7pt !important; padding: 1px 4px !important; border-radius: 3px !important;
+            }
+            .syn-chip::before { width: 6px !important; left: -6px !important; }
+            .syn-chip::after { width: 3px !important; height: 3px !important; left: -8px !important; }
+
+            /* FORZAR EXPANSIÓN TOTAL DE DETALLES EN PDF */
+            .syn-detail {
+                max-height: none !important; opacity: 1 !important;
+                padding: 6px 10px !important; font-size: 7.5pt !important;
+                line-height: 1.3 !important; margin-top: 4px !important;
+                border-radius: 6px !important; box-shadow: none !important;
+                break-inside: avoid !important; page-break-inside: avoid !important;
+            }
+            .syn-detail h4 { font-size: 8pt !important; margin: 0 0 4px 0 !important; }
+            .syn-sublist { padding: 4px 6px !important; margin-top: 4px !important; }
+            .syn-sublist .t { font-size: 6.5pt !important; }
+            .syn-sublist li { font-size: 7pt !important; }
         }
     </style>
 </head>
@@ -367,354 +313,273 @@
 
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
 
-        <a onclick="goBackOrHome()"
-            class="no-print inline-flex items-center gap-2 text-light-metal dark:text-dark-metal hover:text-light-accent dark:hover:text-dark-accent mb-6 transition-colors font-medium cursor-pointer">
+        <a onclick="goBackOrHome()" class="no-print inline-flex items-center gap-2 text-light-metal dark:text-dark-metal hover:text-light-accent dark:hover:text-dark-accent mb-6 transition-colors font-medium cursor-pointer">
             <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver
         </a>
 
-        <!-- ===================== VISTA WEB ===================== -->
+        <!-- ENCABEZADO EXCLUSIVO PARA IMPRESIÓN (PDF) -->
+        <div class="print-header">
+            <h1>CUADRO SINÓPTICO – ALTERNATIVAS DE ETAPA PRODUCTIVA</h1>
+            <p>Evidencia AA4-EV01 | Acuerdo 009 de 2024 | Programa 3607890</p>
+        </div>
+
+        <!-- ===================== VISTA WEB (Y BASE PARA PDF) ===================== -->
         <div id="web-view">
+            <!-- Encabezado Web (se oculta en impresión) -->
             <div class="mb-8 text-center sm:text-left">
-                <div class="inline-flex items-center gap-3 mb-3">
-                    <div class="w-12 h-12 bg-sena-green/10 dark:bg-sena-green/20 rounded-xl flex items-center justify-center text-sena-green">
-                        <i data-lucide="network" class="w-6 h-6"></i>
+                <div class="inline-flex items-center gap-3 mb-3 max-w-full">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-sena-green/10 dark:bg-sena-green/20 rounded-xl flex items-center justify-center text-sena-green flex-shrink-0">
+                        <i data-lucide="network" class="w-5 h-5 sm:w-6 sm:h-6"></i>
                     </div>
-                    <h1 class="font-display text-3xl sm:text-4xl text-light-dark dark:text-dark-light">Cuadro Sinóptico</h1>
+                    <h1 class="font-display text-2xl sm:text-3xl md:text-4xl text-light-dark dark:text-dark-light break-words">
+                        Cuadro Sinóptico
+                    </h1>
                 </div>
-                <p class="text-light-metal dark:text-dark-metal max-w-3xl text-base leading-relaxed">
-                    Alternativas de <strong>Etapa Productiva</strong> (Acuerdo 009 de 2024).
-                    Haz clic en el <span class="text-sena-green font-semibold">nodo verde</span> de cada rama para mostrar u ocultar el detalle a su derecha.
+                <p class="text-light-metal dark:text-dark-metal max-w-3xl text-sm sm:text-base leading-relaxed px-2 sm:px-0">
+                    Alternativas de <strong>Etapa Productiva</strong> (Acuerdo 009 de 2024). </br>
+                    Haz clic en el <span class="text-sena-green font-semibold">nodo verde</span> de cada rama para mostrar u ocultar el detalle.
                 </p>
             </div>
 
-            <!-- MAPA MERMAID -->
-            <div class="mb-10">
-                <h2 class="font-display text-xl text-sena-dark dark:text-sena-green mb-3 flex items-center gap-2">
-                    <i data-lucide="git-fork" class="w-5 h-5"></i> Mapa Visual
-                </h2>
-                <div class="mermaid">
-                    flowchart LR
-                        ROOT["🎓 ETAPA PRODUCTIVA<br/>(Acuerdo 009 de 2024)"]
-                        ROOT --> A["1️⃣ Contrato de<br/>Aprendizaje"]
-                        ROOT --> B["2️⃣ Contrato de<br/>Vínculo Formativo"]
-                        ROOT --> C["3️⃣ Monitoría"]
-                        ROOT --> D["4️⃣ Proyecto<br/>Productivo"]
-                        ROOT --> E["5️⃣ Vínculo<br/>Laboral"]
-                        A --> A1["Formación teórico-práctica"]
-                        A --> A2["Contrato laboral especial"]
-                        A --> A3["Remuneración 75% → 100%"]
-                        A --> A4["Gestión Sofía Plus + SGVA"]
-                        A --> A5["Requisitos 2.º contrato"]
-                        B --> B1["Asesoría a PYMES"]
-                        B --> B2["Apoyo a unidad productiva"]
-                        B --> B3["Apoyo a institución"]
-                        C --> C1["Apoyo en el centro"]
-                        C --> C2["Convocatoria subdirección"]
-                        C --> C3["Complementar horas"]
-                        D --> D1["SENA Empresa"]
-                        D --> D2["SENA Proveedor SENA"]
-                        D --> D3["Producción de Centros"]
-                        D --> D4["Enfoque Empresarial / I+D+i"]
-                        D --> D5["Ruta Emprendedora SENA"]
-                        E --> E1["Trabajo formal / contrato"]
-                        E --> E2["Funciones afines"]
-                        E --> E3["Aval coordinación"]
-                        E --> E4["Constancia de la entidad"]
-                        classDef root fill:#2D8600,stroke:#2D8600,color:#fff,font-weight:bold,stroke-width:2px;
-                        classDef lvl1 fill:#E8F5E1,stroke:#39A900,color:#2D8600,font-weight:bold;
-                        classDef lvl2 fill:#FFF7E6,stroke:#F5A623,color:#4A4A4A;
-                        class ROOT root;
-                        class A,B,C,D,E lvl1;
-                        class A1,A2,A3,A4,A5,B1,B2,B3,C1,C2,C3,D1,D2,D3,D4,D5,E1,E2,E3,E4 lvl2;
+            <!-- GRID PRINCIPAL: 1 columna en móvil, 2 columnas en escritorio Y EN IMPRESIÓN -->
+            <div id="main-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+
+                <!-- COLUMNA IZQUIERDA: MAPA MERMAID -->
+                <div>
+                    <h2 class="no-print font-display text-xl text-sena-dark dark:text-sena-green mb-3 flex items-center gap-2">
+                        <i data-lucide="git-fork" class="w-5 h-5"></i> Mapa Visual
+                    </h2>
+                    <div class="mermaid">
+                        flowchart LR
+                            ROOT["🎓 ETAPA PRODUCTIVA<br/>(Acuerdo 009 de 2024)"]
+                            ROOT --> A["1️⃣ Contrato de<br/>Aprendizaje"]
+                            ROOT --> B["2️⃣ Contrato de<br/>Vínculo Formativo"]
+                            ROOT --> C["3️⃣ Monitoría"]
+                            ROOT --> D["4️⃣ Proyecto<br/>Productivo"]
+                            ROOT --> E["5️⃣ Vínculo<br/>Laboral"]
+                            A --> A1["Formación teórico-práctica"]
+                            A --> A2["Contrato laboral especial"]
+                            A --> A3["Remuneración 75% → 100%"]
+                            A --> A4["Gestión Sofía Plus + SGVA"]
+                            A --> A5["Requisitos 2.º contrato"]
+                            B --> B1["Asesoría a PYMES"]
+                            B --> B2["Apoyo a unidad productiva"]
+                            B --> B3["Apoyo a institución"]
+                            C --> C1["Apoyo en el centro"]
+                            C --> C2["Convocatoria subdirección"]
+                            C --> C3["Complementar horas"]
+                            D --> D1["SENA Empresa"]
+                            D --> D2["SENA Proveedor SENA"]
+                            D --> D3["Producción de Centros"]
+                            D --> D4["Enfoque Empresarial / I+D+i"]
+                            D --> D5["Ruta Emprendedora SENA"]
+                            E --> E1["Trabajo formal / contrato"]
+                            E --> E2["Funciones afines"]
+                            E --> E3["Aval coordinación"]
+                            E --> E4["Constancia de la entidad"]
+                            classDef root fill:#2D8600,stroke:#2D8600,color:#fff,font-weight:bold,stroke-width:2px;
+                            classDef lvl1 fill:#E8F5E1,stroke:#39A900,color:#2D8600,font-weight:bold;
+                            classDef lvl2 fill:#FFF7E6,stroke:#F5A623,color:#4A4A4A;
+                            class ROOT root;
+                            class A,B,C,D,E lvl1;
+                            class A1,A2,A3,A4,A5,B1,B2,B3,C1,C2,C3,D1,D2,D3,D4,D5,E1,E2,E3,E4 lvl2;
+                    </div>
+                </div>
+
+                <!-- COLUMNA DERECHA: ESTRUCTURA DETALLADA -->
+                <div>
+                    <div class="no-print flex items-center justify-between flex-wrap gap-3 mb-3">
+                        <h2 class="font-display text-xl text-sena-dark dark:text-sena-green flex items-center gap-2">
+                            <i data-lucide="list-tree" class="w-5 h-5"></i> Estructura Detallada
+                        </h2>
+                        <div class="flex gap-2">
+                            <button onclick="synExpandAll()" class="text-xs px-3 py-1.5 rounded-lg bg-sena-green text-white font-semibold hover:bg-sena-dark transition-colors">Expandir</button>
+                            <button onclick="synCollapseAll()" class="text-xs px-3 py-1.5 rounded-lg bg-sena-orange text-white font-semibold hover:bg-sena-dark transition-colors">Colapsar</button>
+                        </div>
+                    </div>
+
+                    <div class="syn-tree">
+                        <div class="syn-root-node">
+                            <span class="emoji">🎓</span>
+                            <div>
+                                <div class="rt">ETAPA PRODUCTIVA</div>
+                                <div class="rs">Acuerdo 009 de 2024</div>
+                            </div>
+                        </div>
+
+                        <div class="syn-spine">
+                            <!-- RAMA 1 -->
+                            <div class="syn-row">
+                                <div class="syn-node-col">
+                                    <div class="syn-node" onclick="toggleSynRow(this, 'd-1')" data-id="1">
+                                        <span class="num">1️⃣</span>
+                                        <span class="nm">Contrato de Aprendizaje</span>
+                                        <i data-lucide="chevron-down" class="cv w-4 h-4"></i>
+                                    </div>
+                                    <div class="syn-chips">
+                                        <span class="syn-chip">Formación teórico-práctica patrocinada</span>
+                                        <span class="syn-chip">Contrato laboral especial</span>
+                                        <span class="syn-chip">Remuneración 75% → 100% SMLMV</span>
+                                        <span class="syn-chip">Gestión Sofía Plus + SGVA</span>
+                                        <span class="syn-chip">Requisitos 2.º contrato</span>
+                                    </div>
+                                    <div class="syn-detail" id="d-1">
+                                        <h4><i data-lucide="briefcase" class="w-4 h-4"></i> 1. Contrato de Aprendizaje</h4>
+                                        <p>Formación teórico-práctica patrocinada por una empresa con apoyo de sostenimiento mensual.</p>
+                                        <p><strong>Marco Legal:</strong> Contrato laboral especial, duración máx. 3 años (Art. 21, Ley 2466 de 2025).</p>
+                                        <p><strong>Remuneración:</strong> 75% SMLMV (1.er año/etapa lectiva) y 100% SMLMV (2.º año/etapa productiva).</p>
+                                        <p><strong>Gestión:</strong> Postulación desde inducción en Sofía Plus y gestión vía sistema SGVA.</p>
+                                        <div class="syn-sublist">
+                                            <div class="t">Requisitos 2.º contrato</div>
+                                            <ul>
+                                                <li>Cadena de formación (misma línea, nivel superior).</li>
+                                                <li>Certificación del programa del primer contrato.</li>
+                                                <li>Culminación satisfactoria sin faltas disciplinarias.</li>
+                                                <li>Solicitud vía GFPI F165 en coordinación académica.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- RAMA 2 -->
+                            <div class="syn-row">
+                                <div class="syn-node-col">
+                                    <div class="syn-node" onclick="toggleSynRow(this, 'd-2')" data-id="2">
+                                        <span class="num">2️⃣</span>
+                                        <span class="nm">Contrato de Vínculo Formativo</span>
+                                        <i data-lucide="chevron-down" class="cv w-4 h-4"></i>
+                                    </div>
+                                    <div class="syn-chips">
+                                        <span class="syn-chip">Asesoría a PYMES</span>
+                                        <span class="syn-chip">Apoyo a unidad productiva</span>
+                                        <span class="syn-chip">Apoyo a institución (Estado / ONG)</span>
+                                    </div>
+                                    <div class="syn-detail" id="d-2">
+                                        <h4><i data-lucide="users" class="w-4 h-4"></i> 2. Contrato de Vínculo Formativo</h4>
+                                        <p>Combina formación teórica y práctica en diversos escenarios (talleres, empresas, entornos rurales/urbanos).</p>
+                                        <div class="syn-sublist">
+                                            <div class="t">Subtipos</div>
+                                            <ul>
+                                                <li><strong>Asesoría a PYMES:</strong> apoyo técnico/estratégico para productividad y sostenibilidad.</li>
+                                                <li><strong>Apoyo a unidad productiva:</strong> núcleo familiar, cooperativas u organizaciones de aprendices.</li>
+                                                <li><strong>Apoyo a institución:</strong> entidades estatales, territoriales, ANA u ONG.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- RAMA 3 -->
+                            <div class="syn-row">
+                                <div class="syn-node-col">
+                                    <div class="syn-node" onclick="toggleSynRow(this, 'd-3')" data-id="3">
+                                        <span class="num">3️⃣</span>
+                                        <span class="nm">Monitoría</span>
+                                        <i data-lucide="chevron-down" class="cv w-4 h-4"></i>
+                                    </div>
+                                    <div class="syn-chips">
+                                        <span class="syn-chip">Apoyo en el centro de formación</span>
+                                        <span class="syn-chip">Convocatoria por subdirección</span>
+                                        <span class="syn-chip">Complementar horas del currículo</span>
+                                    </div>
+                                    <div class="syn-detail" id="d-3">
+                                        <h4><i data-lucide="graduation-cap" class="w-4 h-4"></i> 3. Monitoría</h4>
+                                        <p>Participación activa dentro del propio centro de formación apoyando procesos académicos, administrativos o de acompañamiento.</p>
+                                        <div class="syn-sublist">
+                                            <div class="t">Características</div>
+                                            <ul>
+                                                <li>Convocatorias abiertas por la subdirección del centro.</li>
+                                                <li><strong>Condición:</strong> si no cubre horas del currículo, complementar con otra alternativa.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- RAMA 4 -->
+                            <div class="syn-row">
+                                <div class="syn-node-col">
+                                    <div class="syn-node" onclick="toggleSynRow(this, 'd-4')" data-id="4">
+                                        <span class="num">4️⃣</span>
+                                        <span class="nm">Proyecto Productivo</span>
+                                        <i data-lucide="chevron-down" class="cv w-4 h-4"></i>
+                                    </div>
+                                    <div class="syn-chips">
+                                        <span class="syn-chip">SENA Empresa</span>
+                                        <span class="syn-chip">SENA Proveedor SENA</span>
+                                        <span class="syn-chip">Producción de Centros</span>
+                                        <span class="syn-chip">Enfoque Empresarial / I+D+i</span>
+                                        <span class="syn-chip">Ruta Emprendedora SENA</span>
+                                    </div>
+                                    <div class="syn-detail" id="d-4">
+                                        <h4><i data-lucide="lightbulb" class="w-4 h-4"></i> 4. Proyecto Productivo</h4>
+                                        <p>Formulación, desarrollo o ejecución de ideas para generar valor o soluciones innovadoras (individual o colectivo).</p>
+                                        <div class="syn-sublist">
+                                            <div class="t">Subtipos</div>
+                                            <ul>
+                                                <li><strong>SENA Empresa:</strong> gerente, asesor o líder técnico.</li>
+                                                <li><strong>SENA Proveedor SENA:</strong> bienes/servicios para otras dependencias.</li>
+                                                <li><strong>Producción de Centros:</strong> productos/servicios a terceros.</li>
+                                                <li><strong>Enfoque Empresarial / I+D+i:</strong> MVP o vigilancia tecnológica y prototipo.</li>
+                                                <li><strong>Ruta Emprendedora SENA:</strong> acompañamiento de unidades de emprendimiento.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- RAMA 5 -->
+                            <div class="syn-row">
+                                <div class="syn-node-col">
+                                    <div class="syn-node" onclick="toggleSynRow(this, 'd-5')" data-id="5">
+                                        <span class="num">5️⃣</span>
+                                        <span class="nm">Vínculo Laboral</span>
+                                        <i data-lucide="chevron-down" class="cv w-4 h-4"></i>
+                                    </div>
+                                    <div class="syn-chips">
+                                        <span class="syn-chip">Trabajo formal / contrato / prestación</span>
+                                        <span class="syn-chip">Funciones afines al programa</span>
+                                        <span class="syn-chip">Aval coordinación académica</span>
+                                        <span class="syn-chip">Constancia de la entidad</span>
+                                    </div>
+                                    <div class="syn-detail" id="d-5">
+                                        <h4><i data-lucide="building-2" class="w-4 h-4"></i> 5. Vínculo Laboral</h4>
+                                        <p>Para aprendices con trabajo formal, contrato o prestación de servicios.</p>
+                                        <p>Funciones <strong>directamente relacionadas</strong> con el programa de formación.</p>
+                                        <div class="syn-sublist">
+                                            <div class="t">Requisitos y soporte</div>
+                                            <ul>
+                                                <li>Requiere <strong>aval de la coordinación académica</strong>; solicitar desde el último trimestre de etapa lectiva.</li>
+                                                <li>La entidad debe expedir <strong>constancia</strong> de actividades desarrolladas.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <!-- ÁRBOL DE FLUJO INTERACTIVO -->
-            <div class="mb-4 flex items-center justify-between flex-wrap gap-3">
-                <h2 class="font-display text-xl text-sena-dark dark:text-sena-green flex items-center gap-2">
-                    <i data-lucide="list-tree" class="w-5 h-5"></i> Estructura Detallada
-                </h2>
-                <p class="no-print text-xs text-light-metal dark:text-dark-metal mt-3 text-center">
-                    💡 Cada rama muestra su estructura de sub-nodos y despliega el detalle completo al hacer clic.
-                </p>
-                <div class="no-print flex gap-2">
-                    <button onclick="synExpandAll()" class="text-xs px-3 py-1.5 rounded-lg bg-sena-green text-white font-semibold hover:bg-sena-dark transition-colors">
-                        Expandir todo
-                    </button>
-                    <button onclick="synCollapseAll()" class="text-xs px-3 py-1.5 rounded-lg bg-sena-orange text-white font-semibold hover:bg-sena-dark transition-colors">
-                        Colapsar todo
-                    </button>
-                </div>
-            </div>
-
-            <div class="syn-tree">
-                <!-- NODO RAÍZ -->
-                <div class="syn-root-node">
-                    <span class="emoji">🎓</span>
-                    <div>
-                        <div class="rt">ETAPA PRODUCTIVA</div>
-                        <div class="rs">Acuerdo 009 de 2024</div>
-                    </div>
-                </div>
-
-                <!-- SPINE + RAMAS -->
-                <div class="syn-spine">
-
-                    <!-- ============ RAMA 1 ============ -->
-                    <div class="syn-row">
-                        <div class="syn-node-col">
-                            <div class="syn-node" onclick="toggleSynRow(this, 'd-1')" data-id="1">
-                                <span class="num">1️⃣</span>
-                                <span class="nm">Contrato de Aprendizaje</span>
-                                <i data-lucide="chevron-down" class="cv w-4 h-4"></i>
-                            </div>
-                            <div class="syn-chips">
-                                <span class="syn-chip">Formación teórico-práctica patrocinada</span>
-                                <span class="syn-chip">Contrato laboral especial</span>
-                                <span class="syn-chip">Remuneración 75% → 100% SMLMV</span>
-                                <span class="syn-chip">Gestión Sofía Plus + SGVA</span>
-                                <span class="syn-chip">Requisitos 2.º contrato</span>
-                            </div>
-                        </div>
-                        <div class="syn-arrow"></div>
-                        <div class="syn-detail" id="d-1">
-                            <h4><i data-lucide="briefcase" class="w-4 h-4"></i> 1. Contrato de Aprendizaje</h4>
-                            <p>Formación teórico-práctica patrocinada por una empresa con apoyo de sostenimiento mensual.</p>
-                            <p><strong>Marco Legal:</strong> Contrato laboral especial, duración máx. 3 años (Art. 21, Ley 2466 de 2025).</p>
-                            <p><strong>Remuneración:</strong> 75% SMLMV (1.er año/etapa lectiva) y 100% SMLMV (2.º año/etapa productiva).</p>
-                            <p><strong>Gestión:</strong> Postulación desde inducción en Sofía Plus y gestión vía sistema SGVA.</p>
-                            <div class="syn-sublist">
-                                <div class="t">Requisitos 2.º contrato</div>
-                                <ul>
-                                    <li>Cadena de formación (misma línea, nivel superior).</li>
-                                    <li>Certificación del programa del primer contrato.</li>
-                                    <li>Culminación satisfactoria sin faltas disciplinarias.</li>
-                                    <li>Solicitud vía GFPI F165 en coordinación académica.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ============ RAMA 2 ============ -->
-                    <div class="syn-row">
-                        <div class="syn-node-col">
-                            <div class="syn-node" onclick="toggleSynRow(this, 'd-2')" data-id="2">
-                                <span class="num">2️⃣</span>
-                                <span class="nm">Contrato de Vínculo Formativo</span>
-                                <i data-lucide="chevron-down" class="cv w-4 h-4"></i>
-                            </div>
-                            <div class="syn-chips">
-                                <span class="syn-chip">Asesoría a PYMES</span>
-                                <span class="syn-chip">Apoyo a unidad productiva</span>
-                                <span class="syn-chip">Apoyo a institución (Estado / ONG)</span>
-                            </div>
-                        </div>
-                        <div class="syn-arrow"></div>
-                        <div class="syn-detail" id="d-2">
-                            <h4><i data-lucide="users" class="w-4 h-4"></i> 2. Contrato de Vínculo Formativo</h4>
-                            <p>Combina formación teórica y práctica en diversos escenarios (talleres, empresas, entornos rurales/urbanos), promoviendo la interacción directa con el mundo laboral.</p>
-                            <div class="syn-sublist">
-                                <div class="t">Subtipos</div>
-                                <ul>
-                                    <li><strong>Asesoría a PYMES:</strong> apoyo técnico/estratégico para fortalecer productividad y sostenibilidad.</li>
-                                    <li><strong>Apoyo a unidad productiva:</strong> actividades en unidades del núcleo familiar, asociaciones cooperativas u organizaciones de aprendices.</li>
-                                    <li><strong>Apoyo a institución:</strong> participación en entidades estatales, territoriales, ANA u ONG (puede incluir auxilios económicos concertados).</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ============ RAMA 3 ============ -->
-                    <div class="syn-row">
-                        <div class="syn-node-col">
-                            <div class="syn-node" onclick="toggleSynRow(this, 'd-3')" data-id="3">
-                                <span class="num">3️⃣</span>
-                                <span class="nm">Monitoría</span>
-                                <i data-lucide="chevron-down" class="cv w-4 h-4"></i>
-                            </div>
-                            <div class="syn-chips">
-                                <span class="syn-chip">Apoyo en el centro de formación</span>
-                                <span class="syn-chip">Convocatoria por subdirección</span>
-                                <span class="syn-chip">Complementar horas del currículo</span>
-                            </div>
-                        </div>
-                        <div class="syn-arrow"></div>
-                        <div class="syn-detail" id="d-3">
-                            <h4><i data-lucide="graduation-cap" class="w-4 h-4"></i> 3. Monitoría</h4>
-                            <p>Participación activa dentro del propio centro de formación apoyando procesos académicos, administrativos o de acompañamiento, fortaleciendo habilidades mientras contribuye al desarrollo institucional.</p>
-                            <div class="syn-sublist">
-                                <div class="t">Características</div>
-                                <ul>
-                                    <li>Convocatorias abiertas por la subdirección del centro según necesidades y presupuesto.</li>
-                                    <li><strong>Condición:</strong> si no cubre la totalidad de horas del diseño curricular, el aprendiz debe complementarla con otra alternativa o nueva convocatoria.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ============ RAMA 4 ============ -->
-                    <div class="syn-row">
-                        <div class="syn-node-col">
-                            <div class="syn-node" onclick="toggleSynRow(this, 'd-4')" data-id="4">
-                                <span class="num">4️⃣</span>
-                                <span class="nm">Proyecto Productivo</span>
-                                <i data-lucide="chevron-down" class="cv w-4 h-4"></i>
-                            </div>
-                            <div class="syn-chips">
-                                <span class="syn-chip">SENA Empresa</span>
-                                <span class="syn-chip">SENA Proveedor SENA</span>
-                                <span class="syn-chip">Producción de Centros</span>
-                                <span class="syn-chip">Enfoque Empresarial / I+D+i</span>
-                                <span class="syn-chip">Ruta Emprendedora SENA</span>
-                            </div>
-                        </div>
-                        <div class="syn-arrow"></div>
-                        <div class="syn-detail" id="d-4">
-                            <h4><i data-lucide="lightbulb" class="w-4 h-4"></i> 4. Proyecto Productivo</h4>
-                            <p>Formulación, desarrollo o ejecución de ideas para generar valor, resolver necesidades o implementar soluciones innovadoras (individual o colectivo). Fomenta el emprendimiento y la autonomía.</p>
-                            <div class="syn-sublist">
-                                <div class="t">Subtipos</div>
-                                <ul>
-                                    <li><strong>SENA Empresa:</strong> el aprendiz asume roles como gerente, asesor o líder técnico dentro del centro.</li>
-                                    <li><strong>SENA Proveedor SENA:</strong> producción de bienes o servicios utilizados por otras dependencias del SENA.</li>
-                                    <li><strong>Producción de Centros:</strong> generación de productos o servicios ofrecidos a terceros.</li>
-                                    <li><strong>Enfoque Empresarial o I+D+i:</strong> plan de negocio viable con producto mínimo viable, o vigilancia tecnológica y desarrollo de prototipo.</li>
-                                    <li><strong>Ruta Emprendedora SENA:</strong> acompañamiento de las unidades de emprendimiento para estructurar la idea de negocio.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ============ RAMA 5 ============ -->
-                    <div class="syn-row">
-                        <div class="syn-node-col">
-                            <div class="syn-node" onclick="toggleSynRow(this, 'd-5')" data-id="5">
-                                <span class="num">5️⃣</span>
-                                <span class="nm">Vínculo Laboral</span>
-                                <i data-lucide="chevron-down" class="cv w-4 h-4"></i>
-                            </div>
-                            <div class="syn-chips">
-                                <span class="syn-chip">Trabajo formal / contrato / prestación</span>
-                                <span class="syn-chip">Funciones afines al programa</span>
-                                <span class="syn-chip">Aval coordinación académica</span>
-                                <span class="syn-chip">Constancia de la entidad</span>
-                            </div>
-                        </div>
-                        <div class="syn-arrow"></div>
-                        <div class="syn-detail" id="d-5">
-                            <h4><i data-lucide="building-2" class="w-4 h-4"></i> 5. Vínculo Laboral</h4>
-                            <p>Alternativa para aprendices que ya cuentan con un trabajo formal, contrato o prestación de servicios.</p>
-                            <p>Las funciones desempeñadas deben estar <strong>directamente relacionadas</strong> con su programa de formación.</p>
-                            <div class="syn-sublist">
-                                <div class="t">Requisitos y soporte</div>
-                                <ul>
-                                    <li>Requiere <strong>aval de la coordinación académica</strong>. Se puede solicitar a partir del último trimestre de la etapa lectiva.</li>
-                                    <li>La entidad debe expedir una <strong>constancia</strong> de las actividades desarrolladas durante el tiempo de la etapa productiva.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            
         </div>
 
-        <!-- ===================== VISTA PDF (1 PÁGINA A4) ===================== -->
-        <div id="pdf-view">
-            <div class="text-center border-b-2 border-sena-green" style="padding-bottom: 4px; margin-bottom: 6px;">
-                <h1 class="pdf-title">CUADRO SINÓPTICO – ALTERNATIVAS DE ETAPA PRODUCTIVA</h1>
-                <p class="pdf-subtitle">Evidencia AA4-EV01 | Acuerdo 009 de 2024 | Programa 3607890</p>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-                <div class="pdf-col">
-                    <div style="margin-bottom: 5px;">
-                        <div class="pdf-branch-title">1. CONTRATO DE APRENDIZAJE</div>
-                        <p class="pdf-leaf">Formación teórico-práctica patrocinada por empresa con apoyo de sostenimiento mensual.</p>
-                        <p class="pdf-leaf"><strong>Marco legal:</strong> contrato laboral especial, máx. 3 años (Art. 21, Ley 2466/2025).</p>
-                        <p class="pdf-leaf"><strong>Remuneración:</strong> 75% SMLMV (1.er año/lectiva) → 100% SMLMV (2.º año/productiva).</p>
-                        <p class="pdf-leaf"><strong>Gestión:</strong> inducción en Sofía Plus + sistema SGVA.</p>
-                        <p class="pdf-leaf"><strong>Requisitos 2.º contrato:</strong> (1) cadena de formación; (2) certificación del 1.er programa; (3) sin faltas disciplinarias; (4) solicitud vía GFPI F165.</p>
-                    </div>
-
-                    <div style="margin-bottom: 5px;">
-                        <div class="pdf-branch-title">2. CONTRATO DE VÍNCULO FORMATIVO</div>
-                        <p class="pdf-leaf">Combina formación teórica y práctica en talleres, empresas y entornos rurales/urbanos.</p>
-                        <p class="pdf-leaf"><strong>Asesoría a PYMES:</strong> apoyo técnico/estratégico para productividad y sostenibilidad.</p>
-                        <p class="pdf-leaf"><strong>Apoyo a unidad productiva:</strong> núcleo familiar, cooperativas u organizaciones de aprendices.</p>
-                        <p class="pdf-leaf"><strong>Apoyo a institución:</strong> entidades estatales, territoriales, ANA u ONG.</p>
-                    </div>
-
-                    <div style="margin-bottom: 5px;">
-                        <div class="pdf-branch-title">3. MONITORÍA</div>
-                        <p class="pdf-leaf">Participación activa dentro del centro (apoyo académico, administrativo o de acompañamiento).</p>
-                        <p class="pdf-leaf">Convocatorias abiertas por la subdirección del centro.</p>
-                        <p class="pdf-leaf"><strong>Nota:</strong> si no cubre horas del currículo, complementar con otra alternativa.</p>
-                    </div>
-                </div>
-
-                <div class="pdf-col">
-                    <div style="margin-bottom: 5px;">
-                        <div class="pdf-branch-title">4. PROYECTO PRODUCTIVO</div>
-                        <p class="pdf-leaf">Formulación, desarrollo o ejecución de ideas para generar valor o soluciones innovadoras.</p>
-                        <p class="pdf-leaf"><strong>SENA Empresa:</strong> roles de gerente, asesor o líder técnico.</p>
-                        <p class="pdf-leaf"><strong>SENA Proveedor SENA:</strong> bienes/servicios para otras dependencias.</p>
-                        <p class="pdf-leaf"><strong>Producción de Centros:</strong> productos/servicios ofrecidos a terceros.</p>
-                        <p class="pdf-leaf"><strong>Enfoque Empresarial / I+D+i:</strong> plan de negocio con MVP o prototipo.</p>
-                        <p class="pdf-leaf"><strong>Ruta Emprendedora SENA:</strong> acompañamiento de unidades de emprendimiento.</p>
-                    </div>
-
-                    <div style="margin-bottom: 5px;">
-                        <div class="pdf-branch-title">5. VÍNCULO LABORAL</div>
-                        <p class="pdf-leaf">Para aprendices con trabajo formal, contrato o prestación de servicios.</p>
-                        <p class="pdf-leaf">Funciones <strong>directamente relacionadas</strong> con el programa.</p>
-                        <p class="pdf-leaf">Requiere <strong>aval de la coordinación académica</strong>; solicitar desde el último trimestre de etapa lectiva.</p>
-                        <p class="pdf-leaf">La entidad debe expedir <strong>constancia</strong> de actividades desarrolladas.</p>
-                    </div>
-
-                    <div style="background: #F8FAFC; border-left: 3px solid #F5A623; padding: 4px 6px; border-radius: 3px; margin-top: 4px;">
-                        <p style="font-size: 7pt; color: #4A4A4A; margin: 0; line-height: 1.2;">
-                            <strong>Estructura:</strong> ETAPA PRODUCTIVA → { Contrato Aprendizaje · Vínculo Formativo · Monitoría · Proyecto Productivo · Vínculo Laboral }
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pdf-footer">
-                <p style="margin: 0; font-style: italic; font-size: 6.5pt;">
-                    "El SENA facilita el acceso a la formación en diversos ambientes, permitiendo al aprendiz poner en práctica lo aprendido en contextos reales o simulados."
-                </p>
-                <p style="margin: 2px 0 0 0; font-size: 6pt; color: #999;">
-                    Evidencia AA4-EV01 | Desarrollo de Productos Electrónicos (3607890) | martinciro.github.io
-                </p>
-            </div>
-        </div>
-        <!-- ===================== FIN VISTA PDF ===================== -->
-
-        <footer class="no-print mt-10 bg-white dark:bg-dark-deep/20 rounded-2xl p-6 border border-light-metal/20 dark:border-dark-metal/20 border-l-4 border-l-sena-green text-center">
+        <footer class="mt-10 bg-white dark:bg-dark-deep/20 rounded-2xl p-6 border border-light-metal/20 dark:border-dark-metal/20 border-l-4 border-l-sena-green text-center">
             <p class="text-sm font-semibold text-light-dark dark:text-dark-light">Cuadro Sinóptico – Etapa Productiva (AA4-EV01)</p>
             <p class="text-xs text-light-metal dark:text-dark-metal mt-1">Desarrollo de Productos Electrónicos (3607890) | Inducción Virtual</p>
             <div class="mt-2">
-                <a href="https://martinciro.github.io/tecnologo_electronico/evidencias/inicial/cuadro_sinoptico"
-                    class="text-sena-orange underline text-xs font-semibold hover:text-sena-green transition-colors"
-                    target="_blank">
+                <a href="https://martinciro.github.io/tecnologo_electronico/evidencias/inicial/cuadro_sinoptico" class="text-sena-orange underline text-xs font-semibold hover:text-sena-green transition-colors" target="_blank">
                     Ver página en vivo
                 </a>
             </div>
         </footer>
     </main>
 
-    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-        class="no-print fixed bottom-6 left-6 z-50 bg-sena-green hover:bg-sena-dark text-white p-3 rounded-full shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 opacity-0 invisible"
-        id="btn-top" title="Ir arriba">
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="no-print fixed bottom-6 left-6 z-50 bg-sena-green hover:bg-sena-dark text-white p-3 rounded-full shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 opacity-0 invisible" id="btn-top" title="Ir arriba">
         <i data-lucide="chevron-up" class="w-6 h-6"></i>
     </button>
 
-    <button onclick="window.print()"
-        class="no-print fixed bottom-6 right-6 z-50 bg-sena-orange hover:bg-sena-dark text-white p-4 rounded-full shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex items-center group"
-        title="Guardar como PDF">
+    <button onclick="window.print()" class="no-print fixed bottom-6 right-6 z-50 bg-sena-orange hover:bg-sena-dark text-white p-4 rounded-full shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex items-center group" title="Guardar como PDF">
         <i data-lucide="printer" class="w-6 h-6"></i>
         <span class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap font-semibold text-sm ml-0 group-hover:ml-2">
             Guardar PDF
@@ -735,7 +600,7 @@
                 secondaryColor: '#FFF7E6',
                 tertiaryColor: '#F8FAFC'
             },
-            flowchart: { curve: 'basis', padding: 12 }
+            flowchart: { curve: 'basis', padding: 10 }
         });
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -750,18 +615,15 @@
             }
         }
 
-        // ====== Estado y toggle ======
         const synState = { 1: true, 2: true, 3: true, 4: true, 5: true };
 
         function toggleSynRow(nodeEl, detailId) {
             const detail = document.getElementById(detailId);
             const id = nodeEl.getAttribute('data-id');
             if (!detail) return;
-
             synState[id] = !synState[id];
             nodeEl.classList.toggle('collapsed');
             detail.classList.toggle('collapsed');
-
             if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
