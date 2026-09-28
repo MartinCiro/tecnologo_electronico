@@ -4,11 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cuadro Sinóptico – Etapa Productiva | AA4-EV01</title>
+    <title>Cuadro Sinóptico – Alternativas de etapa productiva | AA4-EV01</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <script src="https://unpkg.com/tailwindcss-cdn@3.4.10/tailwindcss-with-all-plugins.js"></script>
     <script>
@@ -38,7 +40,12 @@
     <script src="/components/js/global.js" defer></script>
 
     <style>
-        body, div, nav, a, button, article {
+        body,
+        div,
+        nav,
+        a,
+        button,
+        article {
             transition-property: background-color, border-color, color, fill, stroke, box-shadow;
             transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
             transition-duration: 300ms;
@@ -47,128 +54,291 @@
         /* ======================================================
            ÁRBOL DE FLUJO HTML (VISTA WEB)
            ====================================================== */
-        .syn-tree { position: relative; padding: 8px 0; }
+        .syn-tree {
+            position: relative;
+            padding: 8px 0;
+        }
 
         .syn-root-node {
-            display: inline-flex; align-items: center; gap: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
             background: linear-gradient(135deg, #2D8600 0%, #39A900 100%);
-            color: #fff; padding: 10px 16px; border-radius: 12px;
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 12px;
             font-family: 'Fredoka One', 'Plus Jakarta Sans', sans-serif;
-            font-weight: 700; box-shadow: 0 6px 16px -6px rgba(45,134,0,.5);
-            margin-left: 20px; position: relative; z-index: 2;
+            font-weight: 700;
+            box-shadow: 0 6px 16px -6px rgba(45, 134, 0, .5);
+            margin-left: 20px;
+            position: relative;
+            z-index: 2;
         }
-        .syn-root-node .emoji { font-size: 1.3rem; line-height: 1; }
-        .syn-root-node .rt { font-size: .9rem; letter-spacing: .3px; }
-        .syn-root-node .rs { font-size: .65rem; font-weight: 500; opacity: .85; letter-spacing: .4px; }
+
+        .syn-root-node .emoji {
+            font-size: 1.3rem;
+            line-height: 1;
+        }
+
+        .syn-root-node .rt {
+            font-size: .9rem;
+            letter-spacing: .3px;
+        }
+
+        .syn-root-node .rs {
+            font-size: .65rem;
+            font-weight: 500;
+            opacity: .85;
+            letter-spacing: .4px;
+        }
 
         .syn-spine {
-            position: relative; margin-left: 32px;
-            border-left: 2px solid #39A900; padding-top: 14px; padding-bottom: 4px;
+            position: relative;
+            margin-left: 32px;
+            border-left: 2px solid #39A900;
+            padding-top: 14px;
+            padding-bottom: 4px;
         }
-        .dark .syn-spine { border-color: #4FB3D9; }
+
+        .dark .syn-spine {
+            border-color: #4FB3D9;
+        }
 
         .syn-row {
-            position: relative; display: grid; grid-template-columns: 1fr;
-            align-items: flex-start; margin-bottom: 12px; padding-left: 16px;
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            padding-left: 16px;
         }
-        .syn-row::before {
-            content: ""; position: absolute; left: -16px; top: 22px;
-            width: 16px; height: 2px; background: #39A900; border-radius: 2px;
-        }
-        .dark .syn-row::before { background: #4FB3D9; }
 
-        .syn-node-col { display: flex; flex-direction: column; gap: 6px; }
+        .syn-row::before {
+            content: "";
+            position: absolute;
+            left: -16px;
+            top: 22px;
+            width: 16px;
+            height: 2px;
+            background: #39A900;
+            border-radius: 2px;
+        }
+
+        .dark .syn-row::before {
+            background: #4FB3D9;
+        }
+
+        .syn-node-col {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
 
         .syn-node {
-            display: flex; align-items: center; gap: 8px;
-            background: #E8F5E1; border: 2px solid #39A900; border-radius: 10px;
-            padding: 8px 12px; cursor: pointer; user-select: none;
-            font-weight: 700; color: #2D8600; font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: .8rem; line-height: 1.15; transition: all .25s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #E8F5E1;
+            border: 2px solid #39A900;
+            border-radius: 10px;
+            padding: 8px 12px;
+            cursor: pointer;
+            user-select: none;
+            font-weight: 700;
+            color: #2D8600;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: .8rem;
+            line-height: 1.15;
+            transition: all .25s ease;
         }
+
         .syn-node:hover {
-            background: #39A900; color: #fff; transform: translateX(2px);
-            box-shadow: 0 4px 12px -4px rgba(57,169,0,.6);
+            background: #39A900;
+            color: #fff;
+            transform: translateX(2px);
+            box-shadow: 0 4px 12px -4px rgba(57, 169, 0, .6);
         }
-        .syn-node .num { font-size: .95rem; line-height: 1; flex-shrink: 0; }
-        .syn-node .nm { flex: 1; }
-        .syn-node .cv { transition: transform .3s ease; flex-shrink: 0; opacity: .75; }
-        .syn-node.collapsed .cv { transform: rotate(-90deg); }
-        .dark .syn-node { background: rgba(57,169,0,.18); border-color: #4FB3D9; color: #7FD86B; }
-        .dark .syn-node:hover { background: #4FB3D9; color: #fff; }
+
+        .syn-node .num {
+            font-size: .95rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .syn-node .nm {
+            flex: 1;
+        }
+
+        .syn-node .cv {
+            transition: transform .3s ease;
+            flex-shrink: 0;
+            opacity: .75;
+        }
+
+        .syn-node.collapsed .cv {
+            transform: rotate(-90deg);
+        }
+
+        .dark .syn-node {
+            background: rgba(57, 169, 0, .18);
+            border-color: #4FB3D9;
+            color: #7FD86B;
+        }
+
+        .dark .syn-node:hover {
+            background: #4FB3D9;
+            color: #fff;
+        }
 
         .syn-chips {
-            position: relative; margin-left: 14px; padding-left: 10px;
-            border-left: 2px dashed rgba(245,166,35,.5);
-            display: flex; flex-direction: column; gap: 3px;
+            position: relative;
+            margin-left: 14px;
+            padding-left: 10px;
+            border-left: 2px dashed rgba(245, 166, 35, .5);
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
         }
+
         .syn-chip {
-            position: relative; display: block; padding: 3px 6px;
-            font-size: 10px; font-weight: 500; color: #4A4A4A;
-            background: #FFF7E6; border: 1px solid rgba(245,166,35,.4);
-            border-radius: 4px; line-height: 1.25;
+            position: relative;
+            display: block;
+            padding: 3px 6px;
+            font-size: 10px;
+            font-weight: 500;
+            color: #4A4A4A;
+            background: #FFF7E6;
+            border: 1px solid rgba(245, 166, 35, .4);
+            border-radius: 4px;
+            line-height: 1.25;
         }
+
         .syn-chip::before {
-            content: ""; position: absolute; left: -10px; top: 50%;
-            width: 10px; height: 1.5px; background: rgba(245,166,35,.7);
+            content: "";
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            width: 10px;
+            height: 1.5px;
+            background: rgba(245, 166, 35, .7);
         }
+
         .syn-chip::after {
-            content: ""; position: absolute; left: -13px; top: 50%;
-            transform: translateY(-50%); width: 4px; height: 4px;
-            border-radius: 50%; background: #F5A623;
+            content: "";
+            position: absolute;
+            left: -13px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #F5A623;
         }
-        .dark .syn-chip { background: rgba(245,166,35,.12); color: #CBD5E1; border-color: rgba(245,166,35,.5); }
+
+        .dark .syn-chip {
+            background: rgba(245, 166, 35, .12);
+            color: #CBD5E1;
+            border-color: rgba(245, 166, 35, .5);
+        }
 
         .syn-detail {
-            background: #ffffff; border: 1px solid rgba(148,163,184,.3);
-            border-left: 4px solid #F5A623; border-radius: 10px;
-            padding: 10px 14px; font-size: .76rem; line-height: 1.45; color: #4A4A4A;
-            overflow: hidden; max-height: 1200px; opacity: 1; margin-top: 8px;
-            transition: max-height .45s cubic-bezier(.4,0,.2,1), opacity .3s ease, padding .35s ease, margin .35s ease;
-            box-shadow: 0 4px 14px -8px rgba(0,0,0,.15);
+            background: #ffffff;
+            border: 1px solid rgba(148, 163, 184, .3);
+            border-left: 4px solid #F5A623;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: .76rem;
+            line-height: 1.45;
+            color: #4A4A4A;
+            overflow: hidden;
+            max-height: 1200px;
+            opacity: 1;
+            margin-top: 8px;
+            transition: max-height .45s cubic-bezier(.4, 0, .2, 1), opacity .3s ease, padding .35s ease, margin .35s ease;
+            box-shadow: 0 4px 14px -8px rgba(0, 0, 0, .15);
         }
+
         .syn-detail.collapsed {
-            max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0;
-            border-width: 0; margin-top: 0;
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            border-width: 0;
+            margin-top: 0;
         }
+
         .dark .syn-detail {
-            background: rgba(46,107,138,.12); border-color: rgba(156,163,175,.2);
-            border-left-color: #F5A623; color: #CBD5E1;
+            background: rgba(46, 107, 138, .12);
+            border-color: rgba(156, 163, 175, .2);
+            border-left-color: #F5A623;
+            color: #CBD5E1;
         }
+
         .syn-detail h4 {
-            font-family: 'Fredoka One', sans-serif; font-size: .85rem;
-            color: #2D8600; margin: 0 0 6px 0; display: flex; align-items: center; gap: 6px;
+            font-family: 'Fredoka One', sans-serif;
+            font-size: .85rem;
+            color: #2D8600;
+            margin: 0 0 6px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        .dark .syn-detail h4 { color: #7FD86B; }
-        .syn-detail p { margin: 0 0 5px 0; }
-        .syn-detail p:last-child { margin-bottom: 0; }
-        .syn-detail strong { color: #2D8600; }
-        .dark .syn-detail strong { color: #7FD86B; }
+
+        .dark .syn-detail h4 {
+            color: #7FD86B;
+        }
+
+        .syn-detail p {
+            margin: 0 0 5px 0;
+        }
+
+        .syn-detail p:last-child {
+            margin-bottom: 0;
+        }
+
+        .syn-detail strong {
+            color: #2D8600;
+        }
+
+        .dark .syn-detail strong {
+            color: #7FD86B;
+        }
 
         .syn-sublist {
-            margin-top: 10px;
-            padding: 8px 12px;
+            margin-top: 8px;
+            padding: 6px 10px;
             background: #F8FAFC;
             border-left: 3px solid #F5A623;
             border-radius: 0 6px 6px 0;
         }
-        .dark .syn-sublist { background: rgba(42,42,46,.4); }
+
+        .dark .syn-sublist {
+            background: rgba(42, 42, 46, .4);
+        }
+
         .syn-sublist .t {
-            font-size: .68rem;
+            font-size: .62rem;
             font-weight: 700;
             color: #F5A623;
             text-transform: uppercase;
             letter-spacing: .5px;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
-        .syn-sublist ul { list-style: none; margin: 0; padding: 0; }
+
+        .syn-sublist ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
         .syn-sublist li {
             display: flex;
-            gap: 6px;
-            padding: 2px 0;
-            font-size: .78rem;
+            gap: 5px;
+            padding: 1px 0;
+            font-size: .72rem;
             line-height: 1.35;
         }
+
         .syn-sublist li::before {
             content: "▸";
             color: #F5A623;
@@ -178,50 +348,63 @@
 
         /* ===== MERMAID ===== */
         .mermaid {
-            background: #ffffff; border-radius: 16px; padding: 12px;
-            border: 1px solid rgba(148,163,184,.25); overflow-x: auto;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 12px;
+            border: 1px solid rgba(148, 163, 184, .25);
+            overflow-x: auto;
         }
-        .dark .mermaid { background: rgba(42,42,46,.6); }
-        .mermaid svg { max-width: 100%; height: auto; }
+
+        .dark .mermaid {
+            background: rgba(42, 42, 46, .6);
+        }
+
+        .mermaid svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .pdf-only {
+            display: none;
+        }
 
         /* ======================================================
            DESKTOP WEB SOLAMENTE: centrar Mermaid en su columna.
-           Se aplica SOLO a pantalla (screen) y SOLO en desktop.
            ====================================================== */
         @media screen and (min-width: 1024px) {
-            #main-grid > div:first-child {
+            #main-grid>div:first-child {
                 display: flex;
                 flex-direction: column;
                 height: 100%;
                 align-self: stretch;
             }
-            #main-grid > div:first-child > .mermaid {
+
+            #main-grid>div:first-child>.mermaid {
                 flex: 1 1 auto;
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
-            #main-grid > div:first-child > .mermaid svg {
+
+            #main-grid>div:first-child>.mermaid svg {
                 max-height: 100%;
             }
         }
 
-        /* ===== ENCABEZADO SOLO PARA IMPRESIÓN ===== */
-        .print-header { display: none; }
-
         /* ======================================================
            IMPRESIÓN
            ====================================================== */
-        @media print {
+                @media print {
             @page { size: A4 landscape; margin: 8mm; }
 
-            /* === FIX: Reset total para evitar hoja vacía al inicio === */
+            /* === RESET NUCLEAR === */
             html, body {
                 height: auto !important;
                 min-height: 0 !important;
-                overflow: visible !important;
+                max-height: none !important;
                 margin: 0 !important;
                 padding: 0 !important;
+                overflow: visible !important;
                 background: white !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
@@ -229,25 +412,9 @@
                 font-size: 9pt !important;
                 line-height: 1.25 !important;
             }
+            body { display: block !important; }
 
-            /* === FIX: Colapsar contenedores padre === */
-            body > * {
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-
-            main,
-            main.flex-grow {
-                margin: 0 !important;
-                padding: 0 !important;
-                max-width: 100% !important;
-                width: 100% !important;
-                flex: none !important;
-                display: block !important;
-                min-height: 0 !important;
-            }
-
-            /* === FIX: Ocultar elementos interactivos === */
+            /* === Ocultar elementos interactivos === */
             .no-print,
             .syn-node .cv,
             button,
@@ -255,28 +422,36 @@
             #footer-container,
             footer,
             #btn-top,
-            #web-view > div.mb-8 {
-                display: none !important;
-            }
+            #web-view > div.mb-8 { display: none !important; }
 
-            /* Mostrar encabezado exclusivo de impresión */
-            .print-header {
-                display: block !important;
-                text-align: center;
-                border-bottom: 2px solid #2D8600;
-                padding-bottom: 4px;
-                margin-bottom: 8px;
+            /* === ANCLAR ENCABEZADO A PÁGINA 1 === */
+            .print-title-block {
+                margin: 0 0 6px 0 !important;
+                padding: 0 0 4px 0 !important;
+                border-bottom: 2px solid #2D8600 !important;
+                break-after: avoid !important;      /* No permite salto DESPUÉS del encabezado */
+                page-break-after: avoid !important;
+                break-before: avoid !important;     /* No permite salto ANTES del encabezado */
+                page-break-before: avoid !important;
             }
-            .print-header h1 { font-size: 14pt !important; margin: 0 0 2px 0 !important; color: #2D8600 !important; }
-            .print-header p { font-size: 9pt !important; margin: 0 !important; color: #4A4A4A !important; }
-
-            /* === FIX: Eliminar el primer margin/padding del #web-view === */
-            #web-view > *:first-child {
-                margin-top: 0 !important;
-                padding-top: 0 !important;
+            .print-title-block h1 {
+                font-size: 16pt !important;
+                color: #2D8600 !important;
+                margin: 0 !important;
             }
+            .print-title-block .web-desc { display: none !important; }
+            .print-title-block .print-info { display: block !important; }
 
-            /* FORZAR GRID DE 2 COLUMNAS PARA IMPRESIÓN */
+            /* === Contenedores padre === */
+            main, main.flex-grow {
+                margin: 0 !important; padding: 0 !important;
+                width: 100% !important; max-width: 100% !important;
+                min-height: 0 !important; height: auto !important;
+                display: block !important; flex: none !important;
+            }
+            #web-view { margin: 0 !important; padding: 0 !important; display: block !important; }
+
+            /* === ANCLAR GRID A PÁGINA 1 === */
             #main-grid {
                 display: grid !important;
                 grid-template-columns: 1fr 1.15fr !important;
@@ -284,29 +459,44 @@
                 align-items: start !important;
                 margin: 0 !important;
                 padding: 0 !important;
+                break-before: avoid !important;      /* CLAVE: No permite salto ANTES del grid */
+                page-break-before: avoid !important;
             }
 
-            /* Ajustes Mermaid para impresión */
+            #main-grid > div:first-child {
+                display: block !important;
+                height: auto !important;
+                align-self: start !important;
+            }
+
             .mermaid {
-                padding: 6px !important; border: 1px solid #d1d5db !important;
-                border-radius: 6px !important; background: white !important;
+                padding: 6px !important;
+                border: 1px solid transparent !important;
+                border-radius: 6px !important;
+                background: white !important;
                 overflow: visible !important;
                 display: block !important;
                 visibility: visible !important;
-                min-height: 200px !important;
+                margin: 0 !important;
+                max-height: 180mm !important;        
+                break-inside: auto !important;       
+                page-break-inside: auto !important;
             }
+
             .mermaid svg {
                 display: block !important;
                 visibility: visible !important;
-                max-width: 100% !important;
                 width: 100% !important;
+                max-width: 100% !important;
                 height: auto !important;
-                max-height: 80vh !important;
+                margin: 0 !important;
+                padding: 0 !important;
             }
 
-            /* Ajustes Árbol para impresión (compacto) */
+            /* === Árbol compacto === */
             .syn-root-node {
-                padding: 6px 12px !important; margin-left: 12px !important; box-shadow: none !important;
+                padding: 6px 12px !important; margin-left: 12px !important;
+                box-shadow: none !important;
             }
             .syn-root-node .emoji { font-size: 1rem !important; }
             .syn-root-node .rt { font-size: .8rem !important; }
@@ -324,12 +514,12 @@
 
             .syn-chips { margin-left: 8px !important; padding-left: 6px !important; gap: 1px !important; }
             .syn-chip {
-                font-size: 7pt !important; padding: 1px 4px !important; border-radius: 3px !important;
+                font-size: 7pt !important; padding: 1px 4px !important;
+                border-radius: 3px !important;
             }
             .syn-chip::before { width: 6px !important; left: -6px !important; }
             .syn-chip::after { width: 3px !important; height: 3px !important; left: -8px !important; }
 
-            /* FORZAR EXPANSIÓN TOTAL DE DETALLES EN PDF */
             .syn-detail {
                 max-height: none !important; opacity: 1 !important;
                 padding: 6px 10px !important; font-size: 7.5pt !important;
@@ -341,41 +531,70 @@
             .syn-sublist { padding: 4px 6px !important; margin-top: 4px !important; }
             .syn-sublist .t { font-size: 6.5pt !important; }
             .syn-sublist li { font-size: 7pt !important; }
+
+            footer {
+                display: block !important;
+                margin-top: 12px !important;
+                padding: 8px 12px !important;
+                border: 1px solid #d1d5db !important;
+                border-left: 3px solid #39A900 !important;
+                border-radius: 6px !important;
+                background: #F8FAFC !important;
+                break-before: avoid !important;
+                page-break-before: avoid !important;
+            }
+            footer p {
+                font-size: 7pt !important;
+                margin: 0 0 2px 0 !important;
+                color: #4A4A4A !important;
+            }
+            footer a {
+                font-size: 7pt !important;
+                color: #F5A623 !important;
+                text-decoration: underline !important;
+            }
+            .pdf-only {
+                display: block !important;
+            }
         }
     </style>
 </head>
 
-<body class="bg-light-bg text-light-dark dark:bg-dark-bg dark:text-dark-light font-sans antialiased flex flex-col min-h-screen">
+<body
+    class="bg-light-bg text-light-dark dark:bg-dark-bg dark:text-dark-light font-sans antialiased flex flex-col min-h-screen">
 
     <div class="no-print" id="navbar-container"></div>
 
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
 
-        <a onclick="goBackOrHome()" class="no-print inline-flex items-center gap-2 text-light-metal dark:text-dark-metal hover:text-light-accent dark:hover:text-dark-accent mb-6 transition-colors font-medium cursor-pointer">
+        <a onclick="goBackOrHome()"
+            class="no-print inline-flex items-center gap-2 text-light-metal dark:text-dark-metal hover:text-light-accent dark:hover:text-dark-accent mb-6 transition-colors font-medium cursor-pointer">
             <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver
         </a>
 
-        <!-- ENCABEZADO EXCLUSIVO PARA IMPRESIÓN (PDF) -->
-        <div class="print-header">
-            <h1>CUADRO SINÓPTICO – ALTERNATIVAS DE ETAPA PRODUCTIVA</h1>
-            <p>Evidencia AA4-EV01 | Acuerdo 009 de 2024 | Programa 3607890</p>
-        </div>
-
         <!-- ===================== VISTA WEB (Y BASE PARA PDF) ===================== -->
         <div id="web-view">
-            <div class="mb-8 text-center sm:text-left">
-                <div class="inline-flex items-center gap-3 mb-3 max-w-full">
-                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-sena-green/10 dark:bg-sena-green/20 rounded-xl flex items-center justify-center text-sena-green flex-shrink-0">
+
+            <!-- ENCABEZADO UNIFICADO (web + impresión) -->
+            <div class="print-title-block mb-8 text-center sm:text-left">
+                <div class="web-only inline-flex items-center gap-3 mb-3 max-w-full">
+                    <div
+                        class="w-10 h-10 sm:w-12 sm:h-12 bg-sena-green/10 dark:bg-sena-green/20 rounded-xl flex items-center justify-center text-sena-green flex-shrink-0">
                         <i data-lucide="network" class="w-5 h-5 sm:w-6 sm:h-6"></i>
                     </div>
-                    <h1 class="font-display text-2xl sm:text-3xl md:text-4xl text-light-dark dark:text-dark-light break-words">
+                    <h1
+                        class="font-display text-2xl sm:text-3xl md:text-4xl text-light-dark dark:text-dark-light break-words">
                         Cuadro Sinóptico
                     </h1>
                 </div>
-                <p class="text-light-metal dark:text-dark-metal max-w-3xl text-sm sm:text-base leading-relaxed px-2 sm:px-0">
+                <h1 class="hidden print:block">CUADRO SINÓPTICO – ALTERNATIVAS DE ETAPA PRODUCTIVA</h1>
+                <p
+                    class="web-only text-light-metal dark:text-dark-metal max-w-3xl text-sm sm:text-base leading-relaxed px-2 sm:px-0">
                     Alternativas de <strong>Etapa Productiva</strong> (Acuerdo 009 de 2024).
-                    Haz clic en el <span class="text-sena-green font-semibold">nodo verde</span> de cada rama para mostrar u ocultar el detalle.
+                    Haz clic en el <span class="text-sena-green font-semibold">nodo verde</span> de cada rama para
+                    mostrar u ocultar el detalle.
                 </p>
+                <p class="print-sub hidden">Evidencia AA4-EV01 | Acuerdo 009 de 2024 | Programa 3607890</p>
             </div>
 
             <!-- GRID PRINCIPAL -->
@@ -383,43 +602,44 @@
 
                 <!-- COLUMNA IZQUIERDA: MAPA MERMAID -->
                 <div>
-                    <h2 class="no-print font-display text-xl text-sena-dark dark:text-sena-green mb-3 flex items-center gap-2">
+                    <h2
+                        class="no-print font-display text-xl text-sena-dark dark:text-sena-green mb-3 flex items-center gap-2">
                         <i data-lucide="git-fork" class="w-5 h-5"></i> Mapa Visual
                     </h2>
                     <div class="mermaid">
-flowchart LR
-    ROOT["🎓 ETAPA PRODUCTIVA<br/>(Acuerdo 009 de 2024)"]
-    ROOT --> A["1️⃣ Contrato de<br/>Aprendizaje"]
-    ROOT --> B["2️⃣ Contrato de<br/>Vínculo Formativo"]
-    ROOT --> C["3️⃣ Monitoría"]
-    ROOT --> D["4️⃣ Proyecto<br/>Productivo"]
-    ROOT --> E["5️⃣ Vínculo<br/>Laboral"]
-    A --> A1["Formación teórico-práctica"]
-    A --> A2["Contrato laboral especial"]
-    A --> A3["Remuneración 75% → 100%"]
-    A --> A4["Gestión Sofía Plus + SGVA"]
-    A --> A5["Requisitos 2.º contrato"]
-    B --> B1["Asesoría a PYMES"]
-    B --> B2["Apoyo a unidad productiva"]
-    B --> B3["Apoyo a institución"]
-    C --> C1["Apoyo en el centro"]
-    C --> C2["Convocatoria subdirección"]
-    C --> C3["Complementar horas"]
-    D --> D1["SENA Empresa"]
-    D --> D2["SENA Proveedor SENA"]
-    D --> D3["Producción de Centros"]
-    D --> D4["Enfoque Empresarial / I+D+i"]
-    D --> D5["Ruta Emprendedora SENA"]
-    E --> E1["Trabajo formal / contrato"]
-    E --> E2["Funciones afines"]
-    E --> E3["Aval coordinación"]
-    E --> E4["Constancia de la entidad"]
-    classDef root fill:#2D8600,stroke:#2D8600,color:#fff,font-weight:bold,stroke-width:2px;
-    classDef lvl1 fill:#E8F5E1,stroke:#39A900,color:#2D8600,font-weight:bold;
-    classDef lvl2 fill:#FFF7E6,stroke:#F5A623,color:#4A4A4A;
-    class ROOT root;
-    class A,B,C,D,E lvl1;
-    class A1,A2,A3,A4,A5,B1,B2,B3,C1,C2,C3,D1,D2,D3,D4,D5,E1,E2,E3,E4 lvl2;
+                        flowchart LR
+                        ROOT["🎓 ALTERNATIVAS DE ETAPA PRODUCTIVA<br />(Acuerdo 009 de 2024)"]
+                        ROOT --> A["1️⃣ Contrato de<br />Aprendizaje"]
+                        ROOT --> B["2️⃣ Contrato de<br />Vínculo Formativo"]
+                        ROOT --> C["3️⃣ Monitoría"]
+                        ROOT --> D["4️⃣ Proyecto<br />Productivo"]
+                        ROOT --> E["5️⃣ Vínculo<br />Laboral"]
+                        A --> A1["Formación teórico-práctica"]
+                        A --> A2["Contrato laboral especial"]
+                        A --> A3["Remuneración 75% → 100%"]
+                        A --> A4["Gestión Sofía Plus + SGVA"]
+                        A --> A5["Requisitos 2.º contrato"]
+                        B --> B1["Asesoría a PYMES"]
+                        B --> B2["Apoyo a unidad productiva"]
+                        B --> B3["Apoyo a institución"]
+                        C --> C1["Apoyo en el centro"]
+                        C --> C2["Convocatoria subdirección"]
+                        C --> C3["Complementar horas"]
+                        D --> D1["SENA Empresa"]
+                        D --> D2["SENA Proveedor SENA"]
+                        D --> D3["Producción de Centros"]
+                        D --> D4["Enfoque Empresarial / I+D+i"]
+                        D --> D5["Ruta Emprendedora SENA"]
+                        E --> E1["Trabajo formal / contrato"]
+                        E --> E2["Funciones afines"]
+                        E --> E3["Aval coordinación"]
+                        E --> E4["Constancia de la entidad"]
+                        classDef root fill:#2D8600,stroke:#2D8600,color:#fff,font-weight:bold,stroke-width:2px;
+                        classDef lvl1 fill:#E8F5E1,stroke:#39A900,color:#2D8600,font-weight:bold;
+                        classDef lvl2 fill:#FFF7E6,stroke:#F5A623,color:#4A4A4A;
+                        class ROOT root;
+                        class A,B,C,D,E lvl1;
+                        class A1,A2,A3,A4,A5,B1,B2,B3,C1,C2,C3,D1,D2,D3,D4,D5,E1,E2,E3,E4 lvl2;
                     </div>
                 </div>
 
@@ -430,8 +650,10 @@ flowchart LR
                             <i data-lucide="list-tree" class="w-5 h-5"></i> Estructura Detallada
                         </h2>
                         <div class="flex gap-2">
-                            <button onclick="synExpandAll()" class="text-xs px-3 py-1.5 rounded-lg bg-sena-green text-white font-semibold hover:bg-sena-dark transition-colors">Expandir</button>
-                            <button onclick="synCollapseAll()" class="text-xs px-3 py-1.5 rounded-lg bg-sena-orange text-white font-semibold hover:bg-sena-dark transition-colors">Colapsar</button>
+                            <button onclick="synExpandAll()"
+                                class="text-xs px-3 py-1.5 rounded-lg bg-sena-green text-white font-semibold hover:bg-sena-dark transition-colors">Expandir</button>
+                            <button onclick="synCollapseAll()"
+                                class="text-xs px-3 py-1.5 rounded-lg bg-sena-orange text-white font-semibold hover:bg-sena-dark transition-colors">Colapsar</button>
                         </div>
                     </div>
 
@@ -439,12 +661,13 @@ flowchart LR
                         <div class="syn-root-node">
                             <span class="emoji">🎓</span>
                             <div>
-                                <div class="rt">ETAPA PRODUCTIVA</div>
+                                <div class="rt">ALTERNATIVAS DE ETAPA PRODUCTIVA</div>
                                 <div class="rs">Acuerdo 009 de 2024</div>
                             </div>
                         </div>
 
                         <div class="syn-spine">
+
                             <!-- RAMA 1 -->
                             <div class="syn-row">
                                 <div class="syn-node-col">
@@ -461,11 +684,16 @@ flowchart LR
                                         <span class="syn-chip">Requisitos 2.º contrato</span>
                                     </div>
                                     <div class="syn-detail" id="d-1">
-                                        <h4><i data-lucide="briefcase" class="w-4 h-4"></i> 1. Contrato de Aprendizaje</h4>
-                                        <p>Formación teórico-práctica patrocinada por una empresa con apoyo de sostenimiento mensual.</p>
-                                        <p><strong>Marco Legal:</strong> Contrato laboral especial, duración máx. 3 años (Art. 21, Ley 2466 de 2025).</p>
-                                        <p><strong>Remuneración:</strong> 75% SMLMV (1.er año/etapa lectiva) y 100% SMLMV (2.º año/etapa productiva).</p>
-                                        <p><strong>Gestión:</strong> Postulación desde inducción en Sofía Plus y gestión vía sistema SGVA.</p>
+                                        <h4><i data-lucide="briefcase" class="w-4 h-4"></i> 1. Contrato de Aprendizaje
+                                        </h4>
+                                        <p>Formación teórico-práctica patrocinada por una empresa con apoyo de
+                                            sostenimiento mensual.</p>
+                                        <p><strong>Marco Legal:</strong> Contrato laboral especial, duración máx. 3 años
+                                            (Art. 21, Ley 2466 de 2025).</p>
+                                        <p><strong>Remuneración:</strong> 75% SMLMV (1.er año/etapa lectiva) y 100%
+                                            SMLMV (2.º año/etapa productiva).</p>
+                                        <p><strong>Gestión:</strong> Postulación desde inducción en Sofía Plus y gestión
+                                            vía sistema SGVA.</p>
                                         <div class="syn-sublist">
                                             <div class="t">Requisitos 2.º contrato</div>
                                             <ul>
@@ -493,14 +721,19 @@ flowchart LR
                                         <span class="syn-chip">Apoyo a institución (Estado / ONG)</span>
                                     </div>
                                     <div class="syn-detail" id="d-2">
-                                        <h4><i data-lucide="users" class="w-4 h-4"></i> 2. Contrato de Vínculo Formativo</h4>
-                                        <p>Combina formación teórica y práctica en diversos escenarios (talleres, empresas, entornos rurales/urbanos).</p>
+                                        <h4><i data-lucide="users" class="w-4 h-4"></i> 2. Contrato de Vínculo Formativo
+                                        </h4>
+                                        <p>Combina formación teórica y práctica en diversos escenarios (talleres,
+                                            empresas, entornos rurales/urbanos).</p>
                                         <div class="syn-sublist">
                                             <div class="t">Subtipos</div>
                                             <ul>
-                                                <li><strong>Asesoría a PYMES:</strong> apoyo técnico/estratégico para productividad y sostenibilidad.</li>
-                                                <li><strong>Apoyo a unidad productiva:</strong> núcleo familiar, cooperativas u organizaciones de aprendices.</li>
-                                                <li><strong>Apoyo a institución:</strong> entidades estatales, territoriales, ANA u ONG.</li>
+                                                <li><strong>Asesoría a PYMES:</strong> apoyo técnico/estratégico para
+                                                    productividad y sostenibilidad.</li>
+                                                <li><strong>Apoyo a unidad productiva:</strong> núcleo familiar,
+                                                    cooperativas u organizaciones de aprendices.</li>
+                                                <li><strong>Apoyo a institución:</strong> entidades estatales,
+                                                    territoriales, ANA u ONG.</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -522,12 +755,14 @@ flowchart LR
                                     </div>
                                     <div class="syn-detail" id="d-3">
                                         <h4><i data-lucide="graduation-cap" class="w-4 h-4"></i> 3. Monitoría</h4>
-                                        <p>Participación activa dentro del propio centro de formación apoyando procesos académicos, administrativos o de acompañamiento.</p>
+                                        <p>Participación activa dentro del propio centro de formación apoyando procesos
+                                            académicos, administrativos o de acompañamiento.</p>
                                         <div class="syn-sublist">
                                             <div class="t">Características</div>
                                             <ul>
                                                 <li>Convocatorias abiertas por la subdirección del centro.</li>
-                                                <li><strong>Condición:</strong> si no cubre horas del currículo, complementar con otra alternativa.</li>
+                                                <li><strong>Condición:</strong> si no cubre horas del currículo,
+                                                    complementar con otra alternativa.</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -551,15 +786,20 @@ flowchart LR
                                     </div>
                                     <div class="syn-detail" id="d-4">
                                         <h4><i data-lucide="lightbulb" class="w-4 h-4"></i> 4. Proyecto Productivo</h4>
-                                        <p>Formulación, desarrollo o ejecución de ideas para generar valor o soluciones innovadoras (individual o colectivo).</p>
+                                        <p>Formulación, desarrollo o ejecución de ideas para generar valor o soluciones
+                                            innovadoras (individual o colectivo).</p>
                                         <div class="syn-sublist">
                                             <div class="t">Subtipos</div>
                                             <ul>
                                                 <li><strong>SENA Empresa:</strong> gerente, asesor o líder técnico.</li>
-                                                <li><strong>SENA Proveedor SENA:</strong> bienes/servicios para otras dependencias.</li>
-                                                <li><strong>Producción de Centros:</strong> productos/servicios a terceros.</li>
-                                                <li><strong>Enfoque Empresarial / I+D+i:</strong> MVP o vigilancia tecnológica y prototipo.</li>
-                                                <li><strong>Ruta Emprendedora SENA:</strong> acompañamiento de unidades de emprendimiento.</li>
+                                                <li><strong>SENA Proveedor SENA:</strong> bienes/servicios para otras
+                                                    dependencias.</li>
+                                                <li><strong>Producción de Centros:</strong> productos/servicios a
+                                                    terceros.</li>
+                                                <li><strong>Enfoque Empresarial / I+D+i:</strong> MVP o vigilancia
+                                                    tecnológica y prototipo.</li>
+                                                <li><strong>Ruta Emprendedora SENA:</strong> acompañamiento de unidades
+                                                    de emprendimiento.</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -582,13 +822,16 @@ flowchart LR
                                     </div>
                                     <div class="syn-detail" id="d-5">
                                         <h4><i data-lucide="building-2" class="w-4 h-4"></i> 5. Vínculo Laboral</h4>
-                                        <p>Alternativa para aprendices que ya cuentan con un trabajo formal, contrato o prestación de servicios.</p>
-                                        <p>Las funciones desempeñadas deben estar <strong>directamente relacionadas</strong> con su programa de formación.</p>
+                                        <p>Para aprendices con trabajo formal, contrato o prestación de servicios.</p>
+                                        <p>Funciones <strong>directamente relacionadas</strong> con el programa de
+                                            formación.</p>
                                         <div class="syn-sublist">
                                             <div class="t">Requisitos y soporte</div>
                                             <ul>
-                                                <li>Requiere <strong>aval de la coordinación académica</strong>. Se puede solicitar a partir del último trimestre de la etapa lectiva.</li>
-                                                <li>La entidad debe expedir una <strong>constancia</strong> de las actividades desarrolladas durante el tiempo de la etapa productiva.</li>
+                                                <li>Requiere <strong>aval de la coordinación académica</strong>;
+                                                    solicitar desde el último trimestre de etapa lectiva.</li>
+                                                <li>La entidad debe expedir <strong>constancia</strong> de actividades
+                                                    desarrolladas.</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -601,24 +844,38 @@ flowchart LR
             </div>
         </div>
 
-        <footer class="no-print mt-10 bg-white dark:bg-dark-deep/20 rounded-2xl p-6 border border-light-metal/20 dark:border-dark-metal/20 border-l-4 border-l-sena-green text-center">
-            <p class="text-sm font-semibold text-light-dark dark:text-dark-light">Cuadro Sinóptico – Etapa Productiva (AA4-EV01)</p>
+        <footer
+            class="mt-10 bg-white dark:bg-dark-deep/20 rounded-2xl p-6 border border-light-metal/20 dark:border-dark-metal/20 border-l-4 border-l-sena-green text-center">
+            <p class="text-sm font-semibold text-light-dark dark:text-dark-light">Cuadro Sinóptico – Alternativas de etapa productiva (AA4-EV01)</p>
             <p class="text-xs text-light-metal dark:text-dark-metal mt-1">Desarrollo de Productos Electrónicos (3607890) | Inducción Virtual</p>
-            <div class="mt-2">
-                <a href="https://martinciro.github.io/tecnologo_electronico/evidencias/inicial/cuadro_sinoptico" class="text-sena-orange underline text-xs font-semibold hover:text-sena-green transition-colors" target="_blank">
-                    Ver página en vivo
+            <p class="no-print text-xs text-sena-dark dark:text-sena-green mt-2">Elaborada con HTML5 + Tailwind CSS | Herramienta: VS Code</p>
+
+            <!-- Bloque "Ver página": SOLO se muestra en PDF -->
+            <div class="pdf-only mt-2">
+                <a href="https://martinciro.github.io/tecnologo_electronico/evidencias/inicial/cuadro_sinoptico"
+                    class="text-sena-orange underline text-xs font-semibold hover:text-sena-green transition-colors"
+                    target="_blank">
+                    Ver página
                 </a>
+                <p class="no-print text-[10px] text-light-metal dark:text-dark-metal mt-1 break-all">https://martinciro.github.io/tecnologo_electronico/evidencias/inicial/cuadro_sinoptico</p>
             </div>
+
+            <p class="no-print text-xs text-light-metal dark:text-dark-metal mt-3">Fuente: SENA. (2024). Formación titulada virtual SENA. Grupo de Ejecución de la Formación Virtual.</p>
         </footer>
     </main>
 
-    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="no-print fixed bottom-6 left-6 z-50 bg-sena-green hover:bg-sena-dark text-white p-3 rounded-full shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 opacity-0 invisible" id="btn-top" title="Ir arriba">
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+        class="no-print fixed bottom-6 left-6 z-50 bg-sena-green hover:bg-sena-dark text-white p-3 rounded-full shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 opacity-0 invisible"
+        id="btn-top" title="Ir arriba">
         <i data-lucide="chevron-up" class="w-6 h-6"></i>
     </button>
 
-    <button onclick="window.print()" class="no-print fixed bottom-6 right-6 z-50 bg-sena-orange hover:bg-sena-dark text-white p-4 rounded-full shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex items-center group" title="Guardar como PDF">
+    <button onclick="window.print()"
+        class="no-print fixed bottom-6 right-6 z-50 bg-sena-orange hover:bg-sena-dark text-white p-4 rounded-full shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex items-center group"
+        title="Guardar como PDF">
         <i data-lucide="printer" class="w-6 h-6"></i>
-        <span class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap font-semibold text-sm ml-0 group-hover:ml-2">
+        <span
+            class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap font-semibold text-sm ml-0 group-hover:ml-2">
             Guardar PDF
         </span>
     </button>
@@ -665,7 +922,7 @@ flowchart LR
         }
 
         function synExpandAll() {
-            [1,2,3,4,5].forEach(n => {
+            [1, 2, 3, 4, 5].forEach(n => {
                 if (!synState[n]) {
                     const node = document.querySelector(`[data-id="${n}"]`);
                     const detail = document.getElementById(`d-${n}`);
@@ -680,7 +937,7 @@ flowchart LR
         }
 
         function synCollapseAll() {
-            [1,2,3,4,5].forEach(n => {
+            [1, 2, 3, 4, 5].forEach(n => {
                 if (synState[n]) {
                     const node = document.querySelector(`[data-id="${n}"]`);
                     const detail = document.getElementById(`d-${n}`);
