@@ -104,7 +104,8 @@
             #navbar-container,
             footer,
             #btn-top,
-            #btn-print {
+            #btn-print,
+            #progress-bar {
                 display: none !important;
             }
 
@@ -197,12 +198,14 @@
     </style>
 </head>
 
-<body
-    class="bg-light-bg text-light-dark dark:bg-dark-bg dark:text-dark-light font-sans antialiased flex flex-col min-h-screen">
+<body class="bg-light-bg text-light-dark dark:bg-dark-bg dark:text-dark-light font-sans antialiased flex flex-col min-h-screen overflow-x-hidden">
+
+    <!-- BARRA DE PROGRESO SUPERIOR (Solo Web) -->
+    <div id="progress-bar" class="no-print fixed top-0 left-0 h-1 bg-sena-green z-50 transition-all duration-100" style="width: 0%;"></div>
 
     <div class="no-print" id="navbar-container"></div>
 
-    <main class="flex-grow max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+    <main class="flex-grow max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 w-full">
 
         <a href="../"
             class="no-print inline-flex items-center gap-2 text-light-metal dark:text-dark-metal hover:text-light-accent dark:hover:text-dark-accent mb-6 transition-colors font-medium cursor-pointer">
@@ -234,22 +237,22 @@
         </div>
 
         <!-- DOCUMENTO PRINCIPAL -->
-        <div class="paper-sheet rounded-2xl p-6 sm:p-10 border border-light-metal/10 dark:border-dark-metal/10">
+        <div class="paper-sheet rounded-2xl p-4 sm:p-10 border border-light-metal/10 dark:border-dark-metal/10">
 
             <!-- 1. PORTADA APA 7 (Estudiante) -->
             <div
                 class="apa-title-page mb-12 pb-12 border-b border-light-metal/20 dark:border-dark-metal/20 print:mb-0 print:pb-0 print:border-0">
-                <p class="apa-paper-title font-display text-xl text-sena-dark dark:text-sena-green">Mi Programa de
+                <p class="apa-paper-title font-display text-xl sm:text-2xl text-sena-dark dark:text-sena-green">Mi Programa de
                     Formación</p>
                 <div class="apa-affiliation-block mt-8 text-center">
-                    <p class="text-sm text-light-dark dark:text-dark-light">Martin Ciro</p>
-                    <p class="text-sm text-light-dark dark:text-dark-light">Servicio Nacional de Aprendizaje (SENA)</p>
-                    <p class="text-sm text-light-dark dark:text-dark-light">IND1 – Inducción al Entorno de Formación
+                    <p class="text-sm sm:text-base text-light-dark dark:text-dark-light">Martin Ciro</p>
+                    <p class="text-sm sm:text-base text-light-dark dark:text-dark-light">Servicio Nacional de Aprendizaje (SENA)</p>
+                    <p class="text-sm sm:text-base text-light-dark dark:text-dark-light">IND1 – Inducción al Entorno de Formación
                         Virtual</p>
-                    <p class="text-sm text-light-dark dark:text-dark-light">Tecnólogo en Desarrollo de Productos
+                    <p class="text-sm sm:text-base text-light-dark dark:text-dark-light">Tecnólogo en Desarrollo de Productos
                         Electrónicos</p>
-                    <p class="text-sm text-light-dark dark:text-dark-light">Instructor</p>
-                    <p class="text-sm text-light-dark dark:text-dark-light" id="current-date-print">Septiembre 29, 2026</p>
+                    <p class="text-sm sm:text-base text-light-dark dark:text-dark-light">Instructor</p>
+                    <p class="text-sm sm:text-base text-light-dark dark:text-dark-light" id="current-date-print">Septiembre 29, 2026</p>
                 </div>
             </div>
 
@@ -257,9 +260,9 @@
             <div class="apa-content">
 
                 <!-- INTRODUCCIÓN (título duplicado eliminado) -->
-                <h2 class="font-display text-xl text-sena-dark dark:text-sena-green mt-8">Introducción</h2>
+                <h2 class="font-display text-lg sm:text-xl text-sena-dark dark:text-sena-green mt-8">Introducción</h2>
 
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     El presente documento tiene como propósito consolidar los conocimientos adquiridos durante la fase
                     de inducción al entorno de formación virtual del Servicio Nacional de Aprendizaje (SENA), entidad
                     que constituye uno de los pilares fundamentales en la cualificación del talento humano en Colombia.
@@ -268,7 +271,7 @@
                     abarcando desde la identidad institucional representada en la Senalogía, hasta los aspectos
                     normativos, pedagógicos y operativos que rigen el proceso educativo.
                 </p>
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     La inducción virtual, según lo planteado por el Servicio Nacional de Aprendizaje (SENA, 2024),
                     representa el primer contacto formal del aprendiz con la entidad y con la modalidad de educación
                     mediada por las Tecnologías de la Información y la Comunicación [TIC]. Este proceso no solo busca
@@ -277,7 +280,7 @@
                     la cual trasciende la mera transmisión de conocimientos técnicos para integrar dimensiones del
                     saber, el hacer y el ser.
                 </p>
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     En este contexto, el documento se estructura en nueve secciones que abordan de manera progresiva los
                     distintos componentes del proceso formativo. Se inicia con la Senalogía e identidad institucional,
                     continuando con el Reglamento del Aprendiz y los servicios de Bienestar, para luego profundizar en
@@ -288,10 +291,10 @@
                 </p>
 
                 <!-- SENALOGÍA -->
-                <h2 class="font-display text-xl text-sena-dark dark:text-sena-green mt-8">Senalogía e Identidad
+                <h2 class="font-display text-lg sm:text-xl text-sena-dark dark:text-sena-green mt-8">Senalogía e Identidad
                     Institucional</h2>
 
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     La Senalogía comprende el conjunto de elementos simbólicos, históricos y filosóficos que configuran
                     la identidad del Servicio Nacional de Aprendizaje. Fundada el 21 de junio de 1957 mediante el
                     Acuerdo 118, la entidad fue creada por el visionario líder Rodolfo Martínez Tono, con el apoyo
@@ -301,7 +304,7 @@
                     SENA como un establecimiento público del orden nacional, con personería jurídica, patrimonio propio
                     y autonomía administrativa, adscrito al Ministerio del Trabajo.
                 </p>
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     La misión institucional se orienta a invertir en el desarrollo social y técnico de los trabajadores
                     colombianos, mediante el desarrollo de la Formación Profesional Integral, para la incorporación y el
                     desarrollo de las personas en actividades productivas que contribuyan al desarrollo social,
@@ -310,7 +313,7 @@
                     fortalecedora de la economía campesina, popular, verde y digital, con un enfoque diferencial que
                     reconoce la diversidad de los territorios y las poblaciones.
                 </p>
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     Los símbolos institucionales constituyen elementos visuales que condensan la filosofía de la
                     entidad. El Escudo integra tres elementos representativos de los sectores económicos: el piñón que
                     simboliza la industria, el caduceo que representa el comercio y los servicios, y el café que evoca
@@ -321,10 +324,10 @@
                 </p>
 
                 <!-- REGLAMENTO Y BIENESTAR -->
-                <h2 class="font-display text-xl text-sena-dark dark:text-sena-green mt-8">Reglamento del Aprendiz y
+                <h2 class="font-display text-lg sm:text-xl text-sena-dark dark:text-sena-green mt-8">Reglamento del Aprendiz y
                     Bienestar al Aprendiz</h2>
 
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     El Reglamento del Aprendiz, adoptado mediante el Acuerdo 007 de 2012 (Servicio Nacional de
                     Aprendizaje, 2012), constituye el marco normativo que regula la formación profesional integral
                     dentro del SENA. Este documento establece los derechos, deberes, prohibiciones y garantías
@@ -334,7 +337,7 @@
                     y la posibilidad de solicitar traslados, revalidaciones o homologaciones según los procedimientos
                     establecidos.
                 </p>
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     Paralelamente, los deberes del aprendiz incluyen el cumplimiento del cronograma de trabajo
                     propuesto, el uso adecuado de los ambientes de formación, la presentación oportuna de las evidencias
                     de aprendizaje, el porte del carné institucional, y el mantenimiento de una conducta respetuosa y
@@ -342,7 +345,7 @@
                     derivar en procesos disciplinarios que, dependiendo de su gravedad, pueden culminar en la
                     cancelación de la matrícula.
                 </p>
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     Complementariamente, el Bienestar al Aprendiz representa el conjunto de programas, servicios y
                     estrategias orientadas a garantizar la permanencia, la formación integral y el desarrollo humano del
                     aprendiz. Este componente reconoce que el proceso educativo no se limita a lo académico, sino que
@@ -355,10 +358,10 @@
                 </p>
 
                 <!-- FORMACIÓN VIRTUAL -->
-                <h2 class="font-display text-xl text-sena-dark dark:text-sena-green mt-8">La Formación Virtual en el
+                <h2 class="font-display text-lg sm:text-xl text-sena-dark dark:text-sena-green mt-8">La Formación Virtual en el
                     SENA</h2>
 
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     La formación profesional integral en el SENA se centra en generar competencias que le permitan al
                     egresado integrar tecnologías, plantear y solucionar creativamente problemas para lograr eficacia en
                     el saber hacer, además de brindarle movilidad en la estructura ocupacional (Servicio Nacional de
@@ -366,7 +369,7 @@
                     enseñanza-aprendizaje-evaluación que se llevan a cabo a partir de la interacción de sus actores en
                     un ambiente mediado por las Tecnologías de la Información y la Comunicación (TIC).
                 </p>
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     Las principales características de esta modalidad incluyen el acceso a la información en diversos
                     formatos y en los tiempos que requiera el aprendiz, la comunicación entre compañeros e instructores
                     a través de herramientas como foros, chat, correo electrónico, mensajería interna y sesiones en
@@ -374,7 +377,7 @@
                     aprendizaje autónomo y colaborativo, y la posibilidad de mejorar continuamente el proceso formativo
                     a partir de la retroalimentación oportuna frente al desarrollo de las actividades.
                 </p>
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     Las ventajas de la formación virtual, según el Ministerio de Educación Nacional (MEN, 2023),
                     incluyen su ajuste a las necesidades y tiempos de los aprendices, la posibilidad de realizar un
                     proceso educativo en cualquier momento y lugar, el acceso a regiones apartadas, el desarrollo de
@@ -385,10 +388,10 @@
                 </p>
 
                 <!-- RECURSOS PARA LA FORMACIÓN -->
-                <h2 class="font-display text-xl text-sena-dark dark:text-sena-green mt-8">Recursos para la Formación
+                <h2 class="font-display text-lg sm:text-xl text-sena-dark dark:text-sena-green mt-8">Recursos para la Formación
                 </h2>
 
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     Para participar en la formación titulada a distancia con experticia y pertinencia, es necesario
                     reconocer conceptos institucionales propios de la modalidad. El programa formativo se trata de la
                     tecnología o especialización tecnológica que el instructor liderará, cuya construcción obedece a una
@@ -397,7 +400,7 @@
                     ocupacional, las competencias que lo conforman, los resultados de aprendizaje y el tipo de
                     formación.
                 </p>
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     La planeación pedagógica constituye una fase indispensable antes de iniciar el proceso formativo, en
                     la cual se identifican aspectos como las necesidades de formación de los aprendices, los estilos de
                     aprendizaje y la adaptación de los currículos a los lineamientos institucionales y la legislación
@@ -406,7 +409,7 @@
                     directo de aprendizaje y estableciendo una relación directa entre lo que se debe hacer en el centro
                     formativo y lo que más tarde se hará en el mundo laboral.
                 </p>
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     El resultado de aprendizaje presenta una relación de las evidencias junto con los resultados y su
                     respectiva ponderación dentro del proceso de evaluación, mientras que la actividad de aprendizaje
                     corresponde a las acciones integradoras realizadas por los aprendices con la orientación del
@@ -417,10 +420,10 @@
                 </p>
 
                 <!-- EVALUACIÓN -->
-                <h2 class="font-display text-xl text-sena-dark dark:text-sena-green mt-8">Evaluación por Competencias
+                <h2 class="font-display text-lg sm:text-xl text-sena-dark dark:text-sena-green mt-8">Evaluación por Competencias
                 </h2>
 
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     La evaluación del aprendizaje en el SENA se realiza a través del enfoque por competencias, entendido
                     como el proceso por el cual los instructores-tutores obtienen y analizan las evidencias del proceso
                     de aprendizaje y desarrollo de las competencias del aprendiz, con base en el programa de formación y
@@ -429,7 +432,7 @@
                     del desarrollo de las competencias del aprendiz, y se evalúa con el modelo definido por la entidad,
                     donde A representa Aprobado y D Deficiente.
                 </p>
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     Este enfoque evaluativo se centra en el desempeño del aprendiz soportado en evidencias que incluyen
                     el conocimiento (saber), el ser (actitudes y valores) y el hacer (desempeños prácticos), frente a
                     los resultados de aprendizaje del programa de formación y las normas de competencia que le
@@ -439,9 +442,9 @@
                 </p>
 
                 <!-- MI PROGRAMA DE FORMACIÓN -->
-                <h2 class="font-display text-xl text-sena-dark dark:text-sena-green mt-8">Mi Programa de Formación</h2>
+                <h2 class="font-display text-lg sm:text-xl text-sena-dark dark:text-sena-green mt-8">Mi Programa de Formación</h2>
 
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     Estoy vinculado al programa Tecnólogo en Desarrollo de Productos Electrónicos, con código 3607890,
                     el cual hace parte de la oferta de formación titulada del SENA en el área de tecnología e industria.
                     Este programa está diseñado para formar profesionales capaces de interpretar especificaciones
@@ -450,7 +453,7 @@
                     para la formulación de proyectos tecnológicos, la implementación de sistemas electrónicos analógicos
                     y digitales, y el mantenimiento preventivo y correctivo de equipos electrónicos.
                 </p>
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     La pertinencia de este programa responde a las necesidades del sector productivo colombiano, que
                     demanda profesionales con capacidades para integrarse a procesos de automatización, innovación
                     tecnológica y desarrollo de productos electrónicos competitivos. La modalidad virtual en la que
@@ -460,10 +463,10 @@
                 </p>
 
                 <!-- EMPRENDIMIENTO E INVESTIGACIÓN -->
-                <h2 class="font-display text-xl text-sena-dark dark:text-sena-green mt-8">Emprendimiento e Investigación
+                <h2 class="font-display text-lg sm:text-xl text-sena-dark dark:text-sena-green mt-8">Emprendimiento e Investigación
                     en el SENA</h2>
 
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     El SENA ofrece múltiples oportunidades para que el egresado siga vinculado activamente con la
                     entidad. El Observatorio Laboral y Ocupacional constituye un grupo de profesionales que vigila el
                     comportamiento de las ocupaciones, partiendo de diversas fuentes de información del mercado laboral,
@@ -473,7 +476,7 @@
                     adscrito al SENA cuyo objeto exclusivo es financiar iniciativas empresariales desarrolladas por
                     aprendices, practicantes universitarios o profesionales.
                 </p>
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     Adicionalmente, la entidad ofrece convenios con Instituciones de Educación Superior para que los
                     egresados puedan acceder a títulos de nivel profesional, complementando su formación técnica y
                     tecnológica. La internacionalización, por su parte, gestiona el intercambio en los ámbitos
@@ -484,10 +487,10 @@
                 </p>
 
                 <!-- REFLEXIÓN -->
-                <h2 class="font-display text-xl text-sena-dark dark:text-sena-green mt-8">Reflexión: Fundamentos de la
+                <h2 class="font-display text-lg sm:text-xl text-sena-dark dark:text-sena-green mt-8">Reflexión: Fundamentos de la
                     Formación por Proyectos</h2>
 
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     La formación por proyectos en el SENA constituye una metodología pedagógica que trasciende la
                     concepción tradicional de la educación, centrada en la transmisión unidireccional de contenidos,
                     para situar al aprendiz como protagonista activo de su propio proceso formativo. Esta metodología,
@@ -495,7 +498,7 @@
                     significativo se produce cuando el estudiante se enfrenta a problemas reales del entorno productivo
                     y debe movilizar sus conocimientos, habilidades y actitudes para diseñar soluciones pertinentes.
                 </p>
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     Desde mi perspectiva como aprendiz del programa de Desarrollo de Productos Electrónicos, la
                     formación por proyectos representa una simulación anticipada del mundo laboral. A diferencia de la
                     educación tradicional, donde los contenidos se presentan de forma fragmentada y descontextualizada,
@@ -505,7 +508,7 @@
                     sino también de habilidades blandas fundamentales como el trabajo en equipo, la comunicación
                     asertiva, la resolución de problemas y la toma de decisiones.
                 </p>
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     Zapata (2018) señala que el rol del instructor en esta metodología se transforma de transmisor de
                     conocimiento a facilitador y orientador del proceso, acompañando al aprendiz en la identificación de
                     necesidades, la planeación de acciones, la ejecución de actividades y la evaluación de resultados.
@@ -513,7 +516,7 @@
                     esenciales para un tecnólogo en desarrollo de productos electrónicos que deberá enfrentar retos
                     tecnológicos en constante evolución.
                 </p>
-                <p class="text-sm leading-relaxed mt-4">
+                <p class="text-sm sm:text-base leading-relaxed mt-4">
                     En conclusión, la formación por proyectos no es simplemente una estrategia didáctica, sino una
                     filosofía formativa que prepara al aprendiz para ser un profesional integral, capaz de generar valor
                     desde el primer día en la industria, con una visión sistémica de los procesos productivos y un
@@ -525,9 +528,9 @@
             <!-- 3. REFERENCIAS BIBLIOGRÁFICAS -->
             <div
                 class="apa-references mt-12 pt-8 border-t border-light-metal/20 dark:border-dark-metal/20 print:border-0 print:mt-0 print:pt-0">
-                <h2 class="font-display text-xl text-center">Referencias</h2>
+                <h2 class="font-display text-lg sm:text-xl text-center">Referencias</h2>
 
-                <div class="text-sm leading-relaxed mt-4 space-y-4 print:space-y-0">
+                <div class="text-sm sm:text-base leading-relaxed mt-4 space-y-4 print:space-y-0">
                     <p class="apa-reference-item">
                         Amorós, A. (2011). <em>Desarrollo e implementación de la Formación por Proyectos en el SENA: Un
                             ejemplo de Buenas Prácticas en la transferencia metodológica</em>. Deutsche Gesellschaft für
@@ -600,19 +603,29 @@
 
     <script>
         const dateElement = document.getElementById('current-date-print');
-if (dateElement) {
-    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
-                   'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-    const hoy = new Date();
-    const fechaFormateada = `${meses[hoy.getMonth()]} ${hoy.getDate()}, ${hoy.getFullYear()}`;
-    dateElement.textContent = fechaFormateada;
-}
+        if (dateElement) {
+            const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                           'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            const hoy = new Date();
+            const fechaFormateada = `${meses[hoy.getMonth()]} ${hoy.getDate()}, ${hoy.getFullYear()}`;
+            dateElement.textContent = fechaFormateada;
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
             if (typeof lucide !== 'undefined') lucide.createIcons();
         });
 
         window.addEventListener('scroll', () => {
+            // 1. Actualizar barra de progreso superior
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            const progressBar = document.getElementById('progress-bar');
+            if (progressBar) {
+                progressBar.style.width = scrolled + "%";
+            }
+
+            // 2. Botón "Ir arriba"
             const btnTop = document.getElementById('btn-top');
             if (window.scrollY > 300) {
                 btnTop.classList.remove('opacity-0', 'invisible');
