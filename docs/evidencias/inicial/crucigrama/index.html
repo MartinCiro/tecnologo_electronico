@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crucigrama – Inducción SENA | AA3-EV01</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/tailwindcss-cdn@3.4.10/tailwindcss-with-all-plugins.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['"Fredoka One"', 'cursive']
+                    },
+                    colors: {
+                        dark: { bg: '#2A2A2E', accent: '#4FB3D9', deep: '#2E6B8A', light: '#E0F2FE', metal: '#9CA3AF' },
+                        light: { bg: '#F8FAFC', accent: '#0284C7', deep: '#0EA5E9', dark: '#334155', metal: '#64748B' },
+                        sena: { green: '#39A900', dark: '#2D8600', light: '#E8F5E1', orange: '#F5A623', gray: '#4A4A4A' }
+                    }
+                }
+            }
+        };
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="/components/js/global.js" defer></script>
+
+    <style>
+    body,
+    div,
+    nav,
+    a,
+    button,
+    article {
+        transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 300ms;
+    }
+
+     /* ======================================================
+        ESTILOS DE LA CUADRÍCULA DEL CRUCIGRAMA
+        ====================================================== */
+
+    .crossword-grid {
+        display: grid;
+        grid-template-columns: repeat(22, minmax(0, 1fr));
+        gap: 1px;
+        max-width: 660px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .cw-cell {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cw-cell.empty {
+        background: transparent;
+    }
+
+    .cw-cell input {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: 700;
+        /* Tamaño más conservador: 0.45rem (7.2px) en móvil, hasta 0.75rem (12px) en escritorio */
+        font-size: clamp(0.5rem, calc((100vw - 64px) / 22 * 0.65), 0.85rem);
+        line-height: 1;
+        /* Centrado vertical nativo en inputs */
+        background: white;
+        border: 1px solid #d1d5db;
+        border-radius: 2px;
+        outline: none;
+        transition: all 0.2s;
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        /* SE ELIMINÓ display: flex, align-items y justify-content (no son válidos en inputs) */
+    }
+
+    .dark .cw-cell input {
+        background: #334155;
+        border-color: #475569;
+        color: #f8fafc;
+    }
+
+    .cw-cell input:focus {
+        border-color: #39A900;
+        box-shadow: 0 0 0 2px rgba(57, 169, 0, 0.2);
+        z-index: 10;
+    }
+
+    .cw-cell input.correct {
+        background-color: #dcfce7 !important;
+        border-color: #22c55e !important;
+        color: #15803d !important;
+    }
+
+    .cw-cell input.incorrect {
+        background-color: #fee2e2 !important;
+        border-color: #ef4444 !important;
+        color: #b91c1c !important;
+    }
+
+    .dark .cw-cell input.correct {
+        background-color: #14532d !important;
+        color: #86efac !important;
+    }
+
+    .dark .cw-cell input.incorrect {
+        background-color: #7f1d1d !important;
+        color: #fca5a5 !important;
+    }
+
+    .cw-cell .cw-number {
+        position: absolute;
+        top: 0px;
+        /* Ajustado para que no toque el borde superior */
+        left: 1px;
+        font-size: clamp(0.35rem, 1vw, 0.5rem);
+        /* Escala proporcionalmente más pequeña */
+        font-weight: 700;
+        color: #4A4A4A;
+        pointer-events: none;
+        z-index: 5;
+        line-height: 1;
+    }
+
+    .cw-cell .cw-number.v-number {
+        color: #F5A623;
+    }
+
+    .dark .cw-cell .cw-number {
+        color: #94a3b8;
+    }
+
+    .dark .cw-cell .cw-number.v-number {
+        color: #F5A623;
+    }
+
+    @media (max-width: 340px) {
+            .cw-cell input {
+                font-size: 0.4rem !important; /* 8px fijo */
+                letter-spacing: -0.5px;       /* Comprime las letras */
+                font-stretch: condensed;      /* Si la fuente lo soporta */
+            }
+            
+            .cw-cell .cw-number {
+                font-size: 0.3rem !important;
+            }
+            
+            .crossword-grid {
+                gap: 0px; /* Elimina el gap para ganar espacio */
+            }
+        }
+
+    /* ======================================================
+           IMPRESIÓN (PDF)
+           ====================================================== */
+    @media print {
+        @page {
+            size: A4 portrait;
+            margin: 1cm;
+        }
+
+        html,
+        body {
+            background: white !important;
+            color: #000000 !important;
+            font-family: "Times New Roman", Times, serif !important;
+            font-size: 11pt !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .no-print,
+        #navbar-container,
+        footer,
+        #btn-top,
+        #btn-print,
+        #btn-reveal,
+        #btn-check,
+        #btn-clear {
+            display: none !important;
+        }
+
+        .paper-sheet {
+            box-shadow: none !important;
+            background: white !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            max-width: 100% !important;
+            border: none !important;
+        }
+
+        .crossword-grid {
+            max-width: 100% !important;
+            width: 14cm !important;
+            gap: 0 !important;
+            margin: 0 auto 0.5cm auto !important;
+            break-inside: avoid !important;
+        }
+
+        .cw-cell input {
+            border: 1px solid #000 !important;
+            background: white !important;
+            color: black !important;
+            font-size: 8pt !important;
+            border-radius: 0 !important;
+        }
+
+        .cw-cell.empty {
+            border: none !important;
+        }
+
+        .cw-cell .cw-number {
+            color: #000 !important;
+            font-size: 5pt !important;
+        }
+
+        .clues-container {
+            break-inside: avoid !important;
+            margin-top: 0.5cm !important;
+        }
+
+        .clues-container h3 {
+            font-size: 11pt !important;
+            font-weight: bold !important;
+            color: #2D8600 !important;
+            margin-bottom: 4px !important;
+            border-bottom: 1px solid #ccc !important;
+            padding-bottom: 2px !important;
+        }
+
+        .clues-container h4 {
+            font-size: 9pt !important;
+            font-weight: bold !important;
+            margin: 3px 0 2px 0 !important;
+        }
+
+        .clues-container li {
+            font-size: 8.5pt !important;
+            line-height: 1.3 !important;
+            margin-bottom: 2px !important;
+        }
+    }
+</style>
+</head>
+
+<body class="bg-light-bg text-light-dark dark:bg-dark-bg dark:text-dark-light font-sans antialiased flex flex-col min-h-screen">
+
+    <div class="no-print" id="navbar-container"></div>
+
+    <main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+
+        <a href="../" class="no-print inline-flex items-center gap-2 text-light-metal dark:text-dark-metal hover:text-light-accent dark:hover:text-dark-accent mb-6 transition-colors font-medium cursor-pointer">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver a Evidencias Iniciales
+        </a>
+
+        <!-- Encabezado Web -->
+        <div class="no-print mb-8 text-center sm:text-left">
+            <div class="inline-flex items-center gap-3 mb-3">
+                <div class="w-12 h-12 bg-sena-orange/10 dark:bg-sena-orange/20 rounded-xl flex items-center justify-center text-sena-orange flex-shrink-0">
+                    <i data-lucide="puzzle" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="font-display text-2xl sm:text-3xl text-light-dark dark:text-dark-light">Crucigrama de Inducción</h1>
+                    <p class="text-sm text-light-metal dark:text-dark-metal font-medium">Evidencia: AA3-EV01 | Fase de Inducción</p>
+                </div>
+            </div>
+            <div class="bg-sena-green/5 dark:bg-sena-green/10 border border-sena-green/20 dark:border-sena-green/20 rounded-lg p-4 text-sm text-light-dark dark:text-dark-light leading-relaxed">
+                <i data-lucide="info" class="w-4 h-4 inline mr-1 text-sena-green"></i>
+                <strong>Instrucción:</strong> Completa el crucigrama con los conceptos clave de la inducción SENA. Las tildes se omiten en la cuadrícula pero el sistema las normaliza automáticamente. Usa las pistas de la derecha.
+            </div>
+        </div>
+
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <div class="paper-sheet rounded-2xl p-4 sm:p-6 border border-light-metal/10 dark:border-dark-metal/10">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
+                
+                <!-- COLUMNA IZQUIERDA: CUADRÍCULA -->
+                <div class="lg:col-span-3">
+                    <div class="overflow-x-auto pb-2">
+                        <div class="crossword-grid" id="crossword-grid">
+                            <!-- Se genera dinámicamente con JS -->
+                        </div>
+                    </div>
+                    
+                    <!-- Botones de Acción (Web) -->
+                    <div class="no-print flex flex-wrap justify-center gap-3 mt-6">
+                        <button onclick="checkAnswers()" id="btn-check" class="flex items-center gap-2 px-4 py-2 bg-sena-green text-white rounded-lg font-semibold hover:bg-sena-dark transition-colors text-sm">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i> Verificar
+                        </button>
+                        <button onclick="revealAnswers()" id="btn-reveal" class="flex items-center gap-2 px-4 py-2 bg-sena-orange text-white rounded-lg font-semibold hover:bg-sena-dark transition-colors text-sm">
+                            <i data-lucide="eye" class="w-4 h-4"></i> Revelar
+                        </button>
+                        <button onclick="clearGrid()" id="btn-clear" class="flex items-center gap-2 px-4 py-2 bg-gray-500 text-white rounded-lg font-semibold hover:bg-gray-600 transition-colors text-sm">
+                            <i data-lucide="eraser" class="w-4 h-4"></i> Limpiar
+                        </button>
+                    </div>
+
+                    <!-- Banner de retroalimentación -->
+                    <div class="hidden mt-4 p-3 rounded-lg text-sm font-semibold text-center" id="feedbackBanner">
+                        <span id="feedbackText"></span>
+                    </div>
+                </div>
+
+                <!-- COLUMNA DERECHA: PISTAS -->
+                <div class="lg:col-span-2 clues-container">
+                    <div class="bg-sena-light/30 dark:bg-sena-green/5 rounded-xl p-5 border border-sena-green/20 dark:border-sena-green/10">
+                        <h3 class="font-display text-lg text-sena-dark dark:text-sena-green mb-4 flex items-center gap-2">
+                            <i data-lucide="list" class="w-5 h-5"></i> Pistas
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-bold text-sm text-sena-orange mb-2 uppercase tracking-wide">Horizontales</h4>
+                                <ul class="space-y-2 text-sm text-light-dark dark:text-dark-light leading-snug">
+                                    <li class="flex gap-2"><span class="font-bold text-sena-green min-w-[20px]">1.</span> Documento que muestra la estructura general del programa, precisa características y proyecciones del contexto laboral y ocupacional.</li>
+                                    <li class="flex gap-2"><span class="font-bold text-sena-green min-w-[20px]">2.</span> Fondo de capital semilla creado por el Gobierno Nacional en el artículo 40 de la Ley 789.</li>
+                                    <li class="flex gap-2"><span class="font-bold text-sena-green min-w-[20px]">3.</span> Grupo de profesionales que vigila el comportamiento de las ocupaciones, partiendo de diversas fuentes de información del mercado laboral.</li>
+                                    <li class="flex gap-2"><span class="font-bold text-sena-green min-w-[20px]">4.</span> Se centra en el desempeño del aprendiz soportado en evidencias que incluyen el conocimiento, el ser y el hacer.</li>
+                                    <li class="flex gap-2"><span class="font-bold text-sena-green min-w-[20px]">5.</span> Presenta una relación de las evidencias junto con los resultados y su respectiva ponderación dentro del proceso de evaluación.</li>
+                                    <li class="flex gap-2"><span class="font-bold text-sena-green min-w-[20px]">6.</span> Para estar a la vanguardia en innovación y tecnología en el sector productivo, el SENA suscribe acuerdos con los mejores del mundo.</li>
+                                    <li class="flex gap-2"><span class="font-bold text-sena-green min-w-[20px]">7.</span> Proceso de enseñanza-aprendizaje-evaluación mediado por TIC que permite realizar un proceso educativo en cualquier momento y lugar.</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="border-t border-sena-green/20 pt-4">
+                                <h4 class="font-bold text-sm text-sena-orange mb-2 uppercase tracking-wide">Verticales</h4>
+                                <ul class="space-y-2 text-sm text-light-dark dark:text-dark-light leading-snug">
+                                    <li class="flex gap-2"><span class="font-bold text-sena-orange min-w-[20px]">1.</span> Tecnologías de la Información y la Comunicación.</li>
+                                    <li class="flex gap-2"><span class="font-bold text-sena-orange min-w-[20px]">2.</span> Planeación de las necesidades de formación de los aprendices, estilos de aprendizaje y adaptación de los currículos.</li>
+                                    <li class="flex gap-2"><span class="font-bold text-sena-orange min-w-[20px]">3.</span> Entorno telemático en el cual el aprendiz tiene acceso a la red para desarrollar un proceso de aprendizaje.</li>
+                                    <li class="flex gap-2"><span class="font-bold text-sena-orange min-w-[20px]">4.</span> Siglas de: Formación en Ambientes Virtuales de Aprendizaje.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="no-print mt-10 bg-white dark:bg-dark-deep/20 rounded-2xl p-6 border border-light-metal/20 dark:border-dark-metal/20 border-l-4 border-l-sena-green text-center">
+            <p class="text-sm font-semibold text-light-dark dark:text-dark-light">Crucigrama – Inducción SENA (AA3-EV01)</p>
+            <p class="text-xs text-light-metal dark:text-dark-metal mt-1">Desarrollo de Productos Electrónicos (3607890) | Inducción Virtual</p>
+        </footer>
+
+    </main>
+
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="no-print fixed bottom-6 left-6 z-50 bg-sena-green hover:bg-sena-dark text-white p-3 rounded-full shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 opacity-0 invisible" id="btn-top" title="Ir arriba">
+        <i data-lucide="chevron-up" class="w-6 h-6"></i>
+    </button>
+
+    <button onclick="window.print()" class="no-print fixed bottom-6 right-6 z-50 bg-sena-orange hover:bg-sena-dark text-white p-4 rounded-full shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex items-center group" id="btn-print" title="Guardar como PDF">
+        <i data-lucide="printer" class="w-6 h-6"></i>
+        <span class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap font-semibold text-sm ml-0 group-hover:ml-2">
+            Guardar PDF
+        </span>
+    </button>
+
+        <script>
+        // ======================================================
+        // CONFIGURACIÓN EXACTA DEL CRUCIGRAMA (23 filas × 22 columnas)
+        // ======================================================
+        const WORDS = {
+            h1: { id: 'h1', label: '1', dir: 'H', r: 1,  c: 0,  text: 'DISEÑOCURRICULAR',        answer: 'DISEÑO CURRICULAR' },
+            h2: { id: 'h2', label: '2', dir: 'H', r: 7,  c: 6,  text: 'FONDOEMPRENDER',          answer: 'FONDO EMPRENDER' },
+            h3: { id: 'h3', label: '3', dir: 'H', r: 10, c: 1,  text: 'OBSERVATORIOLABORAL',     answer: 'OBSERVATORIO LABORAL' },
+            h4: { id: 'h4', label: '4', dir: 'H', r: 12, c: 2,  text: 'EVALUACION',              answer: 'EVALUACION' },
+            h5: { id: 'h5', label: '5', dir: 'H', r: 16, c: 0,  text: 'RESULTADODEAPRENDIZAJE',  answer: 'RESULTADO DE APRENDIZAJE' },
+            h6: { id: 'h6', label: '6', dir: 'H', r: 18, c: 2,  text: 'INTERNACIONALIZACION',    answer: 'INTERNACIONALIZACION' },
+            h7: { id: 'h7', label: '7', dir: 'H', r: 21, c: 6,  text: 'EDUCACIONVIRTUAL',        answer: 'EDUCACION VIRTUAL' },
+            v1: { id: 'v1', label: '1', dir: 'V', r: 10, c: 8,  text: 'TIC',                     answer: 'TIC' },
+            v2: { id: 'v2', label: '2', dir: 'V', r: 3,  c: 11, text: 'PLANEACIONPEDAGOGICA',    answer: 'PLANEACION PEDAGOGICA' },
+            v3: { id: 'v3', label: '3', dir: 'V', r: 1,  c: 14, text: 'AULAVIRTUAL',             answer: 'AULA VIRTUAL' },
+            v4: { id: 'v4', label: '4', dir: 'V', r: 9,  c: 18, text: 'FAVA',                    answer: 'FAVA' }
+        };
+
+        const GRID_ROWS = 23;
+        const GRID_COLS = 22;
+        const cellMap = {};
+
+        // Construir el mapa de celdas
+        Object.values(WORDS).forEach(word => {
+            const letters = word.text.split('');
+            letters.forEach((char, idx) => {
+                const r = word.dir === 'H' ? word.r : word.r + idx;
+                const c = word.dir === 'H' ? word.c + idx : word.c;
+                const key = `${r},${c}`;
+
+                if (!cellMap[key]) {
+                    cellMap[key] = { r, c, char, words: [], numbers: [] };
+                }
+                cellMap[key].words.push({ id: word.id, idx });
+                if (idx === 0) {
+                    cellMap[key].numbers.push({ label: word.label, dir: word.dir });
+                }
+            });
+        });
+
+        // Normalizar texto (elimina tildes y convierte a mayúsculas)
+        function normalize(text) {
+            return (text || '')
+                .trim()
+                .toUpperCase()
+                .normalize("NFD")
+                .replace(/N\u0303/g, 'Ñ')
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^A-ZÑ]/g, '');
+        }
+
+        // Renderizar la cuadrícula
+        const gridContainer = document.getElementById('crossword-grid');
+        for (let r = 0; r < GRID_ROWS; r++) {
+            for (let c = 0; c < GRID_COLS; c++) {
+                const key = `${r},${c}`;
+                const cellData = cellMap[key];
+                const cellDiv = document.createElement('div');
+                
+                if (cellData) {
+                    cellDiv.className = 'cw-cell';
+                    cellDiv.dataset.r = r;
+                    cellDiv.dataset.c = c;
+
+                    if (cellData.numbers.length > 0) {
+                        cellData.numbers.forEach((num, nIndex) => {
+                            const numSpan = document.createElement('span');
+                            numSpan.className = `cw-number ${num.dir === 'V' ? 'v-number' : ''}`;
+                            if (nIndex > 0) numSpan.style.left = '12px';
+                            numSpan.textContent = num.label;
+                            cellDiv.appendChild(numSpan);
+                        });
+                    }
+
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.maxLength = 1;
+                    input.autocomplete = 'off';
+                    input.spellcheck = false;
+                    input.dataset.r = r;
+                    input.dataset.c = c;
+                    input.dataset.expected = cellData.char;
+
+                    input.addEventListener('input', (e) => onCellInput(e, r, c));
+                    input.addEventListener('keydown', (e) => onCellKeyDown(e, r, c));
+                    cellDiv.appendChild(input);
+                } else {
+                    cellDiv.className = 'cw-cell empty';
+                }
+                gridContainer.appendChild(cellDiv);
+            }
+        }
+
+        function focusCell(r, c) {
+            const input = document.querySelector(`input[data-r="${r}"][data-c="${c}"]`);
+            if (input) { input.focus(); input.select(); }
+        }
+
+        function onCellInput(e, r, c) {
+            const input = e.target;
+            let val = normalize(input.value);
+            if (val.length > 1) val = val.slice(-1);
+            input.value = val;
+            input.classList.remove('correct', 'incorrect');
+
+            if (val.length === 1) {
+                const key = `${r},${c}`;
+                const cellData = cellMap[key];
+                if (cellData) {
+                    const primaryWord = cellData.words[0];
+                    const wordObj = WORDS[primaryWord.id];
+                    if (wordObj.dir === 'H') {
+                        const nextKey = `${r},${c+1}`;
+                        if (cellMap[nextKey]) focusCell(r, c+1);
+                    } else {
+                        const nextKey = `${r+1},${c}`;
+                        if (cellMap[nextKey]) focusCell(r+1, c);
+                    }
+                }
+            }
+        }
+
+        function onCellKeyDown(e, r, c) {
+            if (e.key === 'Backspace' && !e.target.value) {
+                const key = `${r},${c}`;
+                const cellData = cellMap[key];
+                if (cellData) {
+                    const primaryWord = cellData.words[0];
+                    const wordObj = WORDS[primaryWord.id];
+                    if (wordObj.dir === 'H') {
+                        const prevKey = `${r},${c-1}`;
+                        if (cellMap[prevKey]) focusCell(r, c-1);
+                    } else {
+                        const prevKey = `${r-1},${c}`;
+                        if (cellMap[prevKey]) focusCell(r-1, c);
+                    }
+                }
+            } else if (e.key === 'ArrowRight') {
+                const nextKey = `${r},${c+1}`;
+                if (cellMap[nextKey]) focusCell(r, c+1);
+            } else if (e.key === 'ArrowLeft') {
+                const prevKey = `${r},${c-1}`;
+                if (cellMap[prevKey]) focusCell(r, c-1);
+            } else if (e.key === 'ArrowDown') {
+                const nextKey = `${r+1},${c}`;
+                if (cellMap[nextKey]) focusCell(r+1, c);
+            } else if (e.key === 'ArrowUp') {
+                const prevKey = `${r-1},${c}`;
+                if (cellMap[prevKey]) focusCell(r-1, c);
+            }
+        }
+
+        function checkAnswers() {
+            const inputs = document.querySelectorAll('.cw-cell input');
+            let correct = 0;
+            let total = 0;
+            let answered = 0;
+
+            inputs.forEach(input => {
+                total++;
+                const expected = normalize(input.dataset.expected);
+                const current = normalize(input.value);
+                input.classList.remove('correct', 'incorrect');
+
+                if (current === expected) {
+                    input.classList.add('correct');
+                    correct++;
+                    answered++;
+                } else if (current.length > 0) {
+                    input.classList.add('incorrect');
+                    answered++;
+                }
+            });
+
+            const banner = document.getElementById('feedbackBanner');
+            const text = document.getElementById('feedbackText');
+            banner.classList.remove('hidden');
+
+            if (correct === total) {
+                banner.className = 'mt-4 p-3 rounded-lg text-sm font-semibold text-center bg-sena-green/20 text-sena-dark dark:text-sena-green border border-sena-green/30';
+                text.innerHTML = `🎉 ¡Excelente! Has completado las ${total} casillas correctamente.`;
+            } else if (answered === 0) {
+                banner.className = 'mt-4 p-3 rounded-lg text-sm font-semibold text-center bg-gray-100 text-gray-600 border border-gray-200';
+                text.innerHTML = `Comienza a escribir en la cuadrícula.`;
+            } else {
+                banner.className = 'mt-4 p-3 rounded-lg text-sm font-semibold text-center bg-sena-orange/20 text-sena-dark dark:text-sena-orange border border-sena-orange/30';
+                text.innerHTML = `Llevas ${correct} de ${total} casillas correctas. ¡Revisa las casillas en rojo!`;
+            }
+        }
+
+        function revealAnswers() {
+            Object.keys(cellMap).forEach(key => {
+                const cellData = cellMap[key];
+                const input = document.querySelector(`input[data-r="${cellData.r}"][data-c="${cellData.c}"]`);
+                if (input) {
+                    input.value = cellData.char;
+                    input.classList.remove('incorrect');
+                    input.classList.add('correct');
+                }
+            });
+
+            const banner = document.getElementById('feedbackBanner');
+            const text = document.getElementById('feedbackText');
+            banner.classList.remove('hidden');
+            banner.className = 'mt-4 p-3 rounded-lg text-sm font-semibold text-center bg-blue-100 text-blue-800 border border-blue-300';
+            text.innerHTML = '💡 Se han revelado todas las respuestas del solucionario.';
+        }
+
+        function clearGrid() {
+            document.querySelectorAll('.cw-cell input').forEach(input => {
+                input.value = '';
+                input.classList.remove('correct', 'incorrect');
+            });
+            document.getElementById('feedbackBanner').classList.add('hidden');
+            focusCell(1, 0);
+        }
+
+        // ======================================================
+        // 🆕 PREPARAR PDF: Siempre inyectar respuestas al imprimir
+        // ======================================================
+        let prePrintState = []; // Para restaurar el estado después de imprimir
+
+        function prepareForPrint() {
+            // Guardar el estado actual de cada celda para restaurarlo después
+            prePrintState = [];
+            document.querySelectorAll('.cw-cell input').forEach(input => {
+                prePrintState.push({
+                    input: input,
+                    value: input.value,
+                    classes: input.className
+                });
+                // Forzar la respuesta correcta y marcarla como correcta
+                const expected = input.dataset.expected;
+                input.value = expected;
+                input.classList.remove('incorrect');
+                input.classList.add('correct');
+            });
+        }
+
+        function restoreAfterPrint() {
+            // Restaurar el estado previo a la impresión
+            prePrintState.forEach(item => {
+                item.input.value = item.value;
+                item.input.className = item.classes;
+            });
+            prePrintState = [];
+        }
+
+        // Conectar a los eventos nativos del navegador
+        window.addEventListener('beforeprint', prepareForPrint);
+        window.addEventListener('afterprint', restoreAfterPrint);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        });
+
+        window.addEventListener('scroll', () => {
+            const btnTop = document.getElementById('btn-top');
+            if (window.scrollY > 300) {
+                btnTop.classList.remove('opacity-0', 'invisible');
+                btnTop.classList.add('opacity-100', 'visible');
+            } else {
+                btnTop.classList.add('opacity-0', 'invisible');
+                btnTop.classList.remove('opacity-100', 'visible');
+            }
+        });
+    </script>
+</body>
+
+</html>
